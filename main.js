@@ -411,6 +411,14 @@
     });
   }
 
+  // ── Force Play all videos ──
+  $$('video').forEach(vid => {
+    vid.play().catch(() => {
+      // Re-try on first interaction if blocked
+      document.addEventListener('click', () => vid.play(), { once: true });
+    });
+  });
+
   /* Init complete */
   console.log('%c April Gloreanne Portfolio loaded ✓', 'color:#78b6f0;font-family:monospace;font-size:14px;');
 })();
