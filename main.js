@@ -156,10 +156,6 @@
   const aboutSection  = $('.about');
 
   // ── Scroll Timeline Variables ──
-  // 0.10 -> 0.70: Black curtain grows
-  // 0.72 -> 0.76: "just a designer?" fades out
-  // 0.76 -> 0.80: "keep Scrolling" fades in
-  // 0.88 -> 0.94: "keep Scrolling" fades out, Photos slide in
 
   function onAboutScroll() {
     if (!aboutSection) return;
@@ -167,31 +163,71 @@
     const sectionH   = aboutSection.offsetHeight;
     const progress   = Math.max(0, Math.min(1, -rect.top / (sectionH - window.innerHeight)));
 
-    // ── Reveal Bar Animation (Expanding black curtain) ──
+    // ── Reveal Bar Animation (Stage-by-Stage Logic) ──
     const revealBar = $('.about__reveal-bar');
-    let barProgress = 0;
     if (revealBar) {
-      barProgress = Math.max(0, Math.min(1, (progress - 0.10) / 0.60));
-      revealBar.style.height = `${barProgress * 150}vh`; 
-      if (aboutQuestion) aboutQuestion.classList.toggle('is-covered', barProgress > 0.4);
+      // Stage 1: Stretch (0.1 -> 0.4)
+      const stretchProg = Math.max(0, Math.min(1, (progress - 0.1) / 0.3));
+      revealBar.style.opacity = Math.max(0, Math.min(1, (progress - 0.1) / 0.1));
+      
+      // Stage 2: Gradient Expand (0.4 -> 0.6)
+      const gradProg = Math.max(0, Math.min(1, (progress - 0.4) / 0.2));
+      
+      // Stage 3: Blackout Expansion (0.65 -> 0.85)
+      const blackoutProg = Math.max(0, Math.min(1, (progress - 0.65) / 0.2));
+
+      const currentW = `${100 + (stretchProg * (window.innerWidth - 100))}px`;
+      // Added 5% more height to the base: 140px -> 148px
+      const currentH = `${148 + (blackoutProg * window.innerHeight * 1.5)}px`;
+      
+      revealBar.style.width = currentW;
+      revealBar.style.height = currentH;
+      
+      // Blue gradients ignite ONLY once it reaches the side
+      if (stretchProg >= 1.0) {
+        // Controlled Glow (Tighter, specifically between black and navy)
+        const gradOffset = 1 + (gradProg * 2); 
+        revealBar.style.boxShadow = `
+          0 0 40px #0056b3, /* Focused glow at the edge */
+          0 -${24 * gradOffset}px 0 0 #001233, 
+          0 -${48 * gradOffset}px 0 0 #002e70, 
+          0 -${72 * gradOffset}px 0 0 #0056b3, 
+          0 -${96 * gradOffset}px 0 0 #0088ff, 
+          0 -${125 * gradOffset}px 0 0 rgba(77, 166, 255, 0.6),
+          0 ${24 * gradOffset}px 0 0 #001233, 
+          0 ${48 * gradOffset}px 0 0 #002e70, 
+          0 ${72 * gradOffset}px 0 0 #0056b3, 
+          0 ${96 * gradOffset}px 0 0 #0088ff, 
+          0 ${125 * gradOffset}px 0 0 rgba(77, 166, 255, 0.6)
+        `;
+      } else {
+        revealBar.style.boxShadow = 'none';
+      }
     }
 
     // ── Text Sequence ──
-const texts = [
-  'just a designer?',
-  'be more.',
-  'design. develop. deliver.',
-  'build real systems.'
-];
+    const texts = [
+      'just a designer?',
+      'be more.',
+      'design. develop. deliver.',
+      'build real systems.'
+    ];
     
     if (aboutQuestion) {
-      // Rotate through texts between 0 and 0.72 progress
-      const textStage = Math.max(0, Math.min(3, Math.floor((progress / 0.72) * 4)));
-      aboutQuestion.textContent = texts[textStage];
-
-      // Fades out between 0.72 and 0.76
-      const questionOpacity = 1 - Math.max(0, Math.min(1, (progress - 0.72) / 0.04));
-      aboutQuestion.style.opacity = questionOpacity;
+      let textIdx = 0;
+      // Rotation starts after stretch
+      if (progress > 0.4) {
+        const rotationProg = Math.max(0, Math.min(1, (progress - 0.4) / 0.25));
+        textIdx = 1 + Math.min(2, Math.floor(rotationProg * 3));
+      }
+      aboutQuestion.textContent = texts[textIdx];
+      
+      const questionFadeIn = Math.max(0, Math.min(1, progress / 0.05));
+      // Fade out exactly when bio should start appearing (0.72)
+      const questionFadeOut = 1 - Math.max(0, Math.min(1, (progress - 0.72) / 0.05));
+      aboutQuestion.style.opacity = Math.min(questionFadeIn, questionFadeOut);
+      const offset = (1 - questionFadeIn) * 20;
+      aboutQuestion.style.transform = `translate(-50%, calc(-50% + ${offset}px))`;
     }
     
     const aboutSub = $('.about__sub');
@@ -366,6 +402,15 @@ const texts = [
     }
   }, { passive: true });
 
+  // ── Top Navigation (Profile Logo) ──
+  const navProfileBtn = document.getElementById('nav-profile-btn');
+  if (navProfileBtn) {
+    navProfileBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   /* Init complete */
-  console.log('%c Parash Rautela Portfolio loaded ✓', 'color:#78b6f0;font-family:monospace;font-size:14px;');
+  console.log('%c April Gloreanne Portfolio loaded ✓', 'color:#78b6f0;font-family:monospace;font-size:14px;');
 })();

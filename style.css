@@ -148,6 +148,32 @@ button {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.nav__logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-left: 8px;
+  margin-right: 4px;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nav__logo:hover {
+  transform: scale(1.1);
+  border-color: var(--azure-50);
+}
+
 .nav--transparent {
   background: transparent;
   backdrop-filter: none;
@@ -572,6 +598,10 @@ button {
 /* Peakly hero gradient placeholder */
 .project__img-bg--peakly-hero {
   background-image: url('assets/peakly-hero-bg.png');
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-color: #e8f4f9; /* Matches the image's light teal background */
 }
 
 .project__img-bg--peakly-phone {
@@ -579,8 +609,8 @@ button {
   top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 52%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   background-image: url('assets/peakly-phone-center.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -1027,27 +1057,20 @@ button {
 .about__reveal-bar {
   position: absolute;
   top: 50%;
-  left: 0;
-  width: 100%;
-  height: 0vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
   background: #000;
-  transform: translateY(-50%);
   z-index: -1;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  box-shadow:
-    0 -32px 0 0 #002e70,
-    0 -64px 0 0 #0056b3,
-    0 -96px 0 0 #0088ff,
-    0 -128px 0 0 #4da6ff,
-    0 -160px 0 0 #99ccff,
-    0 32px 0 0 #002e70,
-    0 64px 0 0 #0056b3,
-    0 96px 0 0 #0088ff,
-    0 128px 0 0 #4da6ff,
-    0 160px 0 0 #99ccff;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: none;
+  /* Will be applied in JS */
 }
 
 .about__question {
@@ -1060,16 +1083,12 @@ button {
   font-size: clamp(48px, 8vw, 120px);
   font-weight: 400;
   letter-spacing: -0.02em;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.15);
-  transition: color 0.3s ease, opacity 0.3s ease, -webkit-text-stroke 0.3s ease;
-  width: 100%;
-}
-
-/* When the bar covers the text, it turns white */
-.about__question.is-covered {
   color: #fff;
-  -webkit-text-stroke: 1px transparent;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 10;
+  width: 100%;
 }
 
 .about__sub {
@@ -1241,15 +1260,16 @@ button {
 /* Glowing Neon Transition connecting About and Experiments */
 .neon-transition {
   width: 100%;
-  height: 160px;
+  height: 250px;
   position: relative;
   z-index: 40;
   background: linear-gradient(to bottom,
-      #002e70 0px, #002e70 32px,
-      #0056b3 32px, #0056b3 64px,
-      #0088ff 64px, #0088ff 96px,
-      #4da6ff 96px, #4da6ff 128px,
-      #99ccff 128px, #99ccff 160px);
+      #000000 0%,
+      #001233 30%,
+      #0056b3 60%,
+      #0088ff 85%,
+      #f1f2f3 100%);
+  margin: 0;
 }
 
 /* ════════════════════════════════════════════════
@@ -1446,38 +1466,31 @@ button {
    TESTIMONIAL
 ════════════════════════════════════════════════ */
 .testimonial {
-  background: var(--black);
-  min-height: 1200px;
+  background: #000;
+  min-height: 800px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px 20px;
+  padding: 100px 40px;
 }
 
 .testimonial__content {
   display: flex;
-  gap: 10px;
-  max-width: 1100px;
-  width: 100%;
-  min-height: 451px;
+  max-width: 800px;
+  width: 90%;
+  height: 400px;
+  background: #f1f2f3;
   position: relative;
-  border: 1px solid var(--grey-74);
-  flex-wrap: wrap;
-}
-
-@media (max-width: 768px) {
-  .testimonial__photo-col {
-    width: 100%;
-    height: 300px;
-  }
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
 }
 
 /* Photo col */
 .testimonial__photo-col {
-  width: 380px;
+  width: 40%;
   flex-shrink: 0;
   position: relative;
-  overflow: hidden;
+  background: #fff;
 }
 
 .testimonial__photo {
@@ -1485,30 +1498,31 @@ button {
   height: 100%;
   background-image: url('assets/testimonial-photo.png');
   background-size: cover;
+  background-position: center;
 }
 
 /* Text col */
 .testimonial__text-col {
-  flex: 1;
+  width: 60%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 40px 16px;
-  overflow: hidden;
+  justify-content: center;
+  padding: 30px 40px 40px 40px;
+  position: relative;
 }
 
 .testimonial__quote-icon {
-  font-size: 29px;
-  color: var(--black);
-  text-shadow: 2px 3px 7px rgba(0, 0, 0, 0.54);
+  font-family: var(--font-sans);
+  font-size: 60px;
   line-height: 1;
-  background: var(--grey-96);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  color: #000;
+  font-weight: 700;
+  opacity: 1;
 }
 
 .testimonial__slides {
-  flex: 1;
-  position: relative;
+  width: 100%;
 }
 
 .testimonial__slide {
@@ -1521,94 +1535,90 @@ button {
 
 .testimonial__body {
   font-family: var(--font-pixel);
-  font-size: 16px;
-  color: var(--grey-29);
-  line-height: 20.8px;
-  letter-spacing: -0.32px;
-  white-space: pre-wrap;
-  margin-bottom: 18px;
-}
-
-.testimonial__body--sm {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 22px;
-  color: var(--grey-29);
-  line-height: 28.6px;
-  letter-spacing: -0.44px;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  max-width: 400px;
 }
 
 .testimonial__author {
-  margin-top: 18px;
+  display: flex;
+  align-items: center;
 }
 
 .testimonial__author-chip {
   display: inline-flex;
   align-items: center;
-  background: var(--azure-50);
-  padding: 0 8px;
-  height: 39px;
-  box-shadow: 2px 3px 7px rgba(0, 0, 0, 0.55);
-  transform: rotate(1deg);
+  background: #2060df;
+  padding: 6px 20px;
+  box-shadow: 0 10px 20px rgba(32, 96, 223, 0.3), 2px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
   position: relative;
-  font-size: 0;
 }
 
 .testimonial__chip-script {
   font-family: var(--font-script);
-  font-size: 48px;
+  font-size: 42px;
   font-style: italic;
-  color: var(--white);
-  line-height: 43.2px;
+  color: #fff;
+  margin-right: -4px;
 }
 
 .testimonial__chip-pixel {
   font-family: var(--font-pixel);
-  font-size: 16px;
-  color: var(--white);
-  line-height: 14.4px;
+  font-size: 18px;
+  color: #fff;
+  margin-right: 12px;
 }
 
 .testimonial__chip-role {
-  font-family: var(--font-pixel);
-  font-size: 10px;
-  color: var(--white);
-  opacity: 0.7;
-  margin-left: 8px;
-}
-
-.testimonial__author-name {
   font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 14px;
-  color: var(--grey-68);
-  line-height: 18.2px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+  opacity: 0.9;
 }
 
 .testimonial__controls {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
   display: flex;
-  gap: 6px;
-  justify-content: flex-end;
+  gap: 2px;
 }
 
 .testimonial__btn {
-  width: 24px;
-  height: 24px;
-  background: var(--black);
-  color: var(--white);
-  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  background: #000;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s;
+  transition: opacity 0.3s ease, background 0.3s ease;
+  padding: 0;
+  border: none;
+}
+
+.testimonial__btn img {
+  filter: invert(1);
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.testimonial__btn:hover:not(:disabled) {
+  background: #2060df;
+  /* Blue hover for interaction */
 }
 
 .testimonial__btn:disabled {
-  opacity: 0.4;
-}
-
-.testimonial__btn:not(:disabled):hover {
-  opacity: 0.7;
+  background: #aaaaaa;
+  cursor: not-allowed;
+  opacity: 1;
+  /* Keep it solid, just change color */
 }
 
 /* ════════════════════════════════════════════════
@@ -1647,73 +1657,89 @@ button {
 }
 
 .thankyou__headline {
-  font-size: 0;
+  display: flex;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.thankyou__word {
   display: flex;
   align-items: baseline;
-  gap: 0;
-  margin-bottom: 32px;
-  text-shadow: -5px -2px 4.8px rgba(0, 0, 0, 0.25);
-  flex-wrap: wrap;
+  position: relative;
 }
 
 .thankyou__script {
   font-family: var(--font-script);
-  font-size: clamp(80px, 15vw, 200px);
+  font-size: clamp(120px, 15vw, 220px);
   font-style: italic;
   color: var(--white);
-  line-height: 1.2;
+  line-height: 0.8;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .thankyou__pixel-gradient {
   font-family: var(--font-pixel);
-  font-size: clamp(24px, 4vw, 54px);
+  font-size: clamp(32px, 4vw, 64px);
   background: linear-gradient(to top, var(--azure-71), var(--white));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  line-height: 1.2;
-  align-self: flex-end;
-  margin-bottom: 8px;
+  line-height: 1;
+  margin-left: -15px;
+  /* Pull closer to the script letter */
 }
 
 .thankyou__lines {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  margin-bottom: 48px;
+  gap: 8px;
+  margin-bottom: 60px;
 }
 
 .thankyou__line {
   font-family: var(--font-pixel);
-  font-size: 14px;
-  color: var(--grey-87);
-  line-height: 20px;
+  font-size: 16px;
+  color: var(--grey-80);
+  line-height: 1.5;
 }
 
 .thankyou__line--white {
-  font-size: 16px;
+  font-size: 18px;
   color: var(--white);
+  font-weight: 500;
+  margin-top: 8px;
 }
 
 .thankyou__bold {
   color: var(--white);
+  font-weight: 600;
 }
 
 .thankyou__social {
   display: flex;
-  gap: 19px;
+  gap: 32px;
   align-items: center;
-  margin-top: 8px;
 }
 
 .thankyou__social-link {
-  display: block;
-  transition: opacity 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.7;
+}
+
+.thankyou__social-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .thankyou__social-link:hover {
-  opacity: 0.8;
-  transform: scale(1.05);
+  opacity: 1;
+  transform: translateY(-5px);
 }
 
 .thankyou__footer {
