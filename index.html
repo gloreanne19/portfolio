@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parash Rautela — Product Designer</title>
+  <title>April Gloreanne — Designer | Programmer</title>
   <meta name="description" content="Product designer based in Bangalore. Art is my language. Product design is how I speak it." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,6 +11,21 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- ═══════════════════════════ AUDIO ═══════════════════════════ -->
+  <audio id="bg-audio" src="assets/bgmusic.mp3" loop preload="auto"></audio>
+
+  <!-- ═══════════════════════════ INTRO ═══════════════════════════ -->
+  <div id="intro-overlay">
+    <video class="intro__video" id="intro-video" playsinline autoplay muted src="assets/vid.mp4" poster="assets/hero-spaceship-bg.png"></video>
+    
+    <div class="intro__sound" id="intro-sound-toggle">
+      <div class="intro__sound-btn">
+        <div class="intro__sound-icon"></div>
+      </div>
+      <span class="intro__sound-label">TURN THE SOUND ON</span>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════ NAV ═══════════════════════════ -->
   <nav class="nav" id="main-nav">
@@ -45,15 +60,15 @@
     <!-- Name display -->
     <div class="hero__name-container">
       <div class="hero__name-row">
-        <span class="hero__name-script">P</span>
-        <span class="hero__name-pixel">arash</span>
+        <span class="hero__name-script">A</span>
+        <span class="hero__name-pixel">pril</span>
         <div class="hero__tagline">
           <p>Art is my language. Product design is how I speak it. Based in Bangalore. I code for fun, design for life — beauty was never subjective. <span class="hero__tagline-scroll">Scroll and see.</span></p>
         </div>
       </div>
       <div class="hero__name-row hero__name-row--second">
-        <span class="hero__name-script">R</span>
-        <span class="hero__name-pixel">autela</span>
+        <span class="hero__name-script">G</span>
+        <span class="hero__name-pixel">loreanne</span>
       </div>
     </div>
 
@@ -227,17 +242,6 @@
             <div class="project__brand-text">
               <h3 class="project__brand-name">Mercle</h3>
               <span class="project__brand-tag">2 Designers, UX, UI, Visuals, 3D</span>
-            </div>
-          </div>
-
-          <div class="project__descriptions">
-            <p class="project__desc">Mercle is a Web3 identity platform solving one of the internet's oldest problems — you never really know if someone online is a real person. Think of it as "Login with Google" but every verified Mercle ID is guaranteed to be a real human, giving platforms and communities a trust layer that the internet has never had.</p>
-            <p class="project__desc">I worked across UX, visual design, mascot design, gamification, email visuals, and the app — essentially the entire visual language of the product from scratch. The challenge was building an identity strong enough to carry a Web3 product into mainstream trust.</p>
-          </div>
-
-          <a href="#" class="project__cta">% SEND ME REQUEST %</a>
-        </div>
-
         <div class="project__video-col project__video-col--mercle-end">
           <div class="project__video-placeholder">
             <div class="project__video-shimmer"></div>
@@ -254,54 +258,48 @@
   <section class="about" id="about">
     <div class="about__scroll-container">
       <div class="about__sticky">
-        <div class="about__left">
-          <div class="about__photo-wrap">
-            <div class="about__photo"></div>
-          </div>
-        </div>
-
         <div class="about__center">
+          <div class="about__reveal-bar"></div>
           <h2 class="about__question">just a designer?</h2>
-          <p class="about__sub">keep Scrolling</p>
+          <p class="about__sub">keep Scrolling <span class="about__cursor"></span></p>
         </div>
 
-        <div class="about__right">
-          <div class="about__photo-b"></div>
-          <div class="about__photo-c"></div>
+        <!-- Bio paragraphs (revealed on scroll) -->
+        <div class="about__bio" id="about-bio">
+          <div class="about__bio-header">
+            <div class="about__bio-photo about__bio-photo--left"></div>
+            <div class="about__bio-photo about__bio-photo--center"></div>
+            <div class="about__bio-photo about__bio-photo--right"></div>
+          </div>
+          <div class="about__bio-inner">
+            <p class="about__bio-p">
+              <span class="about__dim">From the hills of </span><span class="about__bright">Uttarakhand</span><span class="about__dim">, based out of Bangalore. I'm </span><span class="about__bright">Parash</span><br>
+              <span class="about__dim">someone who got pulled into design early and never looked back.</span><br>
+              <span class="about__bright">Curious</span><span class="about__dim"> by nature, </span><span class="about__bright">builder</span><span class="about__dim"> by habit.</span>
+            </p>
+            <p class="about__bio-p">
+              <span class="about__dim">Started at </span><span class="about__bright">Nirmaan</span><span class="about__dim">, a tech-first construction startup built their new<br>venture, worked on the core product. Then </span><span class="about__bright">Mercle</span><span class="about__dim">, a web3 company,<br>where I designed everything from what's on your screen to what's in<br>your hand. Multiple hats, no complaints.</span>
+            </p>
+            <p class="about__bio-p">
+              <span class="about__dim">I care more about how something looks and feels than anything else.<br>Simple, intentional, a little delightful. I work best with people who<br>give a damn about what they're building. </span><span class="about__bright">Basketball</span><span class="about__dim"> when I need to<br>reset.</span>
+            </p>
+          </div>
         </div>
       </div>
 
       <!-- Scroll trigger spacers -->
       <div class="about__trigger about__trigger--1"></div>
       <div class="about__trigger about__trigger--2"></div>
+      <div class="about__trigger about__trigger--3"></div>
+      <div class="about__trigger about__trigger--4"></div>
     </div>
-
-    <!-- Bio paragraphs (revealed on scroll) -->
-    <div class="about__bio" id="about-bio">
-      <div class="about__bio-inner">
-        <p class="about__bio-p">
-          <span class="about__dim">From the hills of </span><span class="about__bright">Uttarakhand</span><span class="about__dim">, based out of Bangalore. I'm </span><span class="about__bright">Parash</span>
-        </p>
-        <p class="about__bio-p">
-          <span class="about__dim">someone who got pulled into design early and never looked back.</span>
-        </p>
-        <p class="about__bio-p">
-          <span class="about__bright">Curious</span><span class="about__dim"> by nature, </span><span class="about__bright">builder</span><span class="about__dim"> by habit.</span>
-        </p>
-
-        <p class="about__bio-p">
-          <span class="about__dim">Started at </span><span class="about__bright">Nirmaan</span><span class="about__dim">, a tech-first construction startup built their new venture, worked on the core product. Then </span><span class="about__bright">Mercle</span><span class="about__dim">, a web3 company,</span>
-        </p>
-        <p class="about__bio-p">
-          <span class="about__dim">where I designed everything from what's on your screen to what's in your hand. Multiple hats, no complaints.</span>
-        </p>
-
-        <p class="about__bio-p">
-          <span class="about__dim">I care more about how something looks and feels than anything else. Simple, intentional, a little delightful. I work best with people who give a damn about what they're building. </span><span class="about__bright">Basketball</span><span class="about__dim"> when I need to reset.</span>
-        </p>
-      </div>
-    </div>
+    
+    <!-- Spacer after pinned content seamlessly scrolls -->
+    <div class="about__spacer"></div>
   </section>
+
+  <!-- Glowing neon transition between Bio and Experiments -->
+  <div class="neon-transition"></div>
 
   <!-- ═══════════════════════════ EXPERIMENTS ═══════════════════════════ -->
   <section class="experiments" id="playground">
@@ -457,11 +455,7 @@
         </a>
       </div>
     </div>
-    <div class="thankyou__footer">
-      <span>Crafted with</span>
-      <img src="assets/icon-heart.svg" class="thankyou__heart" width="20" alt="heart">
-      <span>in framer</span>
-    </div>
+    
   </section>
 
   <script src="main.js"></script>
