@@ -93,6 +93,7 @@ body {
   color: var(--white);
   font-family: var(--font-pixel);
   overflow-x: hidden;
+  width: 100%;
   -webkit-font-smoothing: antialiased;
 }
 img, svg { display: block; max-width: 100%; }
@@ -117,6 +118,8 @@ button { cursor: pointer; border: none; background: none; }
   -webkit-backdrop-filter: blur(32px);
   border-bottom: 1px solid rgba(0,0,0,0.08);
   transition: opacity 0.4s var(--ease-smooth);
+  width: auto;
+  max-width: 95vw;
 }
 
 .nav__logo {
@@ -236,13 +239,13 @@ button { cursor: pointer; border: none; background: none; }
 /* Name container */
 .hero__name-container {
   position: absolute;
-  top: 174px;
+  top: clamp(100px, 15vh, 174px);
   left: 0;
   right: 0;
   display: flex;
   flex-direction: column;
   align-items: start;
-  padding-left: 120px;
+  padding-left: clamp(20px, 10vw, 120px);
 }
 
 .hero__name-row {
@@ -253,10 +256,10 @@ button { cursor: pointer; border: none; background: none; }
 
 .hero__name-script {
   font-family: var(--font-script);
-  font-size: 200px;
+  font-size: clamp(80px, 15vw, 200px);
   font-style: italic;
   color: var(--white);
-  line-height: 240px;
+  line-height: 1.1;
   text-shadow: -1px -4px 2px rgba(0,0,0,0.25);
   display: block;
   flex-shrink: 0;
@@ -264,13 +267,13 @@ button { cursor: pointer; border: none; background: none; }
 
 .hero__name-pixel {
   font-family: var(--font-pixel);
-  font-size: 54px;
+  font-size: clamp(24px, 4vw, 54px);
   font-style: normal;
   background: linear-gradient(to top, var(--azure-71), var(--white));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  line-height: 64.8px;
+  line-height: 1.2;
   align-self: flex-end;
   margin-bottom: 4px;
 }
@@ -301,10 +304,11 @@ button { cursor: pointer; border: none; background: none; }
 /* Spaceship */
 .hero__spaceship {
   position: absolute;
-  bottom: 125px;
+  bottom: 80px;
   right: 25px;
-  width: 470px;
-  height: 624px;
+  width: clamp(200px, 30vw, 470px);
+  height: auto;
+  aspect-ratio: 470 / 624;
   pointer-events: none;
 }
 .hero__spaceship-inner {
@@ -447,6 +451,11 @@ button { cursor: pointer; border: none; background: none; }
   gap: 8px;
   align-items: flex-start;
   padding: 0 8px 32px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.project__detail-row::-webkit-scrollbar {
+  display: none;
 }
 
 .project__stack {
@@ -454,9 +463,13 @@ button { cursor: pointer; border: none; background: none; }
   flex-direction: column;
   gap: 10px;
   width: 404px;
+  max-width: 80vw;
   height: 717px;
   overflow: hidden;
   flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .project__stack { height: 400px; }
 }
 .project__stack-img {
   flex: 1;
@@ -602,11 +615,20 @@ button { cursor: pointer; border: none; background: none; }
   height: 704px;
 }
 .project__img-wrap--demandpay-right {
-  width: 773px;
+  flex: 2;
   height: 704px;
+  max-width: 773px;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+}
+@media (max-width: 1200px) {
+  .project__img-wrap--demandpay-right {
+    flex: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 773 / 704;
+  }
 }
 .project__img-bg--demandpay {
   position: absolute;
@@ -670,12 +692,21 @@ button { cursor: pointer; border: none; background: none; }
   height: 488px;
 }
 .project__img-wrap--mercle-hero {
-  width: 1210px;
+  flex: 3;
+  max-width: 1210px;
   height: 476px;
   flex-shrink: 0;
   overflow: hidden;
   background-image: url('assets/mercle-hero.png');
   background-size: cover;
+}
+@media (max-width: 1400px) {
+  .project__img-wrap--mercle-hero {
+    flex: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1210 / 476;
+  }
 }
 .project__video-wrap--mercle {
   flex: 1;
@@ -1021,9 +1052,13 @@ button { cursor: pointer; border: none; background: none; }
   gap: 10px;
   max-width: 1100px;
   width: 100%;
-  height: 451px;
+  min-height: 451px;
   position: relative;
   border: 1px solid var(--grey-74);
+  flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+  .testimonial__photo-col { width: 100%; height: 300px; }
 }
 
 /* Photo col */
@@ -1174,7 +1209,7 @@ button { cursor: pointer; border: none; background: none; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 200px;
+  padding-left: clamp(20px, 15vw, 200px);
   width: 100%;
 }
 
@@ -1185,22 +1220,23 @@ button { cursor: pointer; border: none; background: none; }
   gap: 0;
   margin-bottom: 32px;
   text-shadow: -5px -2px 4.8px rgba(0,0,0,0.25);
+  flex-wrap: wrap;
 }
 .thankyou__script {
   font-family: var(--font-script);
-  font-size: 200px;
+  font-size: clamp(80px, 15vw, 200px);
   font-style: italic;
   color: var(--white);
-  line-height: 240px;
+  line-height: 1.2;
 }
 .thankyou__pixel-gradient {
   font-family: var(--font-pixel);
-  font-size: 54px;
+  font-size: clamp(24px, 4vw, 54px);
   background: linear-gradient(to top, var(--azure-71), var(--white));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  line-height: 64.8px;
+  line-height: 1.2;
   align-self: flex-end;
   margin-bottom: 8px;
 }
