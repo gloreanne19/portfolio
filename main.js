@@ -88,7 +88,6 @@
       const c = bgColors[stage];
       if (aboutSticky) {
         aboutSticky.style.background = c.bg;
-        aboutSticky.style.transition = 'background 0.5s ease';
       }
       if (aboutQuestion) {
         aboutQuestion.style.color = c.questionColor;
@@ -98,11 +97,23 @@
 
     // Show "keep scrolling" sub text mid-way
     if (aboutSub) {
-      aboutSub.style.opacity = progress > 0.85 ? '1' : '0';
+      aboutSub.style.opacity = progress > 0.85 && progress < 0.95 ? '1' : '0';
     }
-    // Reveal photos
-    if (aboutPhotoA) aboutPhotoA.style.opacity = progress > 0.1 ? '1' : '0';
-    if (aboutPhotoB) aboutPhotoB.style.opacity = progress > 0.2 ? '1' : '0';
+    
+    // Reveal photo stages
+    if (aboutPhotoA) aboutPhotoA.style.opacity = progress > 0.1 && progress < 0.9 ? '1' : '0';
+    if (aboutPhotoB) aboutPhotoB.style.opacity = progress > 0.2 && progress < 0.9 ? '1' : '0';
+
+    // Toggle Bio visibility at the end
+    if (aboutBio) {
+      const showBio = progress > 0.95;
+      aboutBio.classList.toggle('is-visible', showBio);
+      
+      // Also hide the main question text when bio is visible
+      if (aboutQuestion) {
+        aboutQuestion.style.opacity = showBio ? '0' : '1';
+      }
+    }
   }
 
   /* ════════════════════════════════════════════

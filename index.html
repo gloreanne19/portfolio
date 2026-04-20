@@ -14,16 +14,14 @@
 
   <!-- ═══════════════════════════ NAV ═══════════════════════════ -->
   <nav class="nav" id="main-nav">
-    <div class="nav__logo">
-      <span class="nav__logo-script">P</span><span class="nav__logo-pixel">arash</span>
-    </div>
+    <div class="nav__logo"></div>
     <div class="nav__tabs">
-      <a href="#work" class="nav__tab">Work</a>
+      <a href="#work" class="nav__tab">Resume</a>
       <a href="#about" class="nav__tab">About</a>
       <a href="#playground" class="nav__tab">Playground</a>
     </div>
     <a href="mailto:parash@example.com" class="nav__cta">
-      Connect <span class="nav__cta-arrow">↗</span>
+      Connect <span class="nav__cta-arrow">+</span>
     </a>
   </nav>
 
@@ -31,79 +29,37 @@
   <section class="hero" id="hero">
     <div class="hero__bg"></div>
 
-    <!-- Sound button -->
     <button class="hero__sound" id="sound-btn" aria-label="Toggle sound">
-      <img src="assets/icon-music.svg" class="hero__sound-icon" width="32" alt="">
+      <div class="hero__sound-icon">
+        <div class="hero__sound-bar"></div>
+        <div class="hero__sound-bar"></div>
+        <div class="hero__sound-bar"></div>
+        <div class="hero__sound-bar"></div>
+        <div class="hero__sound-bar"></div>
+        <div class="hero__sound-bar"></div>
+        <div class="hero__sound-bar"></div>
+      </div>
       <span class="hero__sound-label">TURN THE SOUND ON</span>
     </button>
 
     <!-- Name display -->
     <div class="hero__name-container">
       <div class="hero__name-row">
-        <div class="hero__name-block">
-          <span class="hero__name-script" aria-hidden="true">P</span>
-          <span class="hero__name-pixel">arash</span>
-        </div>
+        <span class="hero__name-script">P</span>
+        <span class="hero__name-pixel">arash</span>
         <div class="hero__tagline">
-          <p>Art is my language. Product design is how I speak it. Based in</p>
-          <p>Bangalore. I code for fun, design for life — beauty was never</p>
-          <p>subjective. <span class="hero__tagline-line">Scroll and see.</span></p>
+          <p>Art is my language. Product design is how I speak it. Based in Bangalore. I code for fun, design for life — beauty was never subjective. <span class="hero__tagline-scroll">Scroll and see.</span></p>
         </div>
       </div>
       <div class="hero__name-row hero__name-row--second">
-        <span class="hero__name-script" aria-hidden="true">R</span>
+        <span class="hero__name-script">R</span>
         <span class="hero__name-pixel">autela</span>
       </div>
     </div>
 
     <!-- Spaceship illustration -->
     <div class="hero__spaceship" aria-hidden="true">
-      <div class="hero__spaceship-inner">
-        <div class="hero__spaceship-glow"></div>
-        <svg class="hero__spaceship-svg" viewBox="0 0 470 624" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- rocket body -->
-          <ellipse cx="235" cy="312" rx="160" ry="280" fill="url(#rocketGrad)" opacity="0.85"/>
-          <ellipse cx="235" cy="180" rx="80" ry="120" fill="url(#noseCone)"/>
-          <!-- windows -->
-          <circle cx="235" cy="260" r="40" fill="url(#windowGrad)" opacity="0.9"/>
-          <circle cx="235" cy="260" r="28" fill="rgba(200,230,255,0.8)"/>
-          <circle cx="225" cy="250" r="10" fill="rgba(255,255,255,0.6)"/>
-          <!-- fins -->
-          <path d="M75 480 L155 380 L155 480 Z" fill="url(#finGrad)" opacity="0.7"/>
-          <path d="M395 480 L315 380 L315 480 Z" fill="url(#finGrad)" opacity="0.7"/>
-          <!-- exhaust -->
-          <ellipse cx="195" cy="560" rx="20" ry="40" fill="url(#exhaustGrad)" opacity="0.6"/>
-          <ellipse cx="235" cy="575" rx="28" ry="55" fill="url(#exhaustGrad2)" opacity="0.5"/>
-          <ellipse cx="275" cy="560" rx="20" ry="40" fill="url(#exhaustGrad)" opacity="0.6"/>
-          <defs>
-            <linearGradient id="rocketGrad" x1="75" y1="32" x2="395" y2="592" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#c8e6ff"/>
-              <stop offset="0.5" stop-color="#6bb3f0"/>
-              <stop offset="1" stop-color="#1a4a80"/>
-            </linearGradient>
-            <linearGradient id="noseCone" x1="155" y1="60" x2="315" y2="300" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#ffffff"/>
-              <stop offset="1" stop-color="#a0cef5"/>
-            </linearGradient>
-            <radialGradient id="windowGrad" cx="50%" cy="50%" r="50%">
-              <stop stop-color="#b0d9ff"/>
-              <stop offset="1" stop-color="#2060df"/>
-            </radialGradient>
-            <linearGradient id="finGrad" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
-              <stop stop-color="#78b6f0"/>
-              <stop offset="1" stop-color="#1a4a80"/>
-            </linearGradient>
-            <linearGradient id="exhaustGrad" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-              <stop stop-color="#ffd580"/>
-              <stop offset="1" stop-color="#ff6b35" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="exhaustGrad2" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-              <stop stop-color="#ffffff" stop-opacity="0.8"/>
-              <stop offset="1" stop-color="#ffa040" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
+      <div class="hero__spaceship-inner"></div>
     </div>
   </section>
 
@@ -137,6 +93,7 @@
         <div class="project__stack">
           <div class="project__stack-img project__stack-img--peakly-a"></div>
           <div class="project__stack-img project__stack-img--peakly-b"></div>
+          <div class="project__stack-img project__stack-img--peakly-c"></div>
         </div>
 
         <!-- Center portrait image -->
@@ -225,9 +182,7 @@
 
         <!-- Video placeholders -->
         <div class="project__video-col">
-          <div class="project__video-placeholder">
-            <div class="project__video-shimmer"></div>
-          </div>
+          <div class="project__video-placeholder project__video-placeholder--demandpay-bank"></div>
           <div class="project__video-placeholder">
             <div class="project__video-shimmer"></div>
           </div>
@@ -255,7 +210,7 @@
         <div class="project__mercle-left">
           <div class="project__mercle-screenshot project__mercle-screenshot--a"></div>
           <div class="project__mercle-screenshot project__mercle-screenshot--b"></div>
-          <div class="project__mercle-screenshot project__mercle-screenshot--blank"></div>
+          <div class="project__mercle-screenshot project__mercle-screenshot--portrait"></div>
         </div>
 
         <div class="project__video-col project__video-col--mercle">
@@ -312,6 +267,7 @@
 
         <div class="about__right">
           <div class="about__photo-b"></div>
+          <div class="about__photo-c"></div>
         </div>
       </div>
 
