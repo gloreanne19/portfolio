@@ -601,7 +601,8 @@ button {
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: center bottom;
-  background-color: #e8f4f9; /* Matches the image's light teal background */
+  background-color: #e8f4f9;
+  /* Matches the image's light teal background */
 }
 
 .project__img-bg--peakly-phone {
@@ -616,6 +617,16 @@ button {
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 16px;
+}
+
+.project__phone-shadow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 /* Video placeholder */
@@ -668,8 +679,104 @@ button {
   -webkit-overflow-scrolling: touch;
 }
 
-.project__detail-row::-webkit-scrollbar {
-  display: none;
+/* Peakly specific layout override */
+.project__detail-row--peakly {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  padding: 0 40px 100px;
+  background: var(--grey-95);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.project__grid {
+  display: contents;
+  /* Allows columns to participate in the parent grid */
+}
+
+.project__grid-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Staggering columns to match Image 1 tracks */
+.project__grid-col--1 {
+  transform: translateY(40px);
+}
+
+/* Dock high */
+.project__grid-col--2 {
+  transform: translateY(40px);
+}
+
+/* Plate low */
+.project__grid-col--3 {
+  transform: translateY(40px);
+}
+
+/* Bag very tall/high */
+.project__grid-col--4 {
+  transform: translateY(40px);
+}
+
+/* Sure/Pasta mid */
+.project__grid-col--5 {
+  transform: translateY(40px);
+}
+
+/* Veggie high */
+
+@media (max-width: 1024px) {
+  .project__grid {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .project__grid-col {
+    flex: none;
+    width: calc(33.33% - 8px);
+    transform: none !important;
+  }
+}
+
+.project__grid-item {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  background: var(--white);
+  /* Default light background for mockups */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  /* Soft premium shadow */
+}
+
+.project__grid-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Specific item styles */
+.project__grid-item--bag {
+  background: transparent;
+  box-shadow: none;
+}
+
+.project__grid-item--bag img {
+  width: 100%;
+  height: auto;
+}
+
+.project__grid-item--sure {
+  background-image: url('assets/peakly-hero-bg1.png');
+  background-size: cover;
+  padding: 20px;
+}
+
+.project__grid-item--veggie {
+  background: #000;
 }
 
 .project__stack {
@@ -724,63 +831,85 @@ button {
 }
 
 .project__info {
+  grid-column: 2 / 6;
+  /* Align below columns 2-5 */
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 4px;
-  width: 404px;
-  flex-shrink: 0;
+  gap: 40px;
+  width: 100%;
+  padding-top: 60px;
 }
 
 .project__brand {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 24px;
+  text-align: left;
 }
 
 .project__logo {
-  width: 48px;
-  height: 48px;
-  overflow: hidden;
-  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  background: var(--white);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.05),
+    0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .project__brand-text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .project__brand-name {
   font-family: var(--font-pixel);
-  font-size: 24px;
+  font-size: 32px;
   color: var(--black);
-  line-height: 28.8px;
+  line-height: 1;
   font-weight: 400;
+  margin: 0;
 }
 
 .project__brand-tag {
   display: inline-block;
-  background: var(--grey-13);
-  color: var(--grey-93);
+  background: #121212;
+  color: #fff;
   font-family: var(--font-pixel);
   font-size: 14px;
-  letter-spacing: -0.42px;
-  line-height: 16.8px;
-  padding: 4px;
+  letter-spacing: -0.2px;
+  padding: 6px 12px;
+  border-radius: 4px;
 }
 
 .project__descriptions {
   display: flex;
-  gap: 72px;
+  gap: 80px;
+  width: 100%;
 }
 
 .project__desc {
   font-family: var(--font-pixel);
-  font-size: 14px;
-  color: var(--grey-38);
-  line-height: 18px;
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.5;
   flex: 1;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .project__descriptions {
+    flex-direction: column;
+    gap: 20px;
+  }
 }
 
 .project__cta {
@@ -819,6 +948,10 @@ button {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .project__extra {
