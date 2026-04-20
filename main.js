@@ -240,26 +240,39 @@
 
     // ── Smooth Transition: Bio Photos and Text ──
     if (aboutBio) {
-      aboutBio.style.opacity = progress > 0.80 ? '1' : '0';
-      aboutBio.style.pointerEvents = progress > 0.80 ? 'all' : 'none';
+      const isBioVisible = progress > 0.72;
+      aboutBio.style.opacity = isBioVisible ? '1' : '0';
+      aboutBio.style.pointerEvents = isBioVisible ? 'all' : 'none';
+
+      // Hide nav when bio is fully visible to prevent overlap
+      if (nav) {
+        nav.style.transform = isBioVisible && progress < 0.98 ? 'translateX(-50%) translateY(100px)' : 'translateX(-50%)';
+      }
 
       // 1. Photos slowly fade and slide in first
-      const slideProgress = Math.max(0, Math.min(1, (progress - 0.82) / 0.06));
+      const slideProgress = Math.max(0, Math.min(1, (progress - 0.72) / 0.10));
       const distance = 1 - slideProgress; 
       
       const photoA = $('.about__bio-photo--left');
       const photoB = $('.about__bio-photo--center');
       const photoC = $('.about__bio-photo--right');
+      
       if (photoB) photoB.style.opacity = slideProgress;
-      if (photoA) { photoA.style.opacity = slideProgress; photoA.style.transform = `translateX(${-distance * 300}px)`; }
-      if (photoC) { photoC.style.opacity = slideProgress; photoC.style.transform = `translateX(${distance * 300}px)`; }
+      if (photoA) { 
+        photoA.style.opacity = slideProgress; 
+        photoA.style.transform = `translateX(${-distance * 100}px)`; 
+      }
+      if (photoC) { 
+        photoC.style.opacity = slideProgress; 
+        photoC.style.transform = `translateX(${distance * 100}px)`; 
+      }
 
       // 2. Text staggered fade-in after
       $$('.about__bio-p').forEach((p, i) => {
-        const staggerStart = 0.85 + (i * 0.03); 
-        const pOpacity = Math.max(0, Math.min(1, (progress - staggerStart) / 0.06));
+        const staggerStart = 0.75 + (i * 0.04); 
+        const pOpacity = Math.max(0, Math.min(1, (progress - staggerStart) / 0.08));
         p.style.opacity = pOpacity;
-        p.style.transform = `translateY(${20 - pOpacity * 20}px)`;
+        p.style.transform = `translateY(${30 - pOpacity * 30}px)`;
       });
     }
   }
@@ -411,12 +424,22 @@
     });
   }
 
-  // ── Force Play all videos ──
+  // ── Force Play and Loop all videos ──
   $$('video').forEach(vid => {
-    vid.play().catch(() => {
-      // Re-try on first interaction if blocked
-      document.addEventListener('click', () => vid.play(), { once: true });
-    });
+    const playVid = () => vid.play().catch(() => {});
+    
+    playVid();
+    
+    // Explicit loop fallback
+    if (vid.hasAttribute('loop')) {
+      vid.addEventListener('ended', () => {
+        vid.currentTime = 0;
+        playVid();
+      });
+    }
+
+    // Re-try on first interaction if blocked
+    document.addEventListener('click', playVid, { once: true });
   });
 
   /* Init complete */
