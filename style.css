@@ -796,8 +796,8 @@ button {
 }
 
 .project__grid-item--bag {
-  height: 350px;
-  max-height: 350px;
+  height: 450px;
+  max-height: 450px;
   background: transparent;
   box-shadow: none;
 }
@@ -1426,7 +1426,8 @@ button {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: transparent; /* Remove the tint that caused color difference */
+  background-color: transparent;
+  /* Remove the tint that caused color difference */
 }
 
 .about__bio-photo--left {
@@ -1436,7 +1437,8 @@ button {
   bottom: 0;
   margin: auto;
   width: 34vw;
-  height: 85%; /* Increased height to give more room for contain */
+  height: 85%;
+  /* Increased height to give more room for contain */
   background-image: url('assets/about-photo-a.png');
   background-position: left center;
   z-index: 1;
@@ -1461,7 +1463,8 @@ button {
   bottom: 0;
   margin: auto;
   width: 34vw;
-  height: 85%; /* Increased height to give more room for contain */
+  height: 85%;
+  /* Increased height to give more room for contain */
   background-image: url('assets/about-photo-c.png');
   background-position: right center;
   z-index: 1;
