@@ -570,7 +570,7 @@ button {
   display: flex;
   gap: 8px;
   align-items: center;
-  padding: 12px 8px 0;
+  /* padding: 12px 8px 0; */
 }
 
 .project__img-wrap {
@@ -674,7 +674,7 @@ button {
   display: flex;
   gap: 8px;
   align-items: flex-start;
-  padding: 0 8px 32px;
+  /* padding: 0 8px 32px; */
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -683,79 +683,124 @@ button {
 .project__detail-row--peakly {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  padding: 0 40px 100px;
+  grid-template-rows: auto auto;
+  /* Explicit 2 Rows */
+  /* gap: 24px;
+  padding: 0 40px 100px; */
   background: var(--grey-95);
-  max-width: 1400px;
+  /* max-width: 1400px; */
   margin: 0 auto;
+  align-items: start;
 }
 
-.project__grid {
-  display: contents;
-  /* Allows columns to participate in the parent grid */
+/* Explicit Item Positioning to match user's 2-row track layout */
+.project__grid-item--dock {
+  grid-column: 1;
+  grid-row: 1;
+  transform: translateY(20px);
 }
 
-.project__grid-col {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.project__grid-item--bag {
+  grid-column: 2;
+  grid-row: 1;
+  transform: translateY(20px);
 }
 
-/* Staggering columns to match Image 1 tracks */
-.project__grid-col--1 {
-  transform: translateY(40px);
+.project__grid-item--pasta {
+  grid-column: 3;
+  grid-row: 1;
+  transform: translateY(20px);
 }
 
-/* Dock high */
-.project__grid-col--2 {
-  transform: translateY(40px);
+.project__grid-item--sure {
+  grid-column: 4;
+  grid-row: 1;
+  transform: translateY(20px);
 }
 
-/* Plate low */
-.project__grid-col--3 {
-  transform: translateY(40px);
+.project__grid-item--veggie {
+  grid-column: 5;
+  grid-row: 1;
+  transform: translateY(20px);
 }
 
-/* Bag very tall/high */
-.project__grid-col--4 {
-  transform: translateY(40px);
+/* Row 2: Plate on the left, Info spanning the rest */
+.project__grid-item--plate {
+  grid-column: 1;
+  grid-row: 2;
+  transform: translateY(-40px);
+  /* Positioned below dock in tracks */
 }
-
-/* Sure/Pasta mid */
-.project__grid-col--5 {
-  transform: translateY(40px);
-}
-
-/* Veggie high */
 
 @media (max-width: 1024px) {
-  .project__grid {
-    flex-wrap: wrap;
-    gap: 12px;
+  .project__detail-row--peakly {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
   }
 
-  .project__grid-col {
-    flex: none;
-    width: calc(33.33% - 8px);
+  .project__grid-item,
+  .project__info {
+    grid-column: span 2 !important;
+    grid-row: auto !important;
     transform: none !important;
   }
 }
 
 .project__grid-item {
   width: 100%;
-  border-radius: 20px;
   overflow: hidden;
   position: relative;
   background: var(--white);
   /* Default light background for mockups */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   /* Soft premium shadow */
+  height: 250px;
+  max-height: 250px;
+}
+
+/* Specific item heights for staggered look */
+.project__grid-item--dock {
+  height: 250px;
+  max-height: 250px;
+}
+
+.project__grid-item--plate {
+  height: 400px;
+  max-height: 400px;
+}
+
+.project__grid-item--bag {
+  height: 350px;
+  max-height: 350px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.project__grid-item--pasta {
+  height: 300px;
+  max-height: 350px;
+}
+
+.project__grid-item--sure {
+  height: 220px;
+  max-height: 350px;
+}
+
+.project__grid-item--veggie {
+  height: 220px;
+  max-height: 300px;
 }
 
 .project__grid-item img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
+}
+
+/* Exception for the bag mockup which should contain its full phone frame */
+.project__grid-item--bag img {
+  object-fit: contain;
 }
 
 /* Specific item styles */
@@ -770,7 +815,7 @@ button {
 }
 
 .project__grid-item--sure {
-  background-image: url('assets/peakly-hero-bg1.png');
+  background-image: url('assets/peakly-hero-bg.png');
   background-size: cover;
   padding: 20px;
 }
@@ -831,13 +876,14 @@ button {
 }
 
 .project__info {
-  grid-column: 2 / 6;
-  /* Align below columns 2-5 */
+  grid-column: 3 / 6;
+  /* Row 2, Columns 3-5 */
+  grid-row: 2;
   display: flex;
   flex-direction: column;
   gap: 40px;
   width: 100%;
-  padding-top: 60px;
+  padding-top: 100px;
 }
 
 .project__brand {
@@ -857,10 +903,17 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 12px;
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.05),
     0 2px 4px rgba(0, 0, 0, 0.02);
+  flex-shrink: 0;
+}
+
+.project__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .project__brand-text {
