@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parash Rautela — Product Designer</title>
+  <meta name="description" content="Product designer based in Bangalore. Art is my language. Product design is how I speak it." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════ NAV ═══════════════════════════ -->
+  <nav class="nav" id="main-nav">
+    <div class="nav__logo">
+      <span class="nav__logo-script">P</span><span class="nav__logo-pixel">arash</span>
+    </div>
+    <div class="nav__tabs">
+      <a href="#work" class="nav__tab">Work</a>
+      <a href="#about" class="nav__tab">About</a>
+      <a href="#playground" class="nav__tab">Playground</a>
+    </div>
+    <a href="mailto:parash@example.com" class="nav__cta">
+      Connect <span class="nav__cta-arrow">↗</span>
+    </a>
+  </nav>
+
+  <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero__bg"></div>
+
+    <!-- Sound button -->
+    <button class="hero__sound" id="sound-btn" aria-label="Toggle sound">
+      <img src="assets/icon-music.svg" class="hero__sound-icon" width="32" alt="">
+      <span class="hero__sound-label">TURN THE SOUND ON</span>
+    </button>
+
+    <!-- Name display -->
+    <div class="hero__name-container">
+      <div class="hero__name-row">
+        <div class="hero__name-block">
+          <span class="hero__name-script" aria-hidden="true">P</span>
+          <span class="hero__name-pixel">arash</span>
+        </div>
+        <div class="hero__tagline">
+          <p>Art is my language. Product design is how I speak it. Based in</p>
+          <p>Bangalore. I code for fun, design for life — beauty was never</p>
+          <p>subjective. <span class="hero__tagline-line">Scroll and see.</span></p>
+        </div>
+      </div>
+      <div class="hero__name-row hero__name-row--second">
+        <span class="hero__name-script" aria-hidden="true">R</span>
+        <span class="hero__name-pixel">autela</span>
+      </div>
+    </div>
+
+    <!-- Spaceship illustration -->
+    <div class="hero__spaceship" aria-hidden="true">
+      <div class="hero__spaceship-inner">
+        <div class="hero__spaceship-glow"></div>
+        <svg class="hero__spaceship-svg" viewBox="0 0 470 624" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- rocket body -->
+          <ellipse cx="235" cy="312" rx="160" ry="280" fill="url(#rocketGrad)" opacity="0.85"/>
+          <ellipse cx="235" cy="180" rx="80" ry="120" fill="url(#noseCone)"/>
+          <!-- windows -->
+          <circle cx="235" cy="260" r="40" fill="url(#windowGrad)" opacity="0.9"/>
+          <circle cx="235" cy="260" r="28" fill="rgba(200,230,255,0.8)"/>
+          <circle cx="225" cy="250" r="10" fill="rgba(255,255,255,0.6)"/>
+          <!-- fins -->
+          <path d="M75 480 L155 380 L155 480 Z" fill="url(#finGrad)" opacity="0.7"/>
+          <path d="M395 480 L315 380 L315 480 Z" fill="url(#finGrad)" opacity="0.7"/>
+          <!-- exhaust -->
+          <ellipse cx="195" cy="560" rx="20" ry="40" fill="url(#exhaustGrad)" opacity="0.6"/>
+          <ellipse cx="235" cy="575" rx="28" ry="55" fill="url(#exhaustGrad2)" opacity="0.5"/>
+          <ellipse cx="275" cy="560" rx="20" ry="40" fill="url(#exhaustGrad)" opacity="0.6"/>
+          <defs>
+            <linearGradient id="rocketGrad" x1="75" y1="32" x2="395" y2="592" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#c8e6ff"/>
+              <stop offset="0.5" stop-color="#6bb3f0"/>
+              <stop offset="1" stop-color="#1a4a80"/>
+            </linearGradient>
+            <linearGradient id="noseCone" x1="155" y1="60" x2="315" y2="300" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#a0cef5"/>
+            </linearGradient>
+            <radialGradient id="windowGrad" cx="50%" cy="50%" r="50%">
+              <stop stop-color="#b0d9ff"/>
+              <stop offset="1" stop-color="#2060df"/>
+            </radialGradient>
+            <linearGradient id="finGrad" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+              <stop stop-color="#78b6f0"/>
+              <stop offset="1" stop-color="#1a4a80"/>
+            </linearGradient>
+            <linearGradient id="exhaustGrad" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+              <stop stop-color="#ffd580"/>
+              <stop offset="1" stop-color="#ff6b35" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="exhaustGrad2" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+              <stop stop-color="#ffffff" stop-opacity="0.8"/>
+              <stop offset="1" stop-color="#ffa040" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ WORK SECTION ═══════════════════════════ -->
+  <section class="work" id="work">
+
+    <!-- ── Project i: Peakly ── -->
+    <article class="project" id="peakly">
+      <div class="project__header">
+        <span class="project__label">PROJECT <span class="project__label-num">(i)</span></span>
+        <h2 class="project__title">Peakly — Full Product</h2>
+      </div>
+
+      <div class="project__gallery">
+        <!-- Main wide image -->
+        <div class="project__img-wrap project__img-wrap--wide">
+          <div class="project__img-bg project__img-bg--peakly-hero"></div>
+          <div class="project__img-overlay project__img-bg--peakly-phone"></div>
+        </div>
+
+        <!-- Right video placeholder -->
+        <div class="project__video-wrap">
+          <div class="project__video-placeholder">
+            <div class="project__video-shimmer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project__detail-row">
+        <!-- Left stack of images -->
+        <div class="project__stack">
+          <div class="project__stack-img project__stack-img--peakly-a"></div>
+          <div class="project__stack-img project__stack-img--peakly-b"></div>
+        </div>
+
+        <!-- Center portrait image -->
+        <div class="project__portrait">
+          <div class="project__portrait-inner project__portrait-inner--peakly"></div>
+        </div>
+
+        <!-- Info + description -->
+        <div class="project__info">
+          <div class="project__brand">
+            <div class="project__logo project__logo--peakly">
+              <img src="assets/peakly-logo.svg" alt="Peakly logo" width="48">
+            </div>
+            <div class="project__brand-text">
+              <h3 class="project__brand-name">Peakly</h3>
+              <span class="project__brand-tag">Solo designer, 0-1 full product</span>
+            </div>
+          </div>
+
+          <div class="project__descriptions">
+            <p class="project__desc">Peakly is a food discovery app — think Tinder for meals. Swipe through dishes, save what you're craving, share the recipe with whoever's cooking, and let the app build your weekly menu and grocery list automatically.</p>
+            <p class="project__desc">I joined as solo designer on a 0→1 team, after UX foundations were set. Peakly isn't a painkiller — it's a lifestyle app. That means design is the entire reason someone opens it, keeps using it, and tells a friend. I built it to be brag-worthy.</p>
+          </div>
+
+          <a href="#" class="project__cta">% SEND ME REQUEST %</a>
+        </div>
+
+        <!-- Far right phone mockup -->
+        <div class="project__phone-wrap">
+          <div class="project__phone-img project__phone-img--peakly"></div>
+        </div>
+
+        <!-- Extra image -->
+        <div class="project__extra">
+          <div class="project__extra-img project__extra-img--peakly"></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── Project ii: DemandPay ── -->
+    <article class="project" id="demandpay">
+      <div class="project__header">
+        <span class="project__label">PROJECT <span class="project__label-num">(ii)</span></span>
+        <h2 class="project__title">DemandPay — reimagining payments</h2>
+      </div>
+
+      <div class="project__gallery project__gallery--demandpay">
+        <div class="project__img-wrap project__img-wrap--demandpay">
+          <div class="project__video-placeholder project__video-placeholder--demandpay">
+            <div class="project__video-shimmer"></div>
+          </div>
+        </div>
+        <div class="project__img-wrap project__img-wrap--demandpay-right">
+          <div class="project__img-bg project__img-bg--demandpay"></div>
+        </div>
+      </div>
+
+      <div class="project__detail-row project__detail-row--demandpay">
+        <!-- Gradient card with phone -->
+        <div class="project__card project__card--gradient">
+          <div class="project__card-phone project__card-phone--demandpay"></div>
+        </div>
+
+        <!-- Wide product shot -->
+        <div class="project__wide-shot project__wide-shot--demandpay"></div>
+
+        <!-- Info column -->
+        <div class="project__info">
+          <div class="project__brand">
+            <div class="project__logo project__logo--demandpay">
+              <img src="assets/demandpay-logo.svg" alt="Demand Pay logo" width="48">
+            </div>
+            <div class="project__brand-text">
+              <h3 class="project__brand-name">Demand Pay</h3>
+              <span class="project__brand-tag">2 Designers, UX, Visuals, 3D</span>
+            </div>
+          </div>
+
+          <div class="project__descriptions">
+            <p class="project__desc">DemandPay is a subscription billing and payment recovery platform — think of how a cable TV company needs to remind thousands of customers to pay, renew, or change their plan. DemandPay automates that entire flow, sending payment reminders and direct payment links via WhatsApp, SMS, and email so businesses never have to chase customers manually.</p>
+            <p class="project__desc">I owned the full product — UX, visual design, and 3D across both the B2B and B2C sides. This was the project where I pushed my craft the furthest: designing for two audiences at once, while making a fintech product feel premium enough to trust and simple enough to act on.</p>
+          </div>
+
+          <a href="#" class="project__cta">% VIEW PROJECT %</a>
+        </div>
+
+        <!-- Video placeholders -->
+        <div class="project__video-col">
+          <div class="project__video-placeholder">
+            <div class="project__video-shimmer"></div>
+          </div>
+          <div class="project__video-placeholder">
+            <div class="project__video-shimmer"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── Project iii: Mercle ── -->
+    <article class="project" id="mercle">
+      <div class="project__header">
+        <span class="project__label">PROJECT <span class="project__label-num">(iii)</span></span>
+        <h2 class="project__title">Mercle — Redefining WEB 3</h2>
+      </div>
+
+      <div class="project__gallery project__gallery--mercle">
+        <div class="project__img-wrap project__img-wrap--mercle-hero"></div>
+        <div class="project__video-wrap project__video-wrap--mercle">
+          <div class="project__video-placeholder">
+            <div class="project__video-shimmer"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project__detail-row project__detail-row--mercle">
+        <div class="project__mercle-left">
+          <div class="project__mercle-screenshot project__mercle-screenshot--a"></div>
+          <div class="project__mercle-screenshot project__mercle-screenshot--b"></div>
+          <div class="project__mercle-screenshot project__mercle-screenshot--blank"></div>
+        </div>
+
+        <div class="project__video-col project__video-col--mercle">
+          <div class="project__video-placeholder">
+            <div class="project__video-shimmer"></div>
+          </div>
+        </div>
+
+        <div class="project__info">
+          <div class="project__brand">
+            <div class="project__logo project__logo--mercle">
+              <img src="assets/mercle-logo.svg" alt="Mercle logo" width="48">
+            </div>
+            <div class="project__brand-text">
+              <h3 class="project__brand-name">Mercle</h3>
+              <span class="project__brand-tag">2 Designers, UX, UI, Visuals, 3D</span>
+            </div>
+          </div>
+
+          <div class="project__descriptions">
+            <p class="project__desc">Mercle is a Web3 identity platform solving one of the internet's oldest problems — you never really know if someone online is a real person. Think of it as "Login with Google" but every verified Mercle ID is guaranteed to be a real human, giving platforms and communities a trust layer that the internet has never had.</p>
+            <p class="project__desc">I worked across UX, visual design, mascot design, gamification, email visuals, and the app — essentially the entire visual language of the product from scratch. The challenge was building an identity strong enough to carry a Web3 product into mainstream trust.</p>
+          </div>
+
+          <a href="#" class="project__cta">% SEND ME REQUEST %</a>
+        </div>
+
+        <div class="project__video-col project__video-col--mercle-end">
+          <div class="project__video-placeholder">
+            <div class="project__video-shimmer"></div>
+          </div>
+          <div class="project__video-placeholder">
+            <div class="project__video-shimmer"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ═══════════════════════════ ABOUT ME ═══════════════════════════ -->
+  <section class="about" id="about">
+    <div class="about__scroll-container">
+      <div class="about__sticky">
+        <div class="about__left">
+          <div class="about__photo-wrap">
+            <div class="about__photo"></div>
+          </div>
+        </div>
+
+        <div class="about__center">
+          <h2 class="about__question">just a designer?</h2>
+          <p class="about__sub">keep Scrolling</p>
+        </div>
+
+        <div class="about__right">
+          <div class="about__photo-b"></div>
+        </div>
+      </div>
+
+      <!-- Scroll trigger spacers -->
+      <div class="about__trigger about__trigger--1"></div>
+      <div class="about__trigger about__trigger--2"></div>
+    </div>
+
+    <!-- Bio paragraphs (revealed on scroll) -->
+    <div class="about__bio" id="about-bio">
+      <div class="about__bio-inner">
+        <p class="about__bio-p">
+          <span class="about__dim">From the hills of </span><span class="about__bright">Uttarakhand</span><span class="about__dim">, based out of Bangalore. I'm </span><span class="about__bright">Parash</span>
+        </p>
+        <p class="about__bio-p">
+          <span class="about__dim">someone who got pulled into design early and never looked back.</span>
+        </p>
+        <p class="about__bio-p">
+          <span class="about__bright">Curious</span><span class="about__dim"> by nature, </span><span class="about__bright">builder</span><span class="about__dim"> by habit.</span>
+        </p>
+
+        <p class="about__bio-p">
+          <span class="about__dim">Started at </span><span class="about__bright">Nirmaan</span><span class="about__dim">, a tech-first construction startup built their new venture, worked on the core product. Then </span><span class="about__bright">Mercle</span><span class="about__dim">, a web3 company,</span>
+        </p>
+        <p class="about__bio-p">
+          <span class="about__dim">where I designed everything from what's on your screen to what's in your hand. Multiple hats, no complaints.</span>
+        </p>
+
+        <p class="about__bio-p">
+          <span class="about__dim">I care more about how something looks and feels than anything else. Simple, intentional, a little delightful. I work best with people who give a damn about what they're building. </span><span class="about__bright">Basketball</span><span class="about__dim"> when I need to reset.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ EXPERIMENTS ═══════════════════════════ -->
+  <section class="experiments" id="playground">
+    <div class="experiments__label">apart from Designing</div>
+
+    <!-- Experiment 1: Studyshield -->
+    <div class="experiment">
+      <div class="experiment__heading">
+        <div class="experiment__tag">Buildathon <span class="experiment__tag-by">by</span> <span class="experiment__tag-org">get cretr</span></div>
+        <h3 class="experiment__title"><em class="experiment__title-script">S</em>tudyshield</h3>
+        <div class="experiment__sub-title">
+          <p>cheat</p>
+          <p>smarter,</p>
+          <p>not harder</p>
+        </div>
+      </div>
+      <div class="experiment__image experiment__image--studyshield">
+        <div class="experiment__img-placeholder experiment__img-placeholder--ss"></div>
+      </div>
+      <div class="experiment__meta">
+        <span class="experiment__place">🥈 2nd place</span>
+        <p class="experiment__role">Concept, UX & interaction</p>
+        <p class="experiment__brief">VS Code disguise for exam cheating</p>
+      </div>
+    </div>
+
+    <!-- Experiment 2: OutreachAI -->
+    <div class="experiment">
+      <div class="experiment__heading">
+        <div class="experiment__tag experiment__tag--dark">Buildathon <span class="experiment__tag-by">by</span> <span class="experiment__tag-org experiment__tag-org--light">100xEngineer</span></div>
+        <h3 class="experiment__title"><em class="experiment__title-script">O</em>utreach AI</h3>
+        <div class="experiment__sub-title">
+          <p>pitch.</p>
+          <p>confirm.</p>
+          <p>close. repeat.</p>
+        </div>
+      </div>
+      <div class="experiment__image experiment__image--outreach">
+        <div class="experiment__img-placeholder experiment__img-placeholder--oa"></div>
+      </div>
+      <div class="experiment__meta experiment__meta--right">
+        <span class="experiment__collab">Built with <u>Masoom</u></span>
+        <p class="experiment__role">Product design & workflow AI</p>
+        <p class="experiment__brief">agents that call, pitch & close</p>
+      </div>
+    </div>
+
+    <!-- Experiment 3: JewelIndia -->
+    <div class="experiment">
+      <div class="experiment__heading">
+        <div class="experiment__tag">Product <span class="experiment__tag-by">of</span> <span class="experiment__tag-org">CURIOSITY</span></div>
+        <h3 class="experiment__title"><em class="experiment__title-script">J</em>ewelIndia</h3>
+        <div class="experiment__sub-title">
+          <p>one photo.</p>
+          <p>every Seller.</p>
+          <p>and everywhere.</p>
+        </div>
+      </div>
+      <div class="experiment__image experiment__image--jewel">
+        <div class="experiment__img-placeholder experiment__img-placeholder--ji"></div>
+      </div>
+      <div class="experiment__meta experiment__meta--right">
+        <span class="experiment__collab">Built with <u>Ashish</u> & <u>Arpit</u></span>
+        <p class="experiment__role">Owned product, UI & pipeline</p>
+        <p class="experiment__brief">Jewelry marketplace, AI-powered</p>
+      </div>
+    </div>
+
+    <!-- Experiment 4: ResumeShift -->
+    <div class="experiment">
+      <div class="experiment__heading">
+        <div class="experiment__tag">Product <span class="experiment__tag-by">of</span> <span class="experiment__tag-org">Friction</span></div>
+        <h3 class="experiment__title"><em class="experiment__title-script">R</em>esumeShift</h3>
+        <div class="experiment__sub-title">
+          <p>1resume.</p>
+          <p>every job.</p>
+          <p>every time.</p>
+        </div>
+      </div>
+      <div class="experiment__image experiment__image--resume">
+        <div class="experiment__img-placeholder experiment__img-placeholder--rs"></div>
+      </div>
+      <div class="experiment__meta experiment__meta--right">
+        <span class="experiment__status">v1 live · v2 in progress</span>
+        <p class="experiment__role">Sole designer & product owner</p>
+        <p class="experiment__brief">ATS-ready resume, per job description</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ TESTIMONIAL ═══════════════════════════ -->
+  <section class="testimonial" id="testimonial">
+    <div class="testimonial__content">
+      <div class="testimonial__photo-col">
+        <div class="testimonial__photo"></div>
+      </div>
+      <div class="testimonial__text-col">
+        <div class="testimonial__quote-icon">"</div>
+        <div class="testimonial__slides">
+          <div class="testimonial__slide testimonial__slide--active">
+            <p class="testimonial__body">Parash is a talented UI/UX designer who consistently delivered high-quality work while we collaborated. He went beyond his core role by designing excellent app screens, creating a polished landing page, and even taking ownership of development and deployment. His dedication and attention to detail made him a valuable asset to the team.</p>
+            <div class="testimonial__author">
+              <div class="testimonial__author-chip">
+                <em class="testimonial__chip-script">P</em><span class="testimonial__chip-pixel">ranav</span>
+                <span class="testimonial__chip-role">SDE at AWS</span>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial__slide">
+            <p class="testimonial__body">I'm building a new website and it's absolutely ridiculous how valuable your content has been.</p>
+            <p class="testimonial__body testimonial__body--sm">Way too much value for free to be honest.</p>
+            <div class="testimonial__author">
+              <span class="testimonial__author-name">James Traf</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial__controls">
+          <button class="testimonial__btn testimonial__btn--prev" id="prev-btn" aria-label="Previous testimonial" disabled>
+            <img src="assets/icon-angle-left.svg" alt="" width="12">
+          </button>
+          <button class="testimonial__btn testimonial__btn--next" id="next-btn" aria-label="Next testimonial">
+            <img src="assets/icon-angle-right.svg" alt="" width="12">
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ THANK YOU / CTA ═══════════════════════════ -->
+  <section class="thankyou" id="contact">
+    <div class="thankyou__bg"></div>
+    <div class="thankyou__content">
+      <h2 class="thankyou__headline">
+        <span class="thankyou__script">T</span><span class="thankyou__pixel-gradient">hank</span>
+        <span class="thankyou__script">Y</span><span class="thankyou__pixel-gradient">ou</span>
+      </h2>
+      <div class="thankyou__lines">
+        <p class="thankyou__line">I may not have all the answers yet.</p>
+        <p class="thankyou__line">But <span class="thankyou__bold">I have the audacity to find them with you.</span></p>
+        <p class="thankyou__line">My best project is always the next one.</p>
+        <p class="thankyou__line thankyou__line--white">Let's make it yours.</p>
+      </div>
+      <div class="thankyou__social">
+        <a href="#" class="thankyou__social-link" aria-label="LinkedIn">
+          <img src="assets/icon-linkedin.svg" alt="LinkedIn" width="31">
+        </a>
+        <a href="#" class="thankyou__social-link" aria-label="Twitter/X">
+          <img src="assets/icon-twitter.svg" alt="Twitter" width="33">
+        </a>
+        <a href="#" class="thankyou__social-link" aria-label="Dribbble">
+          <img src="assets/icon-dribbble.svg" alt="Dribbble" width="26">
+        </a>
+      </div>
+    </div>
+    <div class="thankyou__footer">
+      <span>Crafted with</span>
+      <img src="assets/icon-heart.svg" class="thankyou__heart" width="20" alt="heart">
+      <span>in framer</span>
+    </div>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>
