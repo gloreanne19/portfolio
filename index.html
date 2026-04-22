@@ -65,7 +65,7 @@
         <span class="hero__name-script">A</span>
         <span class="hero__name-pixel">pril</span>
         <div class="hero__tagline">
-          <p>Art is my language. Product design is how I speak it. Based in Bangalore. I code for fun, design for life — beauty was never subjective. <span class="hero__tagline-scroll">Scroll and see.</span></p>
+          <p>Code is my framework. UI/UX is my craft. Based in the Philippines, I build high-performance systems with a designer’s soul. I bridge the gap between complex logic and human-centered beauty. <span class="hero__tagline-scroll"><b>Scroll and see.</b></span></p>
         </div>
       </div>
       <div class="hero__name-row hero__name-row--second">
@@ -160,55 +160,71 @@
     <article class="project" id="demandpay">
       <div class="project__header">
         <span class="project__label">PROJECT <span class="project__label-num">(ii)</span></span>
-        <h2 class="project__title">DemandPay — reimagining payments</h2>
+        <h2 class="project__title">Exler — Excercises and Licensure Exam reviewers</h2>
       </div>
 
-      <div class="project__gallery project__gallery--demandpay">
-        <div class="project__img-wrap project__img-wrap--demandpay">
-          <div class="project__video-placeholder project__video-placeholder--demandpay">
+      <div class="project__gallery">
+        <!-- Main wide image -->
+        <div class="project__img-wrap project__img-wrap--wide">
+          <div class="project__img-bg project__img-bg--demandpay-hero"></div>
+          <!-- <div class="project__img-overlay project__img-bg--demandpay-phone"></div> -->
+        </div>
+
+        <!-- Right video placeholder -->
+        <div class="project__video-wrap">
+          <div class="project__video-placeholder">    <video src="assets/exler.mp4" autoplay loop muted playsinline class="project__video-fill"></video>
             <div class="project__video-shimmer"></div>
           </div>
-        </div>
-        <div class="project__img-wrap project__img-wrap--demandpay-right">
-          <div class="project__img-bg project__img-bg--demandpay"></div>
         </div>
       </div>
 
       <div class="project__detail-row project__detail-row--demandpay">
-        <!-- Gradient card with phone -->
-        <div class="project__card project__card--gradient">
-          <div class="project__card-phone project__card-phone--demandpay"></div>
+        <!-- Row 1 Items (5 items) -->
+        <div class="project__grid-item project__grid-item--demand-bank">
+          <img src="assets/demandpay-product.png" alt="Bank integration">
+        </div>
+        <div class="project__grid-item project__grid-item--demand-phone">
+          <img src="assets/demandpay-phone.png" alt="Mobile app">
+        </div>
+        <div class="project__grid-item project__grid-item--demand-product">
+          <img src="assets/demandpay-product1.png" alt="Product view">
+        </div>
+        <div class="project__grid-item project__grid-item--demand-wide">
+          <img src="assets/demandpay-wide.png" alt="Wide feature">
+        </div>
+        <div class="project__grid-item project__grid-item--demand-extra">
+          <img src="assets/demandpay-bank.png" alt="Extra detail">
         </div>
 
-        <!-- Wide product shot -->
-        <div class="project__wide-shot project__wide-shot--demandpay"></div>
+        <!-- Row 2 Items (Plate/Detail + Info) -->
+        <div class="project__grid-item project__grid-item--demand-detail">
+          <video src="assets/exler-ai.mp4" autoplay loop muted playsinline class="project__video-fill"></video>
+        </div>
 
-        <!-- Info column -->
+        <!-- ── Brand Info ── -->
         <div class="project__info">
           <div class="project__brand">
             <div class="project__logo project__logo--demandpay">
-              <img src="assets/demandpay-logo.svg" alt="Demand Pay logo" width="48">
+              <img src="assets/exler-logo.png" alt="Demand Pay logo" width="56">
             </div>
             <div class="project__brand-text">
-              <h3 class="project__brand-name">Demand Pay</h3>
-              <span class="project__brand-tag">2 Designers, UX, Visuals, 3D</span>
+              <h3 class="project__brand-name">Exler</h3>
+              <div class="project__brand-tag">2 Designers, UX, Visuals, 3D</div>
             </div>
           </div>
 
-          <div class="project__descriptions">
-            <p class="project__desc">DemandPay is a subscription billing and payment recovery platform — think of how a cable TV company needs to remind thousands of customers to pay, renew, or change their plan. DemandPay automates that entire flow, sending payment reminders and direct payment links via WhatsApp, SMS, and email so businesses never have to chase customers manually.</p>
-            <p class="project__desc">I owned the full product — UX, visual design, and 3D across both the B2B and B2C sides. This was the project where I pushed my craft the furthest: designing for two audiences at once, while making a fintech product feel premium enough to trust and simple enough to act on.</p>
+         <div class="project__descriptions">
+            <div class="project__desc-group">
+              <p class="project__desc"><strong>The Challenge:</strong> Traditional review centers burden students with high costs and rigid, location-bound schedules, while specialized lecturers lack a unified platform to market their niche expertise directly to those who need it.</p>
+              <p class="project__desc"><strong>The Solution:</strong> A decentralized, virtual-first educational ecosystem. The platform bridges this gap by offering affordable, tiered subscriptions for students while providing freelancers a scalable space to monetize module-specific materials and video lectures.</p>
+            </div>
+            <div class="project__desc-group">
+              <p class="project__desc"><strong>Specialized Educator Hub:</strong> Designed a streamlined dashboard for lecturers to effortlessly manage virtual meetings, post announcements, and distribute resources without the overhead of traditional center management.</p>
+              <p class="project__desc"><strong>Accessible & Interactive Learning:</strong> Structured the student interface for ultimate flexibility, integrating on-demand video lectures, downloadable offline resources, and AI-assisted review tools to support self-paced, 24/7 learning.</p>
+            </div>
           </div>
 
           <a href="#" class="project__cta">% VIEW PROJECT %</a>
-        </div>
-
-        <!-- Video placeholders -->
-        <div class="project__video-col">
-          <div class="project__video-placeholder project__video-placeholder--demandpay-bank"></div>
-          <div class="project__video-placeholder">
-            <div class="project__video-shimmer"></div>
-          </div>
         </div>
       </div>
     </article>
@@ -220,9 +236,15 @@
         <h2 class="project__title">Mercle — Redefining WEB 3</h2>
       </div>
 
-      <div class="project__gallery project__gallery--mercle">
-        <div class="project__img-wrap project__img-wrap--mercle-hero"></div>
-        <div class="project__video-wrap project__video-wrap--mercle">
+      <div class="project__gallery">
+        <!-- Main wide image -->
+        <div class="project__img-wrap project__img-wrap--wide">
+          <div class="project__img-bg project__img-bg--mercle-hero"></div>
+          <div class="project__img-overlay project__img-bg--mercle-phone"></div>
+        </div>
+
+        <!-- Right video placeholder -->
+        <div class="project__video-wrap">
           <div class="project__video-placeholder">
             <div class="project__video-shimmer"></div>
           </div>
@@ -230,33 +252,52 @@
       </div>
 
       <div class="project__detail-row project__detail-row--mercle">
-        <div class="project__mercle-left">
-          <div class="project__mercle-screenshot project__mercle-screenshot--a"></div>
-          <div class="project__mercle-screenshot project__mercle-screenshot--b"></div>
-          <div class="project__mercle-screenshot project__mercle-screenshot--portrait"></div>
+        <!-- Row 1 Items (5 items) -->
+        <div class="project__grid-item project__grid-item--mercle-a">
+          <img src="assets/mercle-screen-a.png" alt="Dashboard">
+        </div>
+        <div class="project__grid-item project__grid-item--mercle-b">
+          <img src="assets/mercle-portrait.png" alt="Mobile UI">
+        </div>
+        <div class="project__grid-item project__grid-item--mercle-c">
+          <img src="assets/mercle-screen-b.png" alt="Interface detail">
+        </div>
+        <div class="project__grid-item project__grid-item--mercle-d">
+          <img src="assets/mercle-hero.png" alt="Hero view">
+        </div>
+        <div class="project__grid-item project__grid-item--mercle-e">
+          <img src="assets/mercle-screen-a.png" alt="Dashboard detail">
         </div>
 
-        <div class="project__video-col project__video-col--mercle">
-          <div class="project__video-placeholder">
-            <div class="project__video-shimmer"></div>
-          </div>
+        <!-- Row 2 Items (Plate/Detail + Info) -->
+        <div class="project__grid-item project__grid-item--mercle-detail">
+          <img src="assets/mercle-portrait.png" alt="Mobile detail">
         </div>
 
+        <!-- ── Brand Info ── -->
         <div class="project__info">
           <div class="project__brand">
             <div class="project__logo project__logo--mercle">
-              <img src="assets/mercle-logo.svg" alt="Mercle logo" width="48">
+              <img src="assets/mercle-logo.svg" alt="Mercle logo" width="56">
             </div>
             <div class="project__brand-text">
               <h3 class="project__brand-name">Mercle</h3>
-              <span class="project__brand-tag">2 Designers, UX, UI, Visuals, 3D</span>
-        <div class="project__video-col project__video-col--mercle-end">
-          <div class="project__video-placeholder">
-            <div class="project__video-shimmer"></div>
+              <div class="project__brand-tag">2 Designers, UX, Visuals, 3D</div>
+            </div>
           </div>
-          <div class="project__video-placeholder">
-            <div class="project__video-shimmer"></div>
+
+          <div class="project__descriptions">
+            <div class="project__desc-group">
+              <p class="project__desc"><strong>The Challenge:</strong> Designing a Web3 platform that lowers the barrier to entry for non-technical users while providing powerful tools for veterans, without the usual complexity of decentralized apps.</p>
+              <p class="project__desc"><strong>The Solution:</strong> We created a streamlined UX that prioritizes human-readable data over complex hashes, wrapped in a premium 3D-heavy visual identity that builds user trust.</p>
+            </div>
+            <div class="project__desc-group">
+              <p class="project__desc"><strong>Immersive Web3 UX:</strong> Leveraged high-fidelity 3D assets to create a tactile and engaging environment that guides users through complex on-chain interactions.</p>
+              <p class="project__desc"><strong>Scalable Design System:</strong> Built a comprehensive library of components that work seamlessly across high-density B2B dashboards and mobile-first consumer apps.</p>
+            </div>
           </div>
+
+          <a href="#" class="project__cta">% VIEW PROJECT %</a>
         </div>
       </div>
     </article>

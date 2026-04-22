@@ -1065,187 +1065,188 @@ button {
 }
 
 /* ── DemandPay specifics ── */
-.project__gallery--demandpay {
-  height: auto;
+.project__img-bg--demandpay-hero {
+  background-image: url('assets/demandpay-wide1.png');
+  background-size: cover;
+  background-position: center;
 }
 
-.project__img-wrap--demandpay {
-  flex: 1;
-  height: 704px;
-  background: var(--grey-96);
-}
-
-.project__video-placeholder--demandpay {
-  height: 704px;
-}
-
-.project__img-wrap--demandpay-right {
-  flex: 2;
-  height: 704px;
-  max-width: 773px;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-@media (max-width: 1200px) {
-  .project__img-wrap--demandpay-right {
-    flex: none;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 773 / 704;
-  }
-}
-
-.project__img-bg--demandpay {
-  position: absolute;
-  inset: 0;
+/* .project__img-bg--demandpay-hero {
   background-image: url('assets/demandpay-wide.png');
   background-size: cover;
-}
+  background-position: center;
+} */
 
-.project__detail-row--demandpay {
-  flex-wrap: wrap;
-  height: 909px;
-}
-
-.project__card {
-  flex-shrink: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.project__card--gradient {
-  width: 459px;
-  height: 653px;
-  background: radial-gradient(ellipse at right center, #ffffff 0%, #c7e3ff 50%, #8fc7ff 100%);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-}
-
-.project__card-phone {
-  width: 50%;
-  height: 70%;
-  border-radius: 20px;
-}
-
-.project__card-phone--demandpay {
+.project__img-bg--demandpay-phone {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 90%;
   background-image: url('assets/demandpay-phone.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.project__wide-shot {
-  flex-shrink: 0;
-  overflow: hidden;
+.project__detail-row--demandpay {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto auto;
+  background: var(--grey-95);
+  margin: 0 auto;
+  align-items: start;
 }
 
-.project__wide-shot--demandpay {
-  width: 491px;
-  height: 487px;
-  background-image: url('assets/demandpay-product.png');
-  background-size: cover;
+.project__grid-item--demand-bank {
+  grid-column: 1;
+  grid-row: 1;
+  transform: translateY(20px);
+  height: 250px;
 }
 
-.project__video-placeholder--demandpay-bank {
-  background-image: url('assets/demandpay-bank.png');
-  background-size: cover;
+.project__grid-item--demand-phone {
+  grid-column: 2;
+  grid-row: 1;
+  transform: translateY(20px);
+  background: transparent;
+  box-shadow: none;
+  height: 450px;
+  max-height: 450px;
 }
 
-.project__video-col .project__video-placeholder {
-  width: 235px;
-  height: 305px;
+.project__grid-item--demand-phone img {
+  object-fit: contain;
 }
 
-/* ── Mercle specifics ── */
-.project__gallery--mercle {
-  height: 488px;
+.project__grid-item--demand-product {
+  grid-column: 3;
+  grid-row: 1;
+  transform: translateY(20px);
+  height: 450px !important;
+  max-height: 450px !important;
 }
 
-.project__img-wrap--mercle-hero {
-  flex: 3;
-  max-width: 1210px;
-  height: 476px;
-  flex-shrink: 0;
-  overflow: hidden;
-  background-image: url('assets/mercle-hero.png');
-  background-size: cover;
+.project__grid-item--demand-wide {
+  grid-column: 4;
+  grid-row: 1;
+  transform: translateY(20px);
+  height: 400px !important;
+  max-height: 400px !important;
 }
 
-@media (max-width: 1400px) {
-  .project__img-wrap--mercle-hero {
-    flex: none;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1210 / 476;
+.project__grid-item--demand-extra {
+  grid-column: 5;
+  grid-row: 1;
+  transform: translateY(20px);
+  background: #000;
+  height: 220px;
+}
+
+.project__grid-item--demand-detail {
+  grid-column: 1;
+  grid-row: 2;
+  transform: translateY(-160px);
+  height: 800px !important;
+  max-height: 800px !important;
+}
+
+@media (max-width: 1024px) {
+  .project__detail-row--demandpay {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    padding: 20px;
+    gap: 16px;
   }
 }
 
-.project__video-wrap--mercle {
-  flex: 1;
-  height: 100%;
+/* ── Mercle specifics ── */
+.project__img-bg--mercle-hero {
+  background-image: url('assets/mercle-hero.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.project__img-bg--mercle-phone {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 90%;
+  background-image: url('assets/mercle-portrait.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .project__detail-row--mercle {
-  height: 909px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: auto auto;
+  background: var(--grey-95);
+  margin: 0 auto;
+  align-items: start;
 }
 
-.project__mercle-left {
-  width: 584px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.project__grid-item--mercle-a {
+  grid-column: 1;
+  grid-row: 1;
+  transform: translateY(20px);
+  height: 250px;
 }
 
-.project__mercle-screenshot {
-  width: 100%;
+.project__grid-item--mercle-b {
+  grid-column: 2;
+  grid-row: 1;
+  transform: translateY(20px);
+  background: transparent;
+  box-shadow: none;
+  height: 450px;
+  max-height: 450px;
 }
 
-.project__mercle-screenshot--a {
-  height: 516px;
-  background-image: url('assets/mercle-screen-a.png');
-  background-size: cover;
+.project__grid-item--mercle-b img {
+  object-fit: contain;
 }
 
-.project__mercle-screenshot--b {
-  height: 414px;
-  background-image: url('assets/mercle-screen-b.png');
-  background-size: cover;
+.project__grid-item--mercle-c {
+  grid-column: 3;
+  grid-row: 1;
+  transform: translateY(20px);
+  height: 300px;
 }
 
-.project__mercle-screenshot--portrait {
-  height: 661px;
-  background-image: url('assets/mercle-portrait.png');
-  background-size: cover;
+.project__grid-item--mercle-d {
+  grid-column: 4;
+  grid-row: 1;
+  transform: translateY(20px);
+  height: 220px;
 }
 
-.project__video-col--mercle {
-  width: 234px;
-  flex-shrink: 0;
-  height: 554px;
+.project__grid-item--mercle-e {
+  grid-column: 5;
+  grid-row: 1;
+  transform: translateY(20px);
+  background: #000;
+  height: 220px;
 }
 
-.project__video-col--mercle .project__video-placeholder {
-  width: 100%;
-  height: 100%;
+.project__grid-item--mercle-detail {
+  grid-column: 1;
+  grid-row: 2;
+  transform: translateY(-40px);
+  height: 400px;
 }
 
-.project__video-col--mercle-end {
-  width: 235px;
-  flex-shrink: 0;
-}
-
-.project__video-col--mercle-end .project__video-placeholder:first-child {
-  width: 235px;
-  height: 429px;
-}
-
-.project__video-col--mercle-end .project__video-placeholder:last-child {
-  width: 235px;
-  height: 198px;
+@media (max-width: 1024px) {
+  .project__detail-row--mercle {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    padding: 20px;
+    gap: 16px;
+  }
 }
 
 /* ════════════════════════════════════════════════
