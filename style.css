@@ -1128,6 +1128,10 @@ button {
   max-height: 450px !important;
 }
 
+.project__grid-item--demand-product img {
+  object-fit: contain;
+}
+
 .project__grid-item--demand-wide {
   grid-column: 4;
   grid-row: 1;
@@ -1148,8 +1152,13 @@ button {
   grid-column: 1;
   grid-row: 2;
   transform: translateY(-160px);
-  height: 800px !important;
-  max-height: 800px !important;
+  height: 620px !important;
+  max-height: 620px !important;
+  background: #000;
+}
+
+.project__grid-item--demand-detail video {
+  object-fit: contain !important;
 }
 
 @media (max-width: 1024px) {
@@ -1163,7 +1172,7 @@ button {
 
 /* ── Mercle specifics ── */
 .project__img-bg--mercle-hero {
-  background-image: url('assets/mercle-hero.png');
+  background-image: url('assets/recyclaim-hero.png');
   background-size: cover;
   background-position: center;
 }
