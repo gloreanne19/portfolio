@@ -1177,6 +1177,12 @@ button {
   background-position: center;
 }
 
+.project__img-bg--trackinfield-hero {
+  background-image: url('assets/trackinfield-hero.png');
+  background-size: cover;
+  background-position: center;
+}
+
 .project__img-bg--mercle-phone {
   position: absolute;
   top: 5%;
