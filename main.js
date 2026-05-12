@@ -240,7 +240,7 @@
 
     // ── Smooth Transition: Bio Photos and Text ──
     if (aboutBio) {
-      const isBioVisible = progress > 0.72;
+      const isBioVisible = progress > 0.60;
       aboutBio.style.opacity = isBioVisible ? '1' : '0';
       aboutBio.style.pointerEvents = isBioVisible ? 'all' : 'none';
 
@@ -249,31 +249,66 @@
         nav.style.transform = isBioVisible && progress < 0.98 ? 'translateX(-50%) translateY(100px)' : 'translateX(-50%)';
       }
 
-      // 1. Photos slowly fade and slide in first
-      const slideProgress = Math.max(0, Math.min(1, (progress - 0.72) / 0.10));
-      const distance = 1 - slideProgress; 
+      // 1. Photos Assembly (0.60 - 0.68)
+      const assembleProgress = Math.max(0, Math.min(1, (progress - 0.60) / 0.08));
+      // FLEX TIME: Hold in center from 0.68 to 0.76
+      const transProgress    = Math.max(0, Math.min(1, (progress - 0.76) / 0.12));
       
       const photoA = $('.about__bio-photo--left');
       const photoB = $('.about__bio-photo--center');
       const photoC = $('.about__bio-photo--right');
       
-      if (photoB) photoB.style.opacity = slideProgress;
-      if (photoA) { 
-        photoA.style.opacity = slideProgress; 
-        photoA.style.transform = `translateX(${-distance * 100}px)`; 
+      if (photoB) {
+        photoB.style.opacity = assembleProgress; // Fully opaque 1.0
+        // Center photo moves from middle to far left
+        const bX = -(transProgress * 42); // Ends at center - 42vw
+        photoB.style.transform = `translateX(${bX}vw)`;
       }
-      if (photoC) { 
-        photoC.style.opacity = slideProgress; 
-        photoC.style.transform = `translateX(${distance * 100}px)`; 
+      
+      if (photoA) {
+        // Left hand slides out to the left
+        const assembleX = (1 - assembleProgress) * -15; 
+        const transX = transProgress * -100; 
+        photoA.style.opacity = assembleProgress * 1.0 * (1 - transProgress);
+        photoA.style.transform = `translateX(${assembleX + transX}vw)`;
+      }
+      
+      if (photoC) {
+        // Right hand moves from right edge to be next to center photo
+        const assembleX = (1 - assembleProgress) * 15; 
+        const transX = transProgress * -45; // Increased from -38 to move closer to center
+        const scale = 1 - (transProgress * 0.4); // Scale down to 60%
+        photoC.style.opacity = assembleProgress; // Fully opaque 1.0
+        photoC.style.transform = `translateX(${assembleX + transX}vw) scale(${scale})`;
       }
 
-      // 2. Text staggered fade-in after
-      $$('.about__bio-p').forEach((p, i) => {
-        const staggerStart = 0.75 + (i * 0.04); 
-        const pOpacity = Math.max(0, Math.min(1, (progress - staggerStart) / 0.08));
-        p.style.opacity = pOpacity;
-        p.style.transform = `translateY(${30 - pOpacity * 30}px)`;
-      });
+      // 2. Typography Track & Sequence
+      const typoMoveProgress = Math.max(0, Math.min(1, (progress - 0.85) / 0.15));
+      const typoTrack = $('#about-typo-track');
+      
+      if (typoTrack) {
+        // Track movement (Positive shift for row-reverse)
+        typoTrack.style.transform = `translateX(${typoMoveProgress * 80}%)`;
+        
+        // Words Reveal (Starts sooner to allow 'flex' time)
+        const wordsFadeProgress = Math.max(0, Math.min(1, (progress - 0.78) / 0.22));
+        const activeIdx = Math.floor(wordsFadeProgress * 3.2); 
+        
+        if (wordsFadeProgress > 0) {
+          const currentIdx = Math.min(2, activeIdx);
+          
+          $$('.about__typo-word').forEach((word, i) => {
+            word.classList.toggle('is-active', i === currentIdx);
+          });
+
+          $$('.about__seq-item').forEach((item, i) => {
+            item.classList.toggle('is-active', i === currentIdx);
+          });
+        } else {
+          $$('.about__typo-word').forEach(word => word.classList.remove('is-active'));
+          $$('.about__seq-item').forEach(item => item.classList.remove('is-active'));
+        }
+      }
     }
   }
 
