@@ -276,23 +276,22 @@
       if (photoC) {
         // Right hand moves from right edge to be next to center photo
         const assembleX = (1 - assembleProgress) * 15; 
-        const transX = transProgress * -45; // Increased from -38 to move closer to center
+        const transX = transProgress * -48; // Pull closer to center (from -45 to -55)
         const scale = 1 - (transProgress * 0.4); // Scale down to 60%
         photoC.style.opacity = assembleProgress; // Fully opaque 1.0
         photoC.style.transform = `translateX(${assembleX + transX}vw) scale(${scale})`;
       }
 
       // 2. Typography Track & Sequence
-      const typoMoveProgress = Math.max(0, Math.min(1, (progress - 0.85) / 0.15));
+      const typoProgress = Math.max(0, Math.min(1, (progress - 0.86) / 0.14));
       const typoTrack = $('#about-typo-track');
       
       if (typoTrack) {
-        // Track movement (Positive shift for row-reverse)
-        typoTrack.style.transform = `translateX(${typoMoveProgress * 80}%)`;
+        // Track movement removed (Using stacked reveal logic)
         
-        // Words Reveal (Starts sooner to allow 'flex' time)
-        const wordsFadeProgress = Math.max(0, Math.min(1, (progress - 0.78) / 0.22));
-        const activeIdx = Math.floor(wordsFadeProgress * 3.2); 
+        // Words Reveal
+        const wordsFadeProgress = typoProgress; 
+        const activeIdx = Math.floor(wordsFadeProgress * 3.1); 
         
         if (wordsFadeProgress > 0) {
           const currentIdx = Math.min(2, activeIdx);
