@@ -261,7 +261,7 @@
       if (photoB) {
         photoB.style.opacity = assembleProgress; // Fully opaque 1.0
         // Center photo moves from middle to far left
-        const bX = -(transProgress * 42); // Ends at center - 42vw
+        const bX = -(transProgress * 40); // Ends at center - 35vw (lessened from 46)
         photoB.style.transform = `translateX(${bX}vw)`;
       }
       
@@ -278,35 +278,45 @@
         const assembleX = (1 - assembleProgress) * 15; 
         const transX = transProgress * -48; // Pull closer to center (from -45 to -55)
         const scale = 1 - (transProgress * 0.4); // Scale down to 60%
-        photoC.style.opacity = assembleProgress; // Fully opaque 1.0
+        
+        // Fade out as transProgress increases (once photoB is moving left)
+        const fadeOut = 1 - Math.max(0, Math.min(1, transProgress * 1.5));
+        photoC.style.opacity = assembleProgress * fadeOut; 
+        
         photoC.style.transform = `translateX(${assembleX + transX}vw) scale(${scale})`;
       }
 
-      // 2. Typography Track & Sequence
-      const typoProgress = Math.max(0, Math.min(1, (progress - 0.86) / 0.14));
-      const typoTrack = $('#about-typo-track');
+      // 2. What We Do Container & Cards Reveal
+      const typoProgress = Math.max(0, Math.min(1, (progress - 0.88) / 0.15));
+      const wwdContainer = $('#wwd-container');
       
-      if (typoTrack) {
-        // Track movement removed (Using stacked reveal logic)
+      if (wwdContainer) {
+        wwdContainer.classList.toggle('is-visible', typoProgress > 0);
         
-        // Words Reveal
-        const wordsFadeProgress = typoProgress; 
-        const activeIdx = Math.floor(wordsFadeProgress * 3.1); 
+        const cards = $$('.about__card');
+        const seqItems = $$('.about__wwd-seq');
+        const cardStep = 1 / cards.length;
         
-        if (wordsFadeProgress > 0) {
-          const currentIdx = Math.min(2, activeIdx);
-          
-          $$('.about__typo-word').forEach((word, i) => {
-            word.classList.toggle('is-active', i === currentIdx);
-          });
+        // Find the single most active index for text segments
+        const currentIdx = typoProgress > 0 ? Math.min(cards.length - 1, Math.floor(typoProgress * 0.999 * cards.length)) : -1;
 
-          $$('.about__seq-item').forEach((item, i) => {
-            item.classList.toggle('is-active', i === currentIdx);
-          });
-        } else {
-          $$('.about__typo-word').forEach(word => word.classList.remove('is-active'));
-          $$('.about__seq-item').forEach(item => item.classList.remove('is-active'));
-        }
+        cards.forEach((card, i) => {
+          const cardProg = Math.max(0, Math.min(1, (typoProgress - (i * cardStep * 0.5)) / (cardStep * 1.5)));
+          const isActive = cardProg > 0.1;
+          card.classList.toggle('is-active', isActive);
+          
+          // Toggle corresponding text sequence exclusively
+          if (seqItems[i]) {
+            seqItems[i].classList.toggle('about__wwd-seq--active', i === currentIdx);
+          }
+
+          // Optional: slight horizontal stagger
+          card.style.transform = `translateY(${(1 - cardProg) * 40}px) translateX(${(1 - cardProg) * 20}px)`;
+        });
+
+        // Hide old sequence text if present
+        const oldSeq = $('.about__bio-inner--sequence');
+        if (oldSeq) oldSeq.style.opacity = '0';
       }
     }
   }
@@ -475,6 +485,77 @@
     // Re-try on first interaction if blocked
     document.addEventListener('click', playVid, { once: true });
   });
+
+
+  // ════════════════════════════════════════════════
+  // 11. SIDE POPUP PANEL LOGIC
+  // ════════════════════════════════════════════════
+  const panelData = {
+    'UX/UI Design': {
+      tagline: 'Transforming digital experiences with intuitive UX/UI design that drives engagement and loyalty',
+      desc: 'We craft seamless interfaces blending aesthetics and usability, ensuring every click feels natural and every journey inspires lasting connection.',
+      list: ['E-commerce', 'CRM, ERP, SaaS', 'Promo', 'Corporate', 'Desktop app', 'Mobile app', 'etc.']
+    },
+    'Graphic Design': {
+      tagline: 'Elevating brands through strategic visual storytelling and impactful graphic design.',
+      desc: 'I create visual identities that resonate, using color, typography, and motion to tell a compelling story across every touchpoint.',
+      list: ['Logo Design', 'Branding', 'Identity', 'Illustration', '3D Graphics', 'Print Design', 'Social Media']
+    },
+    'Full-Stack Engineering': {
+      tagline: 'Bridging the gap between vision and reality with robust, scalable software solutions.',
+      desc: 'I don’t just draw the map; I build the engine. My technical stack allows me to architect complex systems that are as powerful as they are intuitive.',
+      list: ['React, Next.js, Node.js', 'Web & Mobile Dev', 'System Architecture', 'Database Design', 'Cloud Deployment', 'API Integration']
+    },
+    'Art Direction': {
+      tagline: 'Defining the visual vision and leading creative execution for world-class products.',
+      desc: 'Defining the visual vision and guiding the creative process to ensure consistency and excellence across all media.',
+      list: ['Creative Strategy', 'Concept Development', 'Visual Direction', 'Team Leadership', 'Brand Guidelines', 'Editorial Design']
+    }
+  };
+
+  const sidePanel = $('#side-panel');
+  const panelClose = $('#panel-close');
+  const panelOverlay = $('#panel-overlay');
+
+  function openPanel(title) {
+    const data = panelData[title];
+    if (!data) return;
+
+    $('#panel-title').textContent = title;
+    $('#panel-tagline').textContent = data.tagline;
+    $('#panel-desc').textContent = data.desc;
+    
+    const listContainer = $('#panel-list');
+    listContainer.innerHTML = '';
+    data.list.forEach(item => {
+      const p = document.createElement('p');
+      p.className = 'side-panel__list-item';
+      p.textContent = item;
+      listContainer.appendChild(p);
+    });
+
+    sidePanel.classList.add('side-panel--active');
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+  }
+
+  function closePanel() {
+    sidePanel.classList.remove('side-panel--active');
+    document.body.style.overflow = '';
+  }
+
+  // Add click listeners to cards
+  $$('.about__card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      const titleEl = card.querySelector('.about__card-title');
+      if (titleEl) {
+        openPanel(titleEl.textContent.trim());
+      }
+    });
+  });
+
+  if (panelClose) panelClose.addEventListener('click', closePanel);
+  if (panelOverlay) panelOverlay.addEventListener('click', closePanel);
 
   /* Init complete */
   console.log('%c April Gloreanne Portfolio loaded ✓', 'color:#78b6f0;font-family:monospace;font-size:14px;');
