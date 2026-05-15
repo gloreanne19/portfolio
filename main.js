@@ -110,18 +110,27 @@
 
   const hero = $('.hero');
 
+  const aboutEl = document.getElementById('about');
+
   function updateNav() {
-    if (!hero || !nav) return;
-    const heroBottom = hero.getBoundingClientRect().bottom;
-    if (heroBottom <= 80) {
-      nav.classList.add('nav--visible');
-    } else {
-      nav.classList.remove('nav--visible');
+    if (!nav) return;
+
+    // Nav only becomes visible once the About section ("not just a designer" part) is active
+    if (aboutEl) {
+      const aboutTop = aboutEl.getBoundingClientRect().top;
+      // Show nav when the top of the about section reaches or passes the top of the viewport
+      if (aboutTop <= window.innerHeight * 0.8) {
+        nav.style.opacity = '1';
+        nav.classList.add('nav--visible');
+      } else {
+        nav.style.opacity = '0';
+        nav.classList.remove('nav--visible');
+      }
     }
   }
 
-  // Nav always visible (since it hovers) — adjust opacity based on bg
-  nav.style.opacity = '1';
+  // Start hidden; updateNav() will reveal it once About section is active
+  nav.style.opacity = '0';
 
   /* ════════════════════════════════════════════
      2. INTERSECTION OBSERVER — Reveal on scroll
@@ -322,24 +331,217 @@
   }
 
   /* ════════════════════════════════════════════
-     4. EXPERIMENT section — parallax image inset
+     4. EXPERIMENT section — Slider Logic
   ════════════════════════════════════════════ */
-  const experimentImages = $$('.experiment__img-placeholder');
+  const expData = [
+    {
+      num: '01',
+      title: 'Studyshield',
+      desc: 'cheat smarter, not harder',
+      image: 'assets/exp-studyshield.png',
+      roles: ['🥈 2nd place', 'Concept, UX & interaction', 'VS Code disguise for exam cheating'],
+      label: 'BUILDATHON by GET CRETR',
+      bgColor: '#f5f5f5'
+    },
+    {
+      num: '02',
+      title: 'Outreach AI',
+      desc: 'automate your outreach, ethically',
+      image: 'assets/exp-outreach.png',
+      roles: ['Workflow AI', 'Frontend Development', 'API Integration'],
+      label: 'AI AUTOMATION EXPERIMENT',
+      bgColor: '#e8f4f9'
+    },
+    {
+      num: '03',
+      title: 'Powered to Play',
+      desc: 'gaming meets high-performance tech',
+      image: 'assets/powered-to-play-cool.png',
+      roles: ['Creative Direction', 'Art Direction', 'CGI Production'],
+      label: 'FEATURED WORK / STUDIO DIALECT',
+      bgColor: '#ffffff'
+    },
+    {
+      num: '04',
+      title: 'JewelIndia',
+      desc: 'luxury redefined in the digital space',
+      image: 'assets/exp-jewel.png',
+      roles: ['UI Design', 'Pipeline Architecture', 'Branding'],
+      label: 'CURIOSITY PRODUCT',
+      bgColor: '#f9e8f4'
+    },
+    {
+      num: '05',
+      title: 'ResumeShift',
+      desc: 'your next career move, optimized',
+      image: 'assets/exp-resume.png',
+      roles: ['Product Owner', 'UX Architecture', 'Data Visualisation'],
+      label: 'PRODUCT OF FRICTION',
+      bgColor: '#e8f9ed'
+    }
+  ];
 
-  function onExperimentScroll() {
-    experimentImages.forEach(img => {
-      const rect = img.parentElement.getBoundingClientRect();
-      const vy   = window.innerHeight;
-      const percent = ((vy - rect.top) / (vy + rect.height));
-      const clamp    = Math.max(0, Math.min(1, percent));
-      // Starts at -80% top, converges to 0
-      const top = -80 + clamp * 80;
-      img.style.top  = `${top}%`;
+  let currentExpIdx = -1;
+
+  function updateExperiment(idx) {
+    if (idx === currentExpIdx) return;
+    const data = expData[idx];
+    currentExpIdx = idx;
+
+    // Update UI elements
+    const titleEl = $('.experiments__title');
+    const descEl = $('.experiments__desc');
+    const labelEl = $('.experiments__label');
+    const imageEl = $('.experiments__main-image img');
+    const rolesContainer = $('.experiments__roles');
+    const thumbs = $$('.experiments__thumb');
+    const stickyContainer = $('.experiments__sticky');
+
+    if (stickyContainer) {
+      stickyContainer.style.backgroundColor = data.bgColor;
+    }
+
+    // Update Left Content (Label + Title)
+    if (labelEl) {
+      labelEl.style.opacity = '0';
+      setTimeout(() => {
+        labelEl.textContent = data.label;
+        labelEl.style.opacity = '1';
+      }, 300);
+    }
+
+    if (titleEl) {
+      titleEl.style.opacity = '0';
+      titleEl.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        const firstLetter = data.title.charAt(0);
+        const rest = data.title.slice(1);
+        titleEl.innerHTML = `<span class="experiments__title-script">${firstLetter}</span>${rest}`;
+        titleEl.style.opacity = '1';
+        titleEl.style.transform = 'translateY(0)';
+      }, 300);
+    }
+
+    // Update Center Image
+    if (imageEl) {
+      imageEl.style.opacity = '0';
+      setTimeout(() => {
+        imageEl.src = data.image;
+        imageEl.style.opacity = '1';
+      }, 300);
+    }
+
+    // Update Right Content (Desc + Roles)
+    if (descEl) {
+      descEl.style.opacity = '0';
+      descEl.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        descEl.textContent = data.desc;
+        descEl.style.opacity = '1';
+        descEl.style.transform = 'translateY(0)';
+      }, 300);
+    }
+
+    if (rolesContainer) {
+      rolesContainer.style.opacity = '0';
+      setTimeout(() => {
+        rolesContainer.innerHTML = data.roles.map(role => `<div class="experiments__role">${role}</div>`).join('');
+        rolesContainer.style.opacity = '1';
+      }, 300);
+    }
+
+    // Update Thumbs
+    thumbs.forEach((thumb, i) => {
+      thumb.classList.toggle('experiments__thumb--active', i === idx);
     });
   }
 
+  function onExperimentScroll() {
+    const section = $('.experiments');
+    if (!section) return;
+
+    const rect = section.getBoundingClientRect();
+    const sectionH = section.offsetHeight;
+    const scrollProgress = Math.max(0, Math.min(1, -rect.top / (sectionH - window.innerHeight)));
+    
+    // Divide the scroll track into project segments
+    const idx = Math.min(expData.length - 1, Math.floor(scrollProgress * expData.length));
+    updateExperiment(idx);
+  }
+
+  // Event Listeners for Thumbs (Manual jump)
+  $$('.experiments__thumb').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      const idx = parseInt(el.getAttribute('data-idx'));
+      if (!isNaN(idx)) {
+        const section = $('.experiments');
+        const sectionH = section.offsetHeight;
+        const targetScroll = section.offsetTop + (idx / expData.length) * (sectionH - window.innerHeight);
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+    });
+  });
+
   /* ════════════════════════════════════════════
-     5. SCROLL HANDLER
+     5. GLOBAL SIDE NAV LOGIC
+  ════════════════════════════════════════════ */
+  const sideNavItems = $$('.side-nav__item');
+  const sections = ['hero', 'work', 'about', 'playground', 'contact'];
+
+  function updateSideNav() {
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+    const center = scrollY + vh / 2;
+
+    let currentSection = 'hero';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + scrollY;
+        const bottom = top + el.offsetHeight;
+        if (center >= top && center <= bottom) {
+          currentSection = id;
+        }
+      }
+    });
+
+    sideNavItems.forEach(item => {
+      const section = item.getAttribute('data-section');
+      item.classList.toggle('side-nav__item--active', section === currentSection);
+    });
+
+    // Reveal and Ghosting Logic
+    const sideNav = $('.side-nav');
+    if (sideNav) {
+      const isVisible = scrollY > 200;
+      sideNav.classList.toggle('side-nav--visible', isVisible);
+      
+      if (isVisible) {
+        sideNav.classList.add('side-nav--scrolling');
+        sideNav.classList.remove('side-nav--ghost');
+        
+        clearTimeout(window.sideNavTimer);
+        window.sideNavTimer = setTimeout(() => {
+          sideNav.classList.remove('side-nav--scrolling');
+          sideNav.classList.add('side-nav--ghost');
+        }, 1500); // Ghost after 1.5s of no scroll
+      }
+    }
+  }
+
+  sideNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const id = item.getAttribute('data-section');
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* ════════════════════════════════════════════
+     6. SCROLL HANDLER
   ════════════════════════════════════════════ */
   let ticking = false;
   function onScroll() {
@@ -348,11 +550,13 @@
         updateNav();
         onAboutScroll();
         onExperimentScroll();
+        updateSideNav();
         ticking = false;
       });
       ticking = true;
     }
   }
+
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // run once on load
 
@@ -421,10 +625,8 @@
      10. Nav dynamic colors on scroll
   ════════════════════════════════════════════ */
   window.addEventListener('scroll', () => {
-    const currentY = window.scrollY;
     if (nav) {
-      // Keep nav visible after hero
-      nav.style.opacity = currentY > 80 ? '1' : '0';
+      // Nav visibility is handled by updateNav() — only manage color classes here
       
       const navY = window.innerHeight - 56; // center of nav vertically
       let overLightBg = false;
