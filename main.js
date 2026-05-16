@@ -12,6 +12,18 @@
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => [...document.querySelectorAll(sel)];
 
+  // ── Smooth Scroll (Lenis) ──
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }
+
   // ── Intro Splash Logic ──
   const introOverlay = $('#intro-overlay');
   const introVideo   = $('#intro-video');
@@ -111,26 +123,39 @@
   const hero = $('.hero');
 
   const aboutEl = document.getElementById('about');
+  const keepScrolling = document.getElementById('keep-scrolling');
 
   function updateNav() {
-    if (!nav) return;
-
-    // Nav only becomes visible once the About section ("not just a designer" part) is active
+    // Check if About section ("not just a designer" part) is active
     if (aboutEl) {
       const aboutTop = aboutEl.getBoundingClientRect().top;
-      // Show nav when the top of the about section reaches or passes the top of the viewport
-      if (aboutTop <= window.innerHeight * 0.8) {
-        nav.style.opacity = '1';
-        nav.classList.add('nav--visible');
-      } else {
-        nav.style.opacity = '0';
-        nav.classList.remove('nav--visible');
+      const isAboutActive = aboutTop <= window.innerHeight * 0.8;
+      
+      // Toggle Nav visibility
+      if (nav) {
+        if (isAboutActive) {
+          nav.style.opacity = '1';
+          nav.classList.add('nav--visible');
+        } else {
+          nav.style.opacity = '0';
+          nav.classList.remove('nav--visible');
+        }
+      }
+
+      // Toggle Keep Scrolling visibility (opposite of nav)
+      if (keepScrolling) {
+        if (isAboutActive) {
+          keepScrolling.classList.add('keep-scrolling--hidden');
+        } else {
+          keepScrolling.classList.remove('keep-scrolling--hidden');
+        }
       }
     }
   }
 
-  // Start hidden; updateNav() will reveal it once About section is active
-  nav.style.opacity = '0';
+  // Start states
+  if (nav) nav.style.opacity = '0';
+
 
   /* ════════════════════════════════════════════
      2. INTERSECTION OBSERVER — Reveal on scroll
@@ -412,22 +437,34 @@
 
     if (titleEl) {
       titleEl.style.opacity = '0';
-      titleEl.style.transform = 'translateY(20px)';
+      titleEl.style.transform = 'translate(-30%, -50%) translateY(40px) scale(0.9)';
+      titleEl.style.filter = 'blur(10px)';
       setTimeout(() => {
         const firstLetter = data.title.charAt(0);
         const rest = data.title.slice(1);
         titleEl.innerHTML = `<span class="experiments__title-script">${firstLetter}</span>${rest}`;
         titleEl.style.opacity = '1';
-        titleEl.style.transform = 'translateY(0)';
+        titleEl.style.transform = 'translate(-30%, -50%) translateY(0) scale(1)';
+        titleEl.style.filter = 'blur(0px)';
       }, 300);
     }
 
     // Update Center Image
-    if (imageEl) {
-      imageEl.style.opacity = '0';
+    const imgContainer = $('.experiments__main-image');
+    if (imgContainer && imageEl) {
+      imgContainer.style.opacity = '0';
+      // Start as a 60% scaled, blurred image
+      imgContainer.style.transform = 'scale(0.6) translateY(50px)';
+      imgContainer.style.filter = 'blur(20px)';
+      imageEl.style.transform = 'scale(1.5)'; // Inner image scaled slightly to contrast
+      
       setTimeout(() => {
         imageEl.src = data.image;
-        imageEl.style.opacity = '1';
+        imgContainer.style.opacity = '1';
+        // Burst outward from small to large
+        imgContainer.style.transform = ''; 
+        imgContainer.style.filter = 'blur(0)';
+        imageEl.style.transform = ''; 
       }, 300);
     }
 
@@ -444,9 +481,11 @@
 
     if (rolesContainer) {
       rolesContainer.style.opacity = '0';
+      rolesContainer.style.transform = 'translateX(20px)';
       setTimeout(() => {
-        rolesContainer.innerHTML = data.roles.map(role => `<div class="experiments__role">${role}</div>`).join('');
+        rolesContainer.innerHTML = data.roles.map((role, i) => `<div class="experiments__role" style="animation: fadeInUp 0.5s ease forwards ${i * 0.1}s; opacity: 0;">${role}</div>`).join('');
         rolesContainer.style.opacity = '1';
+        rolesContainer.style.transform = 'translateX(0)';
       }, 300);
     }
 
@@ -467,6 +506,70 @@
     // Divide the scroll track into project segments
     const idx = Math.min(expData.length - 1, Math.floor(scrollProgress * expData.length));
     updateExperiment(idx);
+
+    // Continuous scroll zoom
+    const imageEl = $('.experiments__main-image img');
+    if (imageEl) {
+      // Zoom from 1 to 1.25 over the course of the entire section scroll
+      const zoomLevel = 1 + (scrollProgress * 0.25);
+      imageEl.style.setProperty('--scroll-zoom', zoomLevel);
+    }
+
+    // --- WOW FACTOR ENTRANCE ---
+    // enterProgress: 0 when top is at bottom of viewport, 1 when top is at top of viewport
+    const windowH = window.innerHeight;
+    let enterProgress = (windowH - rect.top) / windowH;
+    enterProgress = Math.max(0, Math.min(1, enterProgress));
+    
+    const mainImage = $('.experiments__main-image');
+    const rightSide = $('.experiments__right');
+    const title = $('.experiments__title');
+    
+    if (enterProgress < 1 && enterProgress > 0) {
+      const easeEnter = Math.pow(enterProgress, 3); // Cubic ease-in for a punchy snap
+
+      if (mainImage) {
+        // Starts at 60% scale (0.6) and grows to 100% (1.0)
+        const imgScale = 0.6 + (0.4 * easeEnter);
+        const blurAmt = 15 * (1 - easeEnter);
+        mainImage.style.transform = `scale(${imgScale})`;
+        mainImage.style.filter = `blur(${blurAmt}px)`;
+        mainImage.style.opacity = easeEnter;
+        mainImage.style.clipPath = `inset(${15 * (1 - easeEnter)}% ${10 * (1 - easeEnter)}% round ${40 * (1 - easeEnter)}px)`;
+        mainImage.dataset.entered = 'false';
+      }
+
+      if (rightSide) {
+        const rightX = 150 * (1 - easeEnter);
+        rightSide.style.transform = `translateX(${rightX}px)`;
+        rightSide.style.opacity = easeEnter;
+      }
+
+      if (title) {
+        const titleX = -100 * (1 - easeEnter);
+        title.style.transform = `translate(calc(-30% + ${titleX}px), -50%)`;
+        title.style.opacity = easeEnter;
+        title.style.filter = `blur(${10 * (1 - easeEnter)}px)`;
+      }
+    } else if (enterProgress === 1) {
+      // Reset everything when fully entered ONLY ONCE to not conflict with transition animations
+      if (mainImage && mainImage.dataset.entered !== 'true') {
+        mainImage.style.transform = ''; // Lets the hover logic work
+        mainImage.style.filter = 'blur(0px)';
+        mainImage.style.opacity = '1';
+        mainImage.style.clipPath = 'inset(0% round 0px)';
+        mainImage.dataset.entered = 'true';
+      }
+      if (rightSide && rightSide.dataset.entered !== 'true') {
+        rightSide.style.transform = 'translateX(0px)';
+        rightSide.style.opacity = '1';
+        rightSide.dataset.entered = 'true';
+      }
+      if (title && title.dataset.entered !== 'true') {
+        title.style.filter = 'blur(0px)';
+        title.dataset.entered = 'true';
+      }
+    }
   }
 
   // Event Listeners for Thumbs (Manual jump)
@@ -758,6 +861,31 @@
 
   if (panelClose) panelClose.addEventListener('click', closePanel);
   if (panelOverlay) panelOverlay.addEventListener('click', closePanel);
+
+  /* ════════════════════════════════════════════════
+     12. CUSTOM CURSOR TRACKING FOR PLAYGROUND "VIEW" BTN
+  ════════════════════════════════════════════════ */
+  const expMainImage = $('.experiments__main-image');
+  const expViewBtn = $('.experiments__view-btn');
+
+  if (expMainImage && expViewBtn) {
+    expMainImage.addEventListener('mousemove', (e) => {
+      const rect = expMainImage.getBoundingClientRect();
+      // Calculate offset from the center of the image container
+      const x = e.clientX - rect.left - (rect.width / 2);
+      const y = e.clientY - rect.top - (rect.height / 2);
+      
+      // Update CSS variables for the transform calc() in CSS
+      expViewBtn.style.setProperty('--mouse-x', `${x}px`);
+      expViewBtn.style.setProperty('--mouse-y', `${y}px`);
+    });
+
+    expMainImage.addEventListener('mouseleave', () => {
+      // Reset variables so it smoothly animates back to center
+      expViewBtn.style.setProperty('--mouse-x', `0px`);
+      expViewBtn.style.setProperty('--mouse-y', `0px`);
+    });
+  }
 
   /* Init complete */
   console.log('%c April Gloreanne Portfolio loaded ✓', 'color:#78b6f0;font-family:monospace;font-size:14px;');
