@@ -3005,3 +3005,402 @@ button {
     padding: 60px 24px;
   }
 }
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE DESIGN SYSTEM
+════════════════════════════════════════════════ */
+
+/* LAPTOP / SMALL DESKTOP (max-width: 1440px) */
+@media (max-width: 1440px) {
+  .hero__spaceship {
+    width: 250px;
+    height: 600px;
+    right: 20px;
+  }
+  .experiments__sticky {
+    padding: 60px 40px;
+  }
+  .experiments__wrapper {
+    gap: 40px;
+  }
+}
+
+/* TABLET (max-width: 1024px) */
+@media (max-width: 1024px) {
+  /* Hero */
+  .hero__name-container {
+    padding: 20px 10px;
+  }
+  .hero__name-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero__tagline {
+    margin-left: 20px;
+    max-width: 300px;
+  }
+  .hero__spaceship {
+    width: 180px;
+    height: 500px;
+    right: 10px;
+    bottom: 20px;
+  }
+
+  /* Projects */
+  .project__header {
+    padding: 0 24px;
+  }
+  .project__gallery {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .project__video-wrap {
+    width: 100%;
+    height: 400px;
+    padding: 0 24px;
+  }
+
+  /* About / What We Do */
+  .about__typo-container {
+    width: 95%;
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .about__typo-track {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .about__card {
+    min-width: 45%;
+    max-width: 50%;
+  }
+
+  /* Experiments */
+  .experiments__wrapper {
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+    padding-top: 40px;
+  }
+  .experiments__center {
+    width: 100%;
+    order: 1;
+    height: auto;
+    min-height: 450px;
+  }
+  .experiments__right {
+    order: 2;
+    align-items: center;
+  }
+  .experiments__meta {
+    align-items: center;
+    text-align: center;
+  }
+  .experiments__roles {
+    justify-content: center;
+  }
+  .experiments__title {
+    top: -40px;
+    left: 50%;
+  }
+}
+
+/* MOBILE (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Nav */
+  .nav {
+    width: 90%;
+    justify-content: center;
+    padding: 0 20px;
+    bottom: 16px;
+  }
+  .nav__tabs {
+    display: none;
+  }
+
+  /* Hero */
+  .hero__name-container {
+    padding-bottom: 140px; /* Make ample room for tagline at bottom */
+    position: relative;
+    justify-content: center;
+  }
+  .hero__name-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    position: static; /* Force absolute children to position relative to container */
+  }
+  .hero__name-row--second {
+    margin-top: -10px;
+    margin-left: 0;
+  }
+  .hero__tagline {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    margin-left: 0;
+    text-align: center;
+  }
+  .hero__spaceship {
+    display: none; /* Hide to prevent text overlap */
+  }
+
+  /* Work / Projects */
+  .project__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+  .project__title {
+    font-size: clamp(28px, 8vw, 40px);
+    text-align: center;
+  }
+  .project__video-wrap {
+    height: 300px;
+  }
+  
+  /* Project Gallery Carousel on Mobile */
+  /* Hide the desktop gallery and detail-row; JS will build a unified carousel */
+  .project__gallery,
+  .project__detail-row {
+    display: none !important;
+  }
+
+  /* JS-built mobile carousel wrapper */
+  .project__mobile-carousel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 12px;
+    padding: 0 20px 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .project__mobile-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project__mobile-carousel__slide {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 420px;
+    position: relative;
+    background: #e8eef4;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.4s ease;
+    transform: scale(0.96);
+  }
+
+  /* Active slide pops forward */
+  .project__mobile-carousel__slide--active {
+    transform: scale(1);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  }
+
+  .project__mobile-carousel__slide img,
+  .project__mobile-carousel__slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── Dot indicators ── */
+  .project__carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0 16px;
+  }
+
+  .project__carousel-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.18);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    border: none;
+  }
+
+  .project__carousel-dot--active {
+    width: 22px;
+    border-radius: 3px;
+    background: #111;
+  }
+
+  /* ── Slide counter (e.g. "3 / 8") ── */
+  .project__carousel-counter {
+    text-align: center;
+    font-family: var(--font-pixel, monospace);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: rgba(0,0,0,0.35);
+    padding-bottom: 4px;
+  }
+
+  /* ── Scroll hint ── */
+  .project__carousel-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 0 20px;
+    font-family: var(--font-pixel, monospace);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(0,0,0,0.3);
+    text-transform: uppercase;
+    animation: carouselHintPulse 2s ease-in-out infinite;
+    transition: opacity 0.5s ease;
+  }
+
+  .project__carousel-hint--hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .project__carousel-hint svg {
+    animation: carouselHintBounce 1.5s ease-in-out infinite;
+  }
+
+  @keyframes carouselHintPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes carouselHintBounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+  }
+
+  /* Info slide inside carousel */
+  .project__mobile-carousel__slide--info {
+    background: #fff;
+    height: auto;
+    min-height: 400px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    flex: 0 0 88%;
+  }
+
+  /* Static info block below the carousel */
+  .project__mobile-info {
+    margin: 0 20px 40px;
+    padding: 28px 24px;
+    background: var(--white, #fff);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+
+  .project__mobile-info .project__brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .project__mobile-info .project__brand-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .project__mobile-info .project__brand-tag {
+    font-size: 12px;
+    background: #111;
+    color: #fff;
+    border-radius: 4px;
+    padding: 3px 8px;
+    display: inline-block;
+  }
+
+  .project__mobile-info .project__desc {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #444;
+    margin-bottom: 14px;
+  }
+
+  .project__mobile-info .project__cta {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 12px 20px;
+    background: #111;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+
+  /* About */
+  .about__card {
+    min-width: 100%;
+  }
+  .about__wwd-footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  /* Experiments */
+  .experiments__sticky {
+    padding: 20px 20px;
+  }
+  .experiments__main-image {
+    max-width: 100%;
+    height: 300px;
+  }
+  .experiments__title {
+    font-size: 40px;
+  }
+  .experiments__thumbs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  /* Side Panel */
+  .side-panel {
+    width: 100%;
+    right: -100%;
+  }
+}
+
+/* SMALL MOBILE (max-width: 480px) */
+@media (max-width: 480px) {
+  .hero__name-script {
+    font-size: 80px;
+  }
+  .hero__name-pixel {
+    font-size: 40px;
+  }
+  .project__detail-row--mercle {
+    grid-template-columns: 1fr;
+  }
+  .project__grid-item {
+    grid-column: 1 !important;
+  }
+  .experiments__main-image {
+    height: 250px;
+  }
+}

@@ -436,15 +436,18 @@
     }
 
     if (titleEl) {
+      const isMobile = window.innerWidth <= 1024;
+      const baseX = isMobile ? '-50%' : '-30%';
+      
       titleEl.style.opacity = '0';
-      titleEl.style.transform = 'translate(-30%, -50%) translateY(40px) scale(0.9)';
+      titleEl.style.transform = `translate(${baseX}, -50%) translateY(40px) scale(0.9)`;
       titleEl.style.filter = 'blur(10px)';
       setTimeout(() => {
         const firstLetter = data.title.charAt(0);
         const rest = data.title.slice(1);
         titleEl.innerHTML = `<span class="experiments__title-script">${firstLetter}</span>${rest}`;
         titleEl.style.opacity = '1';
-        titleEl.style.transform = 'translate(-30%, -50%) translateY(0) scale(1)';
+        titleEl.style.transform = `translate(${baseX}, -50%) translateY(0) scale(1)`;
         titleEl.style.filter = 'blur(0px)';
       }, 300);
     }
@@ -546,8 +549,15 @@
       }
 
       if (title) {
+        const isMobile = window.innerWidth <= 1024;
         const titleX = -100 * (1 - easeEnter);
-        title.style.transform = `translate(calc(-30% + ${titleX}px), -50%)`;
+        
+        if (isMobile) {
+          // On mobile, keep it strictly centered on the X axis, slide up on Y
+          title.style.transform = `translate(-50%, calc(-50% + ${-titleX}px))`;
+        } else {
+          title.style.transform = `translate(calc(-30% + ${titleX}px), -50%)`;
+        }
         title.style.opacity = easeEnter;
         title.style.filter = `blur(${10 * (1 - easeEnter)}px)`;
       }
@@ -561,7 +571,7 @@
         mainImage.dataset.entered = 'true';
       }
       if (rightSide && rightSide.dataset.entered !== 'true') {
-        rightSide.style.transform = 'translateX(0px)';
+        rightSide.style.transform = ''; // Clear JS transform so CSS handles it
         rightSide.style.opacity = '1';
         rightSide.dataset.entered = 'true';
       }
@@ -886,6 +896,150 @@
       expViewBtn.style.setProperty('--mouse-y', `0px`);
     });
   }
+
+  /* ════════════════════════════════════════════════
+     13. MOBILE PROJECT CAROUSELS
+  ════════════════════════════════════════════════ */
+  function buildMobileCarousels() {
+    if (window.innerWidth > 768) return;
+
+    $$('.project').forEach(project => {
+      if (project.querySelector('.project__mobile-carousel')) return;
+
+      const carousel = document.createElement('div');
+      carousel.className = 'project__mobile-carousel';
+
+      // ── Slide 1: Hero image ──
+      const heroWrap = project.querySelector('.project__img-wrap--wide');
+      if (heroWrap) {
+        const heroBg = heroWrap.querySelector('[class*="project__img-bg"]');
+        if (heroBg) {
+          const slide = document.createElement('div');
+          slide.className = 'project__mobile-carousel__slide';
+          const bgClone = heroBg.cloneNode(true);
+          bgClone.style.cssText = 'width:100%;height:100%;background-size:cover;background-position:center;';
+          slide.appendChild(bgClone);
+          carousel.appendChild(slide);
+        }
+      }
+
+      // ── Slide 2: Hero video ──
+      const heroVideo = project.querySelector('.project__gallery .project__video-fill');
+      if (heroVideo) {
+        const slide = document.createElement('div');
+        slide.className = 'project__mobile-carousel__slide';
+        const vid = heroVideo.cloneNode(true);
+        Object.assign(vid, { autoplay: true, muted: true, loop: true, playsInline: true });
+        vid.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        slide.appendChild(vid);
+        vid.play().catch(() => {});
+        carousel.appendChild(slide);
+      }
+
+      // ── Slides: grid item images/videos ──
+      project.querySelectorAll('.project__grid-item').forEach(item => {
+        const img = item.querySelector('img');
+        const vid = item.querySelector('video');
+        const slide = document.createElement('div');
+        slide.className = 'project__mobile-carousel__slide';
+        if (img) {
+          const clone = img.cloneNode(true);
+          clone.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+          slide.appendChild(clone);
+        } else if (vid) {
+          const clone = vid.cloneNode(true);
+          Object.assign(clone, { autoplay: true, muted: true, loop: true, playsInline: true });
+          clone.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+          slide.appendChild(clone);
+          clone.play().catch(() => {});
+        }
+        if (slide.firstChild) carousel.appendChild(slide);
+      });
+
+      // ── Insert carousel after header ──
+      const header = project.querySelector('.project__header');
+      if (header && header.nextSibling) {
+        project.insertBefore(carousel, header.nextSibling);
+      } else {
+        project.appendChild(carousel);
+      }
+
+      // ── Info block: static section BELOW the carousel ──
+      const infoBlock = project.querySelector('.project__info');
+      if (infoBlock) {
+        const infoStatic = document.createElement('div');
+        infoStatic.className = 'project__mobile-info';
+        infoStatic.innerHTML = infoBlock.innerHTML;
+        carousel.insertAdjacentElement('afterend', infoStatic);
+      }
+
+      // ── Snap helpers ──
+      const getSlideWidth = () => {
+        const slide = carousel.querySelector('.project__mobile-carousel__slide');
+        return slide ? slide.offsetWidth + 12 : carousel.clientWidth;
+      };
+      const getCurrentIndex = () => Math.round(carousel.scrollLeft / getSlideWidth());
+      const allSlides = () => [...carousel.querySelectorAll('.project__mobile-carousel__slide')];
+      const getTotalSlides = () => allSlides().length;
+
+      const snapTo = (index) => {
+        const clamped = Math.max(0, Math.min(index, getTotalSlides() - 1));
+        carousel.scrollTo({ left: clamped * getSlideWidth(), behavior: 'smooth' });
+      };
+
+      // ── Dot indicators + counter + hint ──
+      const dotsWrap = document.createElement('div');
+      dotsWrap.className = 'project__carousel-dots';
+      const counter = document.createElement('div');
+      counter.className = 'project__carousel-counter';
+      const hint = document.createElement('div');
+      hint.className = 'project__carousel-hint';
+      hint.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg> swipe`;
+
+      const totalCount = getTotalSlides();
+      const dots = [];
+      for (let i = 0; i < totalCount; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'project__carousel-dot';
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dot.addEventListener('click', () => snapTo(i));
+        dotsWrap.appendChild(dot);
+        dots.push(dot);
+      }
+
+      carousel.insertAdjacentElement('afterend', hint);
+      carousel.insertAdjacentElement('afterend', counter);
+      carousel.insertAdjacentElement('afterend', dotsWrap);
+
+      // ── Update dots/counter on scroll ──
+      let hasInteracted = false;
+      const updateActive = () => {
+        const idx = getCurrentIndex();
+        dots.forEach((d, i) => d.classList.toggle('project__carousel-dot--active', i === idx));
+        allSlides().forEach((s, i) => s.classList.toggle('project__mobile-carousel__slide--active', i === idx));
+        counter.textContent = `${idx + 1} / ${totalCount}`;
+        if (!hasInteracted && idx > 0) {
+          hasInteracted = true;
+          hint.classList.add('project__carousel-hint--hidden');
+        }
+      };
+      updateActive();
+      allSlides()[0]?.classList.add('project__mobile-carousel__slide--active');
+      carousel.addEventListener('scroll', updateActive, { passive: true });
+    });
+  }
+
+  buildMobileCarousels();
+
+  let carouselResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(carouselResizeTimer);
+    carouselResizeTimer = setTimeout(buildMobileCarousels, 300);
+  });
+
+
+
+
 
   /* Init complete */
   console.log('%c April Gloreanne Portfolio loaded ✓', 'color:#78b6f0;font-family:monospace;font-size:14px;');
