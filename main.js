@@ -12,6 +12,18 @@
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => [...document.querySelectorAll(sel)];
 
+  // ── Smooth Scroll (Lenis) ──
+  if (typeof Lenis !== 'undefined') {
+    const lenis = new Lenis();
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }
+
   // ── Intro Splash Logic ──
   const introOverlay = $('#intro-overlay');
   const introVideo   = $('#intro-video');
@@ -110,18 +122,40 @@
 
   const hero = $('.hero');
 
+  const aboutEl = document.getElementById('about');
+  const keepScrolling = document.getElementById('keep-scrolling');
+
   function updateNav() {
-    if (!hero || !nav) return;
-    const heroBottom = hero.getBoundingClientRect().bottom;
-    if (heroBottom <= 80) {
-      nav.classList.add('nav--visible');
-    } else {
-      nav.classList.remove('nav--visible');
+    // Check if About section ("not just a designer" part) is active
+    if (aboutEl) {
+      const aboutTop = aboutEl.getBoundingClientRect().top;
+      const isAboutActive = aboutTop <= window.innerHeight * 0.8;
+      
+      // Toggle Nav visibility
+      if (nav) {
+        if (isAboutActive) {
+          nav.style.opacity = '1';
+          nav.classList.add('nav--visible');
+        } else {
+          nav.style.opacity = '0';
+          nav.classList.remove('nav--visible');
+        }
+      }
+
+      // Toggle Keep Scrolling visibility (opposite of nav)
+      if (keepScrolling) {
+        if (isAboutActive) {
+          keepScrolling.classList.add('keep-scrolling--hidden');
+        } else {
+          keepScrolling.classList.remove('keep-scrolling--hidden');
+        }
+      }
     }
   }
 
-  // Nav always visible (since it hovers) — adjust opacity based on bg
-  nav.style.opacity = '1';
+  // Start states
+  if (nav) nav.style.opacity = '0';
+
 
   /* ════════════════════════════════════════════
      2. INTERSECTION OBSERVER — Reveal on scroll
@@ -261,7 +295,7 @@
       if (photoB) {
         photoB.style.opacity = assembleProgress; // Fully opaque 1.0
         // Center photo moves from middle to far left
-        const bX = -(transProgress * 42); // Ends at center - 42vw
+        const bX = -(transProgress * 40); // Ends at center - 35vw (lessened from 46)
         photoB.style.transform = `translateX(${bX}vw)`;
       }
       
@@ -278,58 +312,349 @@
         const assembleX = (1 - assembleProgress) * 15; 
         const transX = transProgress * -48; // Pull closer to center (from -45 to -55)
         const scale = 1 - (transProgress * 0.4); // Scale down to 60%
-        photoC.style.opacity = assembleProgress; // Fully opaque 1.0
+        
+        // Fade out as transProgress increases (once photoB is moving left)
+        const fadeOut = 1 - Math.max(0, Math.min(1, transProgress * 1.5));
+        photoC.style.opacity = assembleProgress * fadeOut; 
+        
         photoC.style.transform = `translateX(${assembleX + transX}vw) scale(${scale})`;
       }
 
-      // 2. Typography Track & Sequence
-      const typoProgress = Math.max(0, Math.min(1, (progress - 0.86) / 0.14));
-      const typoTrack = $('#about-typo-track');
+      // 2. What We Do Container & Cards Reveal
+      const typoProgress = Math.max(0, Math.min(1, (progress - 0.88) / 0.15));
+      const wwdContainer = $('#wwd-container');
       
-      if (typoTrack) {
-        // Track movement removed (Using stacked reveal logic)
+      if (wwdContainer) {
+        wwdContainer.classList.toggle('is-visible', typoProgress > 0);
         
-        // Words Reveal
-        const wordsFadeProgress = typoProgress; 
-        const activeIdx = Math.floor(wordsFadeProgress * 3.1); 
+        const cards = $$('.about__card');
+        const seqItems = $$('.about__wwd-seq');
+        const cardStep = 1 / cards.length;
         
-        if (wordsFadeProgress > 0) {
-          const currentIdx = Math.min(2, activeIdx);
-          
-          $$('.about__typo-word').forEach((word, i) => {
-            word.classList.toggle('is-active', i === currentIdx);
-          });
+        // Find the single most active index for text segments
+        const currentIdx = typoProgress > 0 ? Math.min(cards.length - 1, Math.floor(typoProgress * 0.999 * cards.length)) : -1;
 
-          $$('.about__seq-item').forEach((item, i) => {
-            item.classList.toggle('is-active', i === currentIdx);
-          });
-        } else {
-          $$('.about__typo-word').forEach(word => word.classList.remove('is-active'));
-          $$('.about__seq-item').forEach(item => item.classList.remove('is-active'));
-        }
+        cards.forEach((card, i) => {
+          const cardProg = Math.max(0, Math.min(1, (typoProgress - (i * cardStep * 0.5)) / (cardStep * 1.5)));
+          const isActive = cardProg > 0.1;
+          card.classList.toggle('is-active', isActive);
+          
+          // Toggle corresponding text sequence exclusively
+          if (seqItems[i]) {
+            seqItems[i].classList.toggle('about__wwd-seq--active', i === currentIdx);
+          }
+
+          // Optional: slight horizontal stagger
+          card.style.transform = `translateY(${(1 - cardProg) * 40}px) translateX(${(1 - cardProg) * 20}px)`;
+        });
+
+        // Hide old sequence text if present
+        const oldSeq = $('.about__bio-inner--sequence');
+        if (oldSeq) oldSeq.style.opacity = '0';
       }
     }
   }
 
   /* ════════════════════════════════════════════
-     4. EXPERIMENT section — parallax image inset
+     4. EXPERIMENT section — Slider Logic
   ════════════════════════════════════════════ */
-  const experimentImages = $$('.experiment__img-placeholder');
+  const expData = [
+    {
+      num: '01',
+      title: 'Studyshield',
+      desc: 'cheat smarter, not harder',
+      image: 'assets/exp-studyshield.png',
+      roles: ['🥈 2nd place', 'Concept, UX & interaction', 'VS Code disguise for exam cheating'],
+      label: 'BUILDATHON by GET CRETR',
+      bgColor: '#f5f5f5'
+    },
+    {
+      num: '02',
+      title: 'Outreach AI',
+      desc: 'automate your outreach, ethically',
+      image: 'assets/exp-outreach.png',
+      roles: ['Workflow AI', 'Frontend Development', 'API Integration'],
+      label: 'AI AUTOMATION EXPERIMENT',
+      bgColor: '#e8f4f9'
+    },
+    {
+      num: '03',
+      title: 'Powered to Play',
+      desc: 'gaming meets high-performance tech',
+      image: 'assets/powered-to-play-cool.png',
+      roles: ['Creative Direction', 'Art Direction', 'CGI Production'],
+      label: 'FEATURED WORK / STUDIO DIALECT',
+      bgColor: '#ffffff'
+    },
+    {
+      num: '04',
+      title: 'JewelIndia',
+      desc: 'luxury redefined in the digital space',
+      image: 'assets/exp-jewel.png',
+      roles: ['UI Design', 'Pipeline Architecture', 'Branding'],
+      label: 'CURIOSITY PRODUCT',
+      bgColor: '#f9e8f4'
+    },
+    {
+      num: '05',
+      title: 'ResumeShift',
+      desc: 'your next career move, optimized',
+      image: 'assets/exp-resume.png',
+      roles: ['Product Owner', 'UX Architecture', 'Data Visualisation'],
+      label: 'PRODUCT OF FRICTION',
+      bgColor: '#e8f9ed'
+    }
+  ];
 
-  function onExperimentScroll() {
-    experimentImages.forEach(img => {
-      const rect = img.parentElement.getBoundingClientRect();
-      const vy   = window.innerHeight;
-      const percent = ((vy - rect.top) / (vy + rect.height));
-      const clamp    = Math.max(0, Math.min(1, percent));
-      // Starts at -80% top, converges to 0
-      const top = -80 + clamp * 80;
-      img.style.top  = `${top}%`;
+  let currentExpIdx = -1;
+
+  function updateExperiment(idx) {
+    if (idx === currentExpIdx) return;
+    const data = expData[idx];
+    currentExpIdx = idx;
+
+    // Update UI elements
+    const titleEl = $('.experiments__title');
+    const descEl = $('.experiments__desc');
+    const labelEl = $('.experiments__label');
+    const imageEl = $('.experiments__main-image img');
+    const rolesContainer = $('.experiments__roles');
+    const thumbs = $$('.experiments__thumb');
+    const stickyContainer = $('.experiments__sticky');
+
+    if (stickyContainer) {
+      stickyContainer.style.backgroundColor = data.bgColor;
+    }
+
+    // Update Left Content (Label + Title)
+    if (labelEl) {
+      labelEl.style.opacity = '0';
+      setTimeout(() => {
+        labelEl.textContent = data.label;
+        labelEl.style.opacity = '1';
+      }, 300);
+    }
+
+    if (titleEl) {
+      const isMobile = window.innerWidth <= 1024;
+      const baseX = isMobile ? '-50%' : '-30%';
+      
+      titleEl.style.opacity = '0';
+      titleEl.style.transform = `translate(${baseX}, -50%) translateY(40px) scale(0.9)`;
+      titleEl.style.filter = 'blur(10px)';
+      setTimeout(() => {
+        const firstLetter = data.title.charAt(0);
+        const rest = data.title.slice(1);
+        titleEl.innerHTML = `<span class="experiments__title-script">${firstLetter}</span>${rest}`;
+        titleEl.style.opacity = '1';
+        titleEl.style.transform = `translate(${baseX}, -50%) translateY(0) scale(1)`;
+        titleEl.style.filter = 'blur(0px)';
+      }, 300);
+    }
+
+    // Update Center Image
+    const imgContainer = $('.experiments__main-image');
+    if (imgContainer && imageEl) {
+      imgContainer.style.opacity = '0';
+      // Start as a 60% scaled, blurred image
+      imgContainer.style.transform = 'scale(0.6) translateY(50px)';
+      imgContainer.style.filter = 'blur(20px)';
+      imageEl.style.transform = 'scale(1.5)'; // Inner image scaled slightly to contrast
+      
+      setTimeout(() => {
+        imageEl.src = data.image;
+        imgContainer.style.opacity = '1';
+        // Burst outward from small to large
+        imgContainer.style.transform = ''; 
+        imgContainer.style.filter = 'blur(0)';
+        imageEl.style.transform = ''; 
+      }, 300);
+    }
+
+    // Update Right Content (Desc + Roles)
+    if (descEl) {
+      descEl.style.opacity = '0';
+      descEl.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        descEl.textContent = data.desc;
+        descEl.style.opacity = '1';
+        descEl.style.transform = 'translateY(0)';
+      }, 300);
+    }
+
+    if (rolesContainer) {
+      rolesContainer.style.opacity = '0';
+      rolesContainer.style.transform = 'translateX(20px)';
+      setTimeout(() => {
+        rolesContainer.innerHTML = data.roles.map((role, i) => `<div class="experiments__role" style="animation: fadeInUp 0.5s ease forwards ${i * 0.1}s; opacity: 0;">${role}</div>`).join('');
+        rolesContainer.style.opacity = '1';
+        rolesContainer.style.transform = 'translateX(0)';
+      }, 300);
+    }
+
+    // Update Thumbs
+    thumbs.forEach((thumb, i) => {
+      thumb.classList.toggle('experiments__thumb--active', i === idx);
     });
   }
 
+  function onExperimentScroll() {
+    const section = $('.experiments');
+    if (!section) return;
+
+    const rect = section.getBoundingClientRect();
+    const sectionH = section.offsetHeight;
+    const scrollProgress = Math.max(0, Math.min(1, -rect.top / (sectionH - window.innerHeight)));
+    
+    // Divide the scroll track into project segments
+    const idx = Math.min(expData.length - 1, Math.floor(scrollProgress * expData.length));
+    updateExperiment(idx);
+
+    // Continuous scroll zoom
+    const imageEl = $('.experiments__main-image img');
+    if (imageEl) {
+      // Zoom from 1 to 1.25 over the course of the entire section scroll
+      const zoomLevel = 1 + (scrollProgress * 0.25);
+      imageEl.style.setProperty('--scroll-zoom', zoomLevel);
+    }
+
+    // --- WOW FACTOR ENTRANCE ---
+    // enterProgress: 0 when top is at bottom of viewport, 1 when top is at top of viewport
+    const windowH = window.innerHeight;
+    let enterProgress = (windowH - rect.top) / windowH;
+    enterProgress = Math.max(0, Math.min(1, enterProgress));
+    
+    const mainImage = $('.experiments__main-image');
+    const rightSide = $('.experiments__right');
+    const title = $('.experiments__title');
+    
+    if (enterProgress < 1 && enterProgress > 0) {
+      const easeEnter = Math.pow(enterProgress, 3); // Cubic ease-in for a punchy snap
+
+      if (mainImage) {
+        // Starts at 60% scale (0.6) and grows to 100% (1.0)
+        const imgScale = 0.6 + (0.4 * easeEnter);
+        const blurAmt = 15 * (1 - easeEnter);
+        mainImage.style.transform = `scale(${imgScale})`;
+        mainImage.style.filter = `blur(${blurAmt}px)`;
+        mainImage.style.opacity = easeEnter;
+        mainImage.style.clipPath = `inset(${15 * (1 - easeEnter)}% ${10 * (1 - easeEnter)}% round ${40 * (1 - easeEnter)}px)`;
+        mainImage.dataset.entered = 'false';
+      }
+
+      if (rightSide) {
+        const rightX = 150 * (1 - easeEnter);
+        rightSide.style.transform = `translateX(${rightX}px)`;
+        rightSide.style.opacity = easeEnter;
+      }
+
+      if (title) {
+        const isMobile = window.innerWidth <= 1024;
+        const titleX = -100 * (1 - easeEnter);
+        
+        if (isMobile) {
+          // On mobile, keep it strictly centered on the X axis, slide up on Y
+          title.style.transform = `translate(-50%, calc(-50% + ${-titleX}px))`;
+        } else {
+          title.style.transform = `translate(calc(-30% + ${titleX}px), -50%)`;
+        }
+        title.style.opacity = easeEnter;
+        title.style.filter = `blur(${10 * (1 - easeEnter)}px)`;
+      }
+    } else if (enterProgress === 1) {
+      // Reset everything when fully entered ONLY ONCE to not conflict with transition animations
+      if (mainImage && mainImage.dataset.entered !== 'true') {
+        mainImage.style.transform = ''; // Lets the hover logic work
+        mainImage.style.filter = 'blur(0px)';
+        mainImage.style.opacity = '1';
+        mainImage.style.clipPath = 'inset(0% round 0px)';
+        mainImage.dataset.entered = 'true';
+      }
+      if (rightSide && rightSide.dataset.entered !== 'true') {
+        rightSide.style.transform = ''; // Clear JS transform so CSS handles it
+        rightSide.style.opacity = '1';
+        rightSide.dataset.entered = 'true';
+      }
+      if (title && title.dataset.entered !== 'true') {
+        title.style.filter = 'blur(0px)';
+        title.dataset.entered = 'true';
+      }
+    }
+  }
+
+  // Event Listeners for Thumbs (Manual jump)
+  $$('.experiments__thumb').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      const idx = parseInt(el.getAttribute('data-idx'));
+      if (!isNaN(idx)) {
+        const section = $('.experiments');
+        const sectionH = section.offsetHeight;
+        const targetScroll = section.offsetTop + (idx / expData.length) * (sectionH - window.innerHeight);
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+    });
+  });
+
   /* ════════════════════════════════════════════
-     5. SCROLL HANDLER
+     5. GLOBAL SIDE NAV LOGIC
+  ════════════════════════════════════════════ */
+  const sideNavItems = $$('.side-nav__item');
+  const sections = ['hero', 'work', 'about', 'playground', 'contact'];
+
+  function updateSideNav() {
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+    const center = scrollY + vh / 2;
+
+    let currentSection = 'hero';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + scrollY;
+        const bottom = top + el.offsetHeight;
+        if (center >= top && center <= bottom) {
+          currentSection = id;
+        }
+      }
+    });
+
+    sideNavItems.forEach(item => {
+      const section = item.getAttribute('data-section');
+      item.classList.toggle('side-nav__item--active', section === currentSection);
+    });
+
+    // Reveal and Ghosting Logic
+    const sideNav = $('.side-nav');
+    if (sideNav) {
+      const isVisible = scrollY > 200;
+      sideNav.classList.toggle('side-nav--visible', isVisible);
+      
+      if (isVisible) {
+        sideNav.classList.add('side-nav--scrolling');
+        sideNav.classList.remove('side-nav--ghost');
+        
+        clearTimeout(window.sideNavTimer);
+        window.sideNavTimer = setTimeout(() => {
+          sideNav.classList.remove('side-nav--scrolling');
+          sideNav.classList.add('side-nav--ghost');
+        }, 1500); // Ghost after 1.5s of no scroll
+      }
+    }
+  }
+
+  sideNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const id = item.getAttribute('data-section');
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* ════════════════════════════════════════════
+     6. SCROLL HANDLER
   ════════════════════════════════════════════ */
   let ticking = false;
   function onScroll() {
@@ -338,11 +663,13 @@
         updateNav();
         onAboutScroll();
         onExperimentScroll();
+        updateSideNav();
         ticking = false;
       });
       ticking = true;
     }
   }
+
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // run once on load
 
@@ -411,10 +738,8 @@
      10. Nav dynamic colors on scroll
   ════════════════════════════════════════════ */
   window.addEventListener('scroll', () => {
-    const currentY = window.scrollY;
     if (nav) {
-      // Keep nav visible after hero
-      nav.style.opacity = currentY > 80 ? '1' : '0';
+      // Nav visibility is handled by updateNav() — only manage color classes here
       
       const navY = window.innerHeight - 56; // center of nav vertically
       let overLightBg = false;
@@ -475,6 +800,246 @@
     // Re-try on first interaction if blocked
     document.addEventListener('click', playVid, { once: true });
   });
+
+
+  // ════════════════════════════════════════════════
+  // 11. SIDE POPUP PANEL LOGIC
+  // ════════════════════════════════════════════════
+  const panelData = {
+    'UX/UI Design': {
+      tagline: 'Transforming digital experiences with intuitive UX/UI design that drives engagement and loyalty',
+      desc: 'We craft seamless interfaces blending aesthetics and usability, ensuring every click feels natural and every journey inspires lasting connection.',
+      list: ['E-commerce', 'CRM, ERP, SaaS', 'Promo', 'Corporate', 'Desktop app', 'Mobile app', 'etc.']
+    },
+    'Graphic Design': {
+      tagline: 'Elevating brands through strategic visual storytelling and impactful graphic design.',
+      desc: 'I create visual identities that resonate, using color, typography, and motion to tell a compelling story across every touchpoint.',
+      list: ['Logo Design', 'Branding', 'Identity', 'Illustration', '3D Graphics', 'Print Design', 'Social Media']
+    },
+    'Full-Stack Engineering': {
+      tagline: 'Bridging the gap between vision and reality with robust, scalable software solutions.',
+      desc: 'I don’t just draw the map; I build the engine. My technical stack allows me to architect complex systems that are as powerful as they are intuitive.',
+      list: ['React, Next.js, Node.js', 'Web & Mobile Dev', 'System Architecture', 'Database Design', 'Cloud Deployment', 'API Integration']
+    },
+    'Art Direction': {
+      tagline: 'Defining the visual vision and leading creative execution for world-class products.',
+      desc: 'Defining the visual vision and guiding the creative process to ensure consistency and excellence across all media.',
+      list: ['Creative Strategy', 'Concept Development', 'Visual Direction', 'Team Leadership', 'Brand Guidelines', 'Editorial Design']
+    }
+  };
+
+  const sidePanel = $('#side-panel');
+  const panelClose = $('#panel-close');
+  const panelOverlay = $('#panel-overlay');
+
+  function openPanel(title) {
+    const data = panelData[title];
+    if (!data) return;
+
+    $('#panel-title').textContent = title;
+    $('#panel-tagline').textContent = data.tagline;
+    $('#panel-desc').textContent = data.desc;
+    
+    const listContainer = $('#panel-list');
+    listContainer.innerHTML = '';
+    data.list.forEach(item => {
+      const p = document.createElement('p');
+      p.className = 'side-panel__list-item';
+      p.textContent = item;
+      listContainer.appendChild(p);
+    });
+
+    sidePanel.classList.add('side-panel--active');
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+  }
+
+  function closePanel() {
+    sidePanel.classList.remove('side-panel--active');
+    document.body.style.overflow = '';
+  }
+
+  // Add click listeners to cards
+  $$('.about__card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      const titleEl = card.querySelector('.about__card-title');
+      if (titleEl) {
+        openPanel(titleEl.textContent.trim());
+      }
+    });
+  });
+
+  if (panelClose) panelClose.addEventListener('click', closePanel);
+  if (panelOverlay) panelOverlay.addEventListener('click', closePanel);
+
+  /* ════════════════════════════════════════════════
+     12. CUSTOM CURSOR TRACKING FOR PLAYGROUND "VIEW" BTN
+  ════════════════════════════════════════════════ */
+  const expMainImage = $('.experiments__main-image');
+  const expViewBtn = $('.experiments__view-btn');
+
+  if (expMainImage && expViewBtn) {
+    expMainImage.addEventListener('mousemove', (e) => {
+      const rect = expMainImage.getBoundingClientRect();
+      // Calculate offset from the center of the image container
+      const x = e.clientX - rect.left - (rect.width / 2);
+      const y = e.clientY - rect.top - (rect.height / 2);
+      
+      // Update CSS variables for the transform calc() in CSS
+      expViewBtn.style.setProperty('--mouse-x', `${x}px`);
+      expViewBtn.style.setProperty('--mouse-y', `${y}px`);
+    });
+
+    expMainImage.addEventListener('mouseleave', () => {
+      // Reset variables so it smoothly animates back to center
+      expViewBtn.style.setProperty('--mouse-x', `0px`);
+      expViewBtn.style.setProperty('--mouse-y', `0px`);
+    });
+  }
+
+  /* ════════════════════════════════════════════════
+     13. MOBILE PROJECT CAROUSELS
+  ════════════════════════════════════════════════ */
+  function buildMobileCarousels() {
+    if (window.innerWidth > 768) return;
+
+    $$('.project').forEach(project => {
+      if (project.querySelector('.project__mobile-carousel')) return;
+
+      const carousel = document.createElement('div');
+      carousel.className = 'project__mobile-carousel';
+
+      // ── Slide 1: Hero image ──
+      const heroWrap = project.querySelector('.project__img-wrap--wide');
+      if (heroWrap) {
+        const heroBg = heroWrap.querySelector('[class*="project__img-bg"]');
+        if (heroBg) {
+          const slide = document.createElement('div');
+          slide.className = 'project__mobile-carousel__slide';
+          const bgClone = heroBg.cloneNode(true);
+          bgClone.style.cssText = 'width:100%;height:100%;background-size:cover;background-position:center;';
+          slide.appendChild(bgClone);
+          carousel.appendChild(slide);
+        }
+      }
+
+      // ── Slide 2: Hero video ──
+      const heroVideo = project.querySelector('.project__gallery .project__video-fill');
+      if (heroVideo) {
+        const slide = document.createElement('div');
+        slide.className = 'project__mobile-carousel__slide';
+        const vid = heroVideo.cloneNode(true);
+        Object.assign(vid, { autoplay: true, muted: true, loop: true, playsInline: true });
+        vid.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        slide.appendChild(vid);
+        vid.play().catch(() => {});
+        carousel.appendChild(slide);
+      }
+
+      // ── Slides: grid item images/videos ──
+      project.querySelectorAll('.project__grid-item').forEach(item => {
+        const img = item.querySelector('img');
+        const vid = item.querySelector('video');
+        const slide = document.createElement('div');
+        slide.className = 'project__mobile-carousel__slide';
+        if (img) {
+          const clone = img.cloneNode(true);
+          clone.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+          slide.appendChild(clone);
+        } else if (vid) {
+          const clone = vid.cloneNode(true);
+          Object.assign(clone, { autoplay: true, muted: true, loop: true, playsInline: true });
+          clone.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+          slide.appendChild(clone);
+          clone.play().catch(() => {});
+        }
+        if (slide.firstChild) carousel.appendChild(slide);
+      });
+
+      // ── Insert carousel after header ──
+      const header = project.querySelector('.project__header');
+      if (header && header.nextSibling) {
+        project.insertBefore(carousel, header.nextSibling);
+      } else {
+        project.appendChild(carousel);
+      }
+
+      // ── Info block: static section BELOW the carousel ──
+      const infoBlock = project.querySelector('.project__info');
+      if (infoBlock) {
+        const infoStatic = document.createElement('div');
+        infoStatic.className = 'project__mobile-info';
+        infoStatic.innerHTML = infoBlock.innerHTML;
+        carousel.insertAdjacentElement('afterend', infoStatic);
+      }
+
+      // ── Snap helpers ──
+      const getSlideWidth = () => {
+        const slide = carousel.querySelector('.project__mobile-carousel__slide');
+        return slide ? slide.offsetWidth + 12 : carousel.clientWidth;
+      };
+      const getCurrentIndex = () => Math.round(carousel.scrollLeft / getSlideWidth());
+      const allSlides = () => [...carousel.querySelectorAll('.project__mobile-carousel__slide')];
+      const getTotalSlides = () => allSlides().length;
+
+      const snapTo = (index) => {
+        const clamped = Math.max(0, Math.min(index, getTotalSlides() - 1));
+        carousel.scrollTo({ left: clamped * getSlideWidth(), behavior: 'smooth' });
+      };
+
+      // ── Dot indicators + counter + hint ──
+      const dotsWrap = document.createElement('div');
+      dotsWrap.className = 'project__carousel-dots';
+      const counter = document.createElement('div');
+      counter.className = 'project__carousel-counter';
+      const hint = document.createElement('div');
+      hint.className = 'project__carousel-hint';
+      hint.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg> swipe`;
+
+      const totalCount = getTotalSlides();
+      const dots = [];
+      for (let i = 0; i < totalCount; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'project__carousel-dot';
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dot.addEventListener('click', () => snapTo(i));
+        dotsWrap.appendChild(dot);
+        dots.push(dot);
+      }
+
+      carousel.insertAdjacentElement('afterend', hint);
+      carousel.insertAdjacentElement('afterend', counter);
+      carousel.insertAdjacentElement('afterend', dotsWrap);
+
+      // ── Update dots/counter on scroll ──
+      let hasInteracted = false;
+      const updateActive = () => {
+        const idx = getCurrentIndex();
+        dots.forEach((d, i) => d.classList.toggle('project__carousel-dot--active', i === idx));
+        allSlides().forEach((s, i) => s.classList.toggle('project__mobile-carousel__slide--active', i === idx));
+        counter.textContent = `${idx + 1} / ${totalCount}`;
+        if (!hasInteracted && idx > 0) {
+          hasInteracted = true;
+          hint.classList.add('project__carousel-hint--hidden');
+        }
+      };
+      updateActive();
+      allSlides()[0]?.classList.add('project__mobile-carousel__slide--active');
+      carousel.addEventListener('scroll', updateActive, { passive: true });
+    });
+  }
+
+  buildMobileCarousels();
+
+  let carouselResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(carouselResizeTimer);
+    carouselResizeTimer = setTimeout(buildMobileCarousels, 300);
+  });
+
+
+
+
 
   /* Init complete */
   console.log('%c April Gloreanne Portfolio loaded ✓', 'color:#78b6f0;font-family:monospace;font-size:14px;');
