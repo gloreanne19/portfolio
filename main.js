@@ -14,10 +14,10 @@
 
   // ── Smooth Scroll (Lenis) ──
   if (typeof Lenis !== 'undefined') {
-    const lenis = new Lenis();
+    window.lenis = new Lenis();
 
     function raf(time) {
-      lenis.raf(time);
+      window.lenis.raf(time);
       requestAnimationFrame(raf);
     }
 
@@ -898,143 +898,189 @@
   }
 
   /* ════════════════════════════════════════════════
-     13. MOBILE PROJECT CAROUSELS
+     13. MOBILE PROJECT CAROUSELS (Playground Effect)
   ════════════════════════════════════════════════ */
+
+
+
   function buildMobileCarousels() {
     if (window.innerWidth > 768) return;
 
     $$('.project').forEach(project => {
-      if (project.querySelector('.project__mobile-carousel')) return;
+      if (project.querySelector('.project__mobile-marquee-wrap')) return;
 
-      const carousel = document.createElement('div');
-      carousel.className = 'project__mobile-carousel';
+      const slidesData = [];
 
       // ── Slide 1: Hero image ──
       const heroWrap = project.querySelector('.project__img-wrap--wide');
       if (heroWrap) {
         const heroBg = heroWrap.querySelector('[class*="project__img-bg"]');
         if (heroBg) {
-          const slide = document.createElement('div');
-          slide.className = 'project__mobile-carousel__slide';
           const bgClone = heroBg.cloneNode(true);
           bgClone.style.cssText = 'width:100%;height:100%;background-size:cover;background-position:center;';
-          slide.appendChild(bgClone);
-          carousel.appendChild(slide);
+          slidesData.push(bgClone);
         }
       }
 
       // ── Slide 2: Hero video ──
       const heroVideo = project.querySelector('.project__gallery .project__video-fill');
       if (heroVideo) {
-        const slide = document.createElement('div');
-        slide.className = 'project__mobile-carousel__slide';
         const vid = heroVideo.cloneNode(true);
         Object.assign(vid, { autoplay: true, muted: true, loop: true, playsInline: true });
         vid.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-        slide.appendChild(vid);
-        vid.play().catch(() => {});
-        carousel.appendChild(slide);
+        slidesData.push(vid);
       }
 
       // ── Slides: grid item images/videos ──
       project.querySelectorAll('.project__grid-item').forEach(item => {
         const img = item.querySelector('img');
         const vid = item.querySelector('video');
-        const slide = document.createElement('div');
-        slide.className = 'project__mobile-carousel__slide';
         if (img) {
           const clone = img.cloneNode(true);
           clone.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-          slide.appendChild(clone);
+          slidesData.push(clone);
         } else if (vid) {
           const clone = vid.cloneNode(true);
           Object.assign(clone, { autoplay: true, muted: true, loop: true, playsInline: true });
           clone.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-          slide.appendChild(clone);
-          clone.play().catch(() => {});
+          slidesData.push(clone);
         }
-        if (slide.firstChild) carousel.appendChild(slide);
       });
+
+      if (slidesData.length === 0) return;
+
+      // Create two rows
+      const half = Math.ceil(slidesData.length / 2);
+      const row1Data = slidesData.slice(0, half);
+      const row2Data = slidesData.slice(half);
+
+      const marqueeWrap = document.createElement('div');
+      marqueeWrap.className = 'project__mobile-marquee-wrap';
+
+      const buildTrack = (dataArr, directionClass) => {
+        const trackWrap = document.createElement('div');
+        trackWrap.className = 'project__mobile-marquee-track';
+        const trackInner = document.createElement('div');
+        trackInner.className = `project__mobile-marquee-inner ${directionClass}`;
+        
+        const createSet = () => {
+          const set = document.createElement('div');
+          set.className = 'project__mobile-marquee-set';
+          dataArr.forEach(el => {
+            const slide = document.createElement('div');
+            slide.className = 'project__mobile-marquee-slide';
+            const clone = el.cloneNode(true);
+            if (clone.tagName === 'VIDEO') clone.play().catch(()=>{});
+            slide.appendChild(clone);
+            set.appendChild(slide);
+          });
+          return set;
+        };
+
+        // Two identical sets for seamless loop
+        trackInner.appendChild(createSet());
+        trackInner.appendChild(createSet());
+        
+        trackWrap.appendChild(trackInner);
+        return trackWrap;
+      };
+
+      if (row1Data.length > 0) marqueeWrap.appendChild(buildTrack(row1Data, 'marquee-left'));
+      if (row2Data.length > 0) marqueeWrap.appendChild(buildTrack(row2Data, 'marquee-right'));
 
       // ── Insert carousel after header ──
       const header = project.querySelector('.project__header');
-      if (header && header.nextSibling) {
-        project.insertBefore(carousel, header.nextSibling);
-      } else {
-        project.appendChild(carousel);
-      }
+      if (header && header.nextSibling) project.insertBefore(marqueeWrap, header.nextSibling);
+      else project.appendChild(marqueeWrap);
 
-      // ── Info block: static section BELOW the carousel ──
+      // ── Build info block with one-at-a-time desc transitions ──
       const infoBlock = project.querySelector('.project__info');
+      let infoStatic = null;
       if (infoBlock) {
-        const infoStatic = document.createElement('div');
+        const brandName = infoBlock.querySelector('.project__brand-name')?.textContent.trim() || '';
+        const brandTag  = infoBlock.querySelector('.project__brand-tag')?.textContent.trim()  || '';
+        const logoEl    = infoBlock.querySelector('.project__brand img');
+        const ctaEl     = infoBlock.querySelector('.project__cta');
+        const descs     = [...infoBlock.querySelectorAll('.project__desc')];
+
+        // Parse label + body from each desc
+        const parsed = descs.map(desc => {
+          const strong = desc.querySelector('strong');
+          const label  = strong ? strong.textContent.replace(/:/g, '').trim().toUpperCase() : '';
+          const body   = strong
+            ? desc.innerHTML.replace(strong.outerHTML, '').replace(/^[\s:]+/, '').trim()
+            : desc.innerHTML.trim();
+          return { label, body };
+        });
+
+        const ctaHTML = ctaEl
+          ? `<a href="${ctaEl.href}" class="pminfo__cta">${ctaEl.textContent.trim()}</a>` : '';
+
+        infoStatic = document.createElement('div');
         infoStatic.className = 'project__mobile-info';
-        infoStatic.innerHTML = infoBlock.innerHTML;
-        carousel.insertAdjacentElement('afterend', infoStatic);
+        infoStatic.innerHTML = `
+          <div class="pminfo__brand">
+            ${logoEl ? `<img src="${logoEl.src}" alt="${logoEl.alt}" class="pminfo__logo">` : ''}
+            <h2 class="pminfo__name">${brandName}</h2>
+            <p class="pminfo__tag">${brandTag}</p>
+          </div>
+          <div class="pminfo__desc-stage">
+            <div class="pminfo__desc-panel">
+              <span class="pminfo__desc-label"></span>
+              <p class="pminfo__desc-body"></p>
+            </div>
+            <div class="pminfo__desc-controls">
+              <button class="pminfo__desc-prev" aria-label="Previous">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <div class="pminfo__desc-dots">
+                ${parsed.map(() => `<span class="pminfo__dot"></span>`).join('')}
+              </div>
+              <button class="pminfo__desc-next" aria-label="Next">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+          ${ctaHTML}
+        `;
+        marqueeWrap.insertAdjacentElement('afterend', infoStatic);
+
+        // ── Desc rotator ──
+        const panel   = infoStatic.querySelector('.pminfo__desc-panel');
+        const lbl     = infoStatic.querySelector('.pminfo__desc-label');
+        const body    = infoStatic.querySelector('.pminfo__desc-body');
+        const dotsEl  = infoStatic.querySelectorAll('.pminfo__dot');
+        const prevBtn = infoStatic.querySelector('.pminfo__desc-prev');
+        const nextBtn = infoStatic.querySelector('.pminfo__desc-next');
+        let   dIdx    = 0;
+
+        const showDesc = (i, dir = 1) => {
+          dIdx = Math.max(0, Math.min(i, parsed.length - 1));
+          panel.style.animation = 'none';
+          void panel.offsetWidth; // reflow
+          panel.style.animation = dir > 0
+            ? 'descSlideInRight 0.38s cubic-bezier(0.16,1,0.3,1) forwards'
+            : 'descSlideInLeft 0.38s cubic-bezier(0.16,1,0.3,1) forwards';
+          lbl.textContent  = parsed[dIdx].label;
+          body.innerHTML   = parsed[dIdx].body;
+          dotsEl.forEach((dot, idx) => dot.classList.toggle('pminfo__dot--active', idx === dIdx));
+          prevBtn.style.opacity = dIdx === 0 ? '0.25' : '1';
+          nextBtn.style.opacity = dIdx === parsed.length - 1 ? '0.25' : '1';
+        };
+
+        showDesc(0);
+        prevBtn.addEventListener('click', () => showDesc(dIdx - 1, -1));
+        nextBtn.addEventListener('click', () => showDesc(dIdx + 1,  1));
       }
-
-      // ── Snap helpers ──
-      const getSlideWidth = () => {
-        const slide = carousel.querySelector('.project__mobile-carousel__slide');
-        return slide ? slide.offsetWidth + 12 : carousel.clientWidth;
-      };
-      const getCurrentIndex = () => Math.round(carousel.scrollLeft / getSlideWidth());
-      const allSlides = () => [...carousel.querySelectorAll('.project__mobile-carousel__slide')];
-      const getTotalSlides = () => allSlides().length;
-
-      const snapTo = (index) => {
-        const clamped = Math.max(0, Math.min(index, getTotalSlides() - 1));
-        carousel.scrollTo({ left: clamped * getSlideWidth(), behavior: 'smooth' });
-      };
-
-      // ── Dot indicators + counter + hint ──
-      const dotsWrap = document.createElement('div');
-      dotsWrap.className = 'project__carousel-dots';
-      const counter = document.createElement('div');
-      counter.className = 'project__carousel-counter';
-      const hint = document.createElement('div');
-      hint.className = 'project__carousel-hint';
-      hint.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg> swipe`;
-
-      const totalCount = getTotalSlides();
-      const dots = [];
-      for (let i = 0; i < totalCount; i++) {
-        const dot = document.createElement('button');
-        dot.className = 'project__carousel-dot';
-        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-        dot.addEventListener('click', () => snapTo(i));
-        dotsWrap.appendChild(dot);
-        dots.push(dot);
-      }
-
-      carousel.insertAdjacentElement('afterend', hint);
-      carousel.insertAdjacentElement('afterend', counter);
-      carousel.insertAdjacentElement('afterend', dotsWrap);
-
-      // ── Update dots/counter on scroll ──
-      let hasInteracted = false;
-      const updateActive = () => {
-        const idx = getCurrentIndex();
-        dots.forEach((d, i) => d.classList.toggle('project__carousel-dot--active', i === idx));
-        allSlides().forEach((s, i) => s.classList.toggle('project__mobile-carousel__slide--active', i === idx));
-        counter.textContent = `${idx + 1} / ${totalCount}`;
-        if (!hasInteracted && idx > 0) {
-          hasInteracted = true;
-          hint.classList.add('project__carousel-hint--hidden');
-        }
-      };
-      updateActive();
-      allSlides()[0]?.classList.add('project__mobile-carousel__slide--active');
-      carousel.addEventListener('scroll', updateActive, { passive: true });
     });
   }
 
   buildMobileCarousels();
 
-  let carouselResizeTimer;
+  let _carouselTimer;
   window.addEventListener('resize', () => {
-    clearTimeout(carouselResizeTimer);
-    carouselResizeTimer = setTimeout(buildMobileCarousels, 300);
+    clearTimeout(_carouselTimer);
+    _carouselTimer = setTimeout(buildMobileCarousels, 300);
   });
 
 
