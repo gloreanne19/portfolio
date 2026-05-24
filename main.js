@@ -361,48 +361,48 @@
   const expData = [
     {
       num: '01',
-      title: 'Studyshield',
-      desc: 'cheat smarter, not harder',
-      image: 'assets/exp-studyshield.png',
-      roles: ['🥈 2nd place', 'Concept, UX & interaction', 'VS Code disguise for exam cheating'],
-      label: 'BUILDATHON by GET CRETR',
+      title: 'AlertGen',
+      desc: 'AI-driven allergen detection for labelled & non-labelled foods',
+      image: 'assets/alertgen.png',
+      roles: ['Sole Designer: Concept, Prototype & Logic', 'OCR & AI-Driven Analysis', 'Mobile App — SCRUM Framework'],
+      label: 'CAPSTONE / PSU URDANETA CITY',
       bgColor: '#f5f5f5'
     },
     {
       num: '02',
-      title: 'Outreach AI',
-      desc: 'automate your outreach, ethically',
-      image: 'assets/exp-outreach.png',
-      roles: ['Workflow AI', 'Frontend Development', 'API Integration'],
-      label: 'AI AUTOMATION EXPERIMENT',
+      title: 'Pabilihaw',
+      desc: 'a Filipino street food arcade cooking game',
+      image: 'assets/pabilihaw.png',
+      roles: ['Arcade / Time-Management', 'Flutter & Flame Engine', 'Filipino Culture & Sound Design'],
+      label: 'GAME DEV / FLUTTER',
       bgColor: '#e8f4f9'
     },
     {
       num: '03',
-      title: 'Powered to Play',
-      desc: 'gaming meets high-performance tech',
-      image: 'assets/powered-to-play-cool.png',
-      roles: ['Creative Direction', 'Art Direction', 'CGI Production'],
-      label: 'FEATURED WORK / STUDIO DIALECT',
-      bgColor: '#ffffff'
+      title: 'Plantify',
+      desc: 'ASP.NET Core E-commerce Plant Store',
+      image: 'assets/plantify.png',
+      roles: ['ASP.NET Core MVC', 'C# Backend Logic', 'Dynamic Frontend UI'],
+      label: 'WEB APP / E-COMMERCE',
+      bgColor: '#eaf4eb'
     },
     {
       num: '04',
-      title: 'JewelIndia',
-      desc: 'luxury redefined in the digital space',
-      image: 'assets/exp-jewel.png',
-      roles: ['UI Design', 'Pipeline Architecture', 'Branding'],
-      label: 'CURIOSITY PRODUCT',
-      bgColor: '#f9e8f4'
+      title: 'Venta',
+      desc: 'Local POS and ordering system',
+      image: 'assets/venta.png',
+      roles: ['Flutter UI', 'SQLite Offline Storage', 'Local Data Management'],
+      label: 'APP DEV / POS SYSTEM',
+      bgColor: '#e8eef9'
     },
     {
       num: '05',
-      title: 'ResumeShift',
-      desc: 'your next career move, optimized',
-      image: 'assets/exp-resume.png',
-      roles: ['Product Owner', 'UX Architecture', 'Data Visualisation'],
-      label: 'PRODUCT OF FRICTION',
-      bgColor: '#e8f9ed'
+      title: 'Paquito\'s Pizza',
+      desc: 'PHP-based e-commerce web application',
+      image: 'assets/paquito.png',
+      roles: ['PHP Backend', 'Database Management', 'Full-Stack Development'],
+      label: 'WEB APP / PHP & MYSQL',
+      bgColor: '#fff3e0'
     }
   ];
 
