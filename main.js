@@ -242,7 +242,7 @@
     // ── Text Sequence ──
     const texts = [
       'just a designer?',
-      'be more.',
+      "I'll be more.",
       'design. develop. deliver.',
       'build real systems.'
     ];
@@ -363,8 +363,11 @@
       num: '01',
       title: 'AlertGen',
       desc: 'AI-driven allergen detection for labelled & non-labelled foods',
+      detail: 'AlertGen utilizes advanced OCR and AI to help individuals identify potential allergens in both packaged and non-packaged foods in real-time, built with a user-centric approach.',
+      fullDesc: 'AlertGen is an AI-powered Android app using Gemini 2.5 Pro to detect allergens via OCR and image recognition. It features real-time alerts against personalized allergy profiles, smart caching, safe alternative suggestions, and built-in emergency guides. For complex or unlabelled meals, it relies on a Human-in-the-Loop (HITL) validation system and manual ingredient entry to ensure accuracy and user safety.',
+      techStack: ['Android', 'Gemini 2.5 Pro', 'OCR', 'Firebase'],
       image: 'assets/alertgen.png',
-      roles: ['Sole Designer: Concept, Prototype & Logic', 'OCR & AI-Driven Analysis', 'Mobile App — SCRUM Framework'],
+      roles: ['Sole Designer: Concept, Prototype & Logic', 'OCR & AI-Driven Analysis', 'Mobile App — SCRUM Framework', 'Full Stack Project'],
       label: 'CAPSTONE / PSU URDANETA CITY',
       bgColor: '#f5f5f5'
     },
@@ -372,6 +375,10 @@
       num: '02',
       title: 'Pabilihaw',
       desc: 'a Filipino street food arcade cooking game',
+      detail: 'A time-management cooking game that immerses players in the vibrant culture of Filipino street food, featuring rich sound design and engaging arcade mechanics.',
+      fullDesc: 'Pabilihaw is a vibrant time-management cooking game that immerses players in the culture of Filipino street food. Built from the ground up to offer engaging arcade mechanics, it challenges players to serve hungry customers while managing multiple cooking stations. The project highlights a deep integration of Filipino culture and bespoke sound design.',
+      techStack: ['Flutter', 'Flame Engine', 'Dart'],
+      link: '#',
       image: 'assets/pabilihaw.png',
       roles: ['Arcade / Time-Management', 'Flutter & Flame Engine', 'Filipino Culture & Sound Design'],
       label: 'GAME DEV / FLUTTER',
@@ -381,6 +388,10 @@
       num: '03',
       title: 'Plantify',
       desc: 'ASP.NET Core E-commerce Plant Store',
+      detail: 'A full-featured e-commerce platform for plant enthusiasts, offering a seamless shopping experience with dynamic UI and robust C# backend logic.',
+      fullDesc: 'Plantify is a complete e-commerce solution tailored for plant enthusiasts. It features a seamless and dynamic front-end shopping experience, paired with a robust and secure C# backend. The platform supports product cataloging, user authentication, shopping carts, and order processing, all architected with the ASP.NET Core MVC framework.',
+      techStack: ['C#', 'ASP.NET Core MVC', 'SQL Server', 'Entity Framework', 'Bootstrap'],
+      link: '#',
       image: 'assets/plantify.png',
       roles: ['ASP.NET Core MVC', 'C# Backend Logic', 'Dynamic Frontend UI'],
       label: 'WEB APP / E-COMMERCE',
@@ -390,6 +401,10 @@
       num: '04',
       title: 'Venta',
       desc: 'Local POS and ordering system',
+      detail: 'A comprehensive local Point of Sale (POS) application featuring offline storage capabilities to ensure reliable data management for small businesses.',
+      fullDesc: 'Venta is a specialized local Point of Sale (POS) and ordering system designed for small to medium businesses. It leverages local SQLite databases to provide full offline storage capabilities, ensuring continuous operation without internet reliance. The intuitive Flutter UI allows for rapid order processing and inventory management.',
+      techStack: ['Flutter', 'Dart', 'SQLite', 'Provider'],
+      link: '#',
       image: 'assets/venta.png',
       roles: ['Flutter UI', 'SQLite Offline Storage', 'Local Data Management'],
       label: 'APP DEV / POS SYSTEM',
@@ -399,6 +414,10 @@
       num: '05',
       title: 'Paquito\'s Pizza',
       desc: 'PHP-based e-commerce web application',
+      detail: 'An end-to-end e-commerce solution for a pizza restaurant, complete with user sessions, shopping cart functionality, and secure database management.',
+      fullDesc: 'Paquito\'s Pizza is an end-to-end e-commerce web application designed specifically for a local pizzeria. The project encompasses everything from an interactive customer storefront to secure user authentication, shopping cart management, and order tracking. It was developed using native PHP and MySQL for a lightweight yet powerful backend system.',
+      techStack: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript', 'XAMPP'],
+      link: '#',
       image: 'assets/paquito.png',
       roles: ['PHP Backend', 'Database Management', 'Full-Stack Development'],
       label: 'WEB APP / PHP & MYSQL',
@@ -417,6 +436,8 @@
     const titleEl = $('.experiments__title');
     const descEl = $('.experiments__desc');
     const labelEl = $('.experiments__label');
+    const detailEl = $('.experiments__detail');
+    const linkEl = $('.experiments__learn-more');
     const imageEl = $('.experiments__main-image img');
     const rolesContainer = $('.experiments__roles');
     const thumbs = $$('.experiments__thumb');
@@ -440,14 +461,14 @@
       const baseX = isMobile ? '-50%' : '-30%';
       
       titleEl.style.opacity = '0';
-      titleEl.style.transform = `translate(${baseX}, -50%) translateY(40px) scale(0.9)`;
+      titleEl.style.transform = `translate(${baseX}, 0) translateY(40px) scale(0.9)`;
       titleEl.style.filter = 'blur(10px)';
       setTimeout(() => {
         const firstLetter = data.title.charAt(0);
         const rest = data.title.slice(1);
         titleEl.innerHTML = `<span class="experiments__title-script">${firstLetter}</span>${rest}`;
         titleEl.style.opacity = '1';
-        titleEl.style.transform = `translate(${baseX}, -50%) translateY(0) scale(1)`;
+        titleEl.style.transform = `translate(${baseX}, 0) translateY(0) scale(1)`;
         titleEl.style.filter = 'blur(0px)';
       }, 300);
     }
@@ -482,6 +503,16 @@
       }, 300);
     }
 
+    if (detailEl) {
+      detailEl.style.opacity = '0';
+      detailEl.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        detailEl.textContent = data.detail;
+        detailEl.style.opacity = '1';
+        detailEl.style.transform = 'translateY(0)';
+      }, 300);
+    }
+
     if (rolesContainer) {
       rolesContainer.style.opacity = '0';
       rolesContainer.style.transform = 'translateX(20px)';
@@ -489,6 +520,13 @@
         rolesContainer.innerHTML = data.roles.map((role, i) => `<div class="experiments__role" style="animation: fadeInUp 0.5s ease forwards ${i * 0.1}s; opacity: 0;">${role}</div>`).join('');
         rolesContainer.style.opacity = '1';
         rolesContainer.style.transform = 'translateX(0)';
+      }, 300);
+    }
+
+    if (linkEl) {
+      linkEl.style.opacity = '0';
+      setTimeout(() => {
+        linkEl.style.opacity = '1';
       }, 300);
     }
 
@@ -554,9 +592,9 @@
         
         if (isMobile) {
           // On mobile, keep it strictly centered on the X axis, slide up on Y
-          title.style.transform = `translate(-50%, calc(-50% + ${-titleX}px))`;
+          title.style.transform = `translate(-50%, ${-titleX}px)`;
         } else {
-          title.style.transform = `translate(calc(-30% + ${titleX}px), -50%)`;
+          title.style.transform = `translate(calc(-30% + ${titleX}px), 0)`;
         }
         title.style.opacity = easeEnter;
         title.style.filter = `blur(${10 * (1 - easeEnter)}px)`;
@@ -594,6 +632,63 @@
       }
     });
   });
+
+  // Learn More Button -> Side Panel Logic
+  const learnMoreBtn = $('.experiments__learn-more');
+  const expSidePanel = $('#side-panel');
+  const expPanelOverlay = $('#panel-overlay');
+  const expPanelClose = $('#panel-close');
+  const expPanelTitle = $('#panel-title');
+  const expPanelTagline = $('#panel-tagline');
+  const expPanelDesc = $('#panel-desc');
+  const expPanelList = $('#panel-list');
+
+  if (learnMoreBtn) {
+    learnMoreBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (currentExpIdx === -1) return;
+      const data = expData[currentExpIdx];
+      
+      if (expPanelTitle) expPanelTitle.textContent = data.title;
+      if (expPanelTagline) expPanelTagline.textContent = data.label;
+      if (expPanelDesc) expPanelDesc.textContent = data.fullDesc || data.detail;
+      
+      if (expPanelList) {
+        expPanelList.innerHTML = '';
+        if (data.techStack && data.techStack.length) {
+          const stackTitle = document.createElement('h3');
+          stackTitle.textContent = 'Tech Stack';
+          stackTitle.style.marginBottom = '10px';
+          stackTitle.style.fontFamily = 'var(--font-mono)';
+          stackTitle.style.color = '#fff';
+          expPanelList.appendChild(stackTitle);
+          
+          const ul = document.createElement('ul');
+          ul.style.listStyle = 'none';
+          ul.style.padding = '0';
+          ul.style.display = 'flex';
+          ul.style.flexWrap = 'wrap';
+          ul.style.gap = '10px';
+          data.techStack.forEach(tech => {
+            const li = document.createElement('li');
+            li.textContent = tech;
+            li.style.background = 'rgba(255, 255, 255, 0.1)';
+            li.style.padding = '8px 16px';
+            li.style.borderRadius = '20px';
+            li.style.fontSize = '14px';
+            li.style.color = '#fff';
+            ul.appendChild(li);
+          });
+          expPanelList.appendChild(ul);
+        }
+      }
+      
+      if (expSidePanel) {
+        expSidePanel.classList.add('side-panel--active');
+      }
+    });
+  }
 
   /* ════════════════════════════════════════════
      5. GLOBAL SIDE NAV LOGIC
@@ -850,12 +945,10 @@
     });
 
     sidePanel.classList.add('side-panel--active');
-    document.body.style.overflow = 'hidden'; // Prevent scroll
   }
 
   function closePanel() {
     sidePanel.classList.remove('side-panel--active');
-    document.body.style.overflow = '';
   }
 
   // Add click listeners to cards
@@ -1084,9 +1177,32 @@
   });
 
 
-
-
-
+  // Email Copy to Clipboard
+  const copyEmailBtn = document.getElementById('copy-email-btn');
+  if (copyEmailBtn) {
+    copyEmailBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const emailText = document.getElementById('email-text');
+      const email = 'gloreanne19@gmail.com';
+      navigator.clipboard.writeText(email).then(() => {
+        emailText.textContent = 'Copied to clipboard!';
+        setTimeout(() => {
+          emailText.textContent = email;
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy email: ', err);
+      });
+    });
+  }
+  
+  // Close side panel when clicking its contact button
+  const sideContactBtn = document.getElementById('side-contact-btn');
+  if (sideContactBtn && typeof closePanel === 'function') {
+    sideContactBtn.addEventListener('click', () => {
+      closePanel();
+    });
+  }
+  
   /* Init complete */
   console.log('%c April Gloreanne Portfolio loaded ✓', 'color:#78b6f0;font-family:monospace;font-size:14px;');
 })();
