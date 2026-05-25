@@ -1177,7 +1177,47 @@
   });
 
 
-  // Email Copy to Clipboard
+  // ── Contact Form Submission ──
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('cf-submit');
+      const successMsg = document.getElementById('cf-success');
+      const errorMsg = document.getElementById('cf-error');
+      const submitText = submitBtn.querySelector('.contact-form__submit-text');
+
+      // Reset state
+      successMsg.hidden = true;
+      errorMsg.hidden = true;
+      submitBtn.disabled = true;
+      submitText.textContent = 'Sending…';
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          contactForm.reset();
+          successMsg.hidden = false;
+          submitText.textContent = 'Send Message';
+        } else {
+          errorMsg.hidden = false;
+          submitText.textContent = 'Send Message';
+        }
+      } catch {
+        errorMsg.hidden = false;
+        submitText.textContent = 'Send Message';
+      }
+
+      submitBtn.disabled = false;
+    });
+  }
+
+
   const copyEmailBtn = document.getElementById('copy-email-btn');
   if (copyEmailBtn) {
     copyEmailBtn.addEventListener('click', (e) => {
