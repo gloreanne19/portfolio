@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — April Gloreanne</title>
+  <meta name="description" content="April Gloreanne — Full-stack designer and developer based in the Philippines. Passionate about building real systems with a designer's soul." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Geist+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ─── About Page Specific Styles ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F8F7F4;
+      --bg-dark: #FFFFFF;
+      --text: #0E0E10;
+      --text-muted: #62626A;
+      --accent: #2060df;
+      --accent-light: rgba(32, 96, 223, 0.05);
+      --white: #fff;
+      --serif: 'DM Serif Display', serif;
+      --sans: 'Inter', sans-serif;
+      --mono: 'Geist Pixel Square', 'Geist Mono', monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(32, 96, 223, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(254, 243, 199, 0.2) 0px, transparent 50%),
+        linear-gradient(rgba(15, 15, 15, 0.015) 1px, transparent 1px), 
+        linear-gradient(90deg, rgba(15, 15, 15, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 80px 80px, 80px 80px;
+    }
+
+    /* ─── NAV ─── */
+    .ab-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 60px;
+      background: linear-gradient(to bottom, rgba(248, 247, 244, 0.8), transparent);
+      backdrop-filter: blur(8px);
+    }
+
+    .ab-nav__logo {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ab-nav__logo span { color: var(--accent); }
+
+    .ab-nav__pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(15, 15, 15, 0.06);
+      border-radius: 50px;
+      padding: 6px 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    }
+
+    .ab-nav__pill-link {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 6px 16px;
+      border-radius: 50px;
+      transition: all 0.3s var(--ease);
+    }
+
+    .ab-nav__pill-link:hover { color: var(--text); }
+    .ab-nav__pill-link--active {
+      background: var(--text);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .ab-nav__links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .ab-nav__link {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+      font-weight: 500;
+    }
+
+    .ab-nav__link:hover { opacity: 1; color: var(--accent); }
+
+    /* ─── HERO ─── */
+    .ab-hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 160px 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ab-hero__eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s var(--ease) 0.2s, transform 0.8s var(--ease) 0.2s;
+      font-weight: 600;
+    }
+
+    .ab-hero__headline {
+      font-family: var(--serif);
+      font-size: clamp(52px, 7.5vw, 110px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      max-width: 1100px;
+      margin-bottom: 60px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1s var(--ease) 0.4s, transform 1s var(--ease) 0.4s;
+    }
+
+    .ab-hero__headline em {
+      font-style: italic;
+      color: var(--accent);
+      position: relative;
+    }
+
+    .ab-hero__headline em::after {
+      content: '';
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: var(--accent);
+      opacity: 0.12;
+      border-radius: 4px;
+    }
+
+    .ab-hero__photo-inline {
+      display: inline-block;
+      width: clamp(80px, 9vw, 130px);
+      height: clamp(80px, 9vw, 130px);
+      border-radius: 50%;
+      overflow: hidden;
+      vertical-align: middle;
+      margin: 0 16px;
+      position: relative;
+      top: -8px;
+      border: 3px solid var(--white);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      transform: rotate(-3deg);
+      transition: transform 0.6s var(--ease);
+    }
+
+    .ab-hero__photo-inline:hover {
+      transform: scale(1.05) rotate(2deg);
+    }
+
+    .ab-hero__photo-inline img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ab-hero__bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s var(--ease) 0.8s, transform 0.8s var(--ease) 0.8s;
+    }
+
+    .ab-hero__tagline {
+      font-family: var(--sans);
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 440px;
+      line-height: 1.6;
+    }
+
+    .ab-hero__scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .ab-hero__scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    /* ─── LOADED STATE ─── */
+    body.loaded .ab-hero__eyebrow,
+    body.loaded .ab-hero__headline,
+    body.loaded .ab-hero__bottom {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── DIVIDER ─── */
+    .ab-divider {
+      height: 1px;
+      background: rgba(15, 15, 15, 0.06);
+      margin: 0 60px;
+    }
+
+    /* ─── STATS ROW ─── */
+    .ab-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 0 60px;
+      gap: 24px;
+      background: transparent;
+      margin-bottom: 80px;
+    }
+
+    .ab-stats__item {
+      background: var(--white);
+      border: 1px solid rgba(15, 15, 15, 0.05);
+      border-radius: 12px;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.02);
+      transition: all 0.5s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ab-stats__item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s var(--ease);
+    }
+
+    .ab-stats__item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+      border-color: rgba(32, 96, 223, 0.15);
+    }
+
+    .ab-stats__item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .ab-stats__num {
+      font-family: var(--sans);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 600;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .ab-stats__label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* ─── BIO SECTION ─── */
+    .ab-bio {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 100px;
+      padding: 80px 60px 120px;
+      align-items: start;
+      border-top: 1px solid rgba(15, 15, 15, 0.06);
+    }
+
+    .ab-bio__left {
+      position: sticky;
+      top: 120px;
+      background: var(--white);
+      border: 1px solid rgba(15, 15, 15, 0.05);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.015);
+    }
+
+    .ab-bio__section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    .ab-bio__section-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    .ab-bio__photo {
+      width: clamp(120px, 12vw, 160px);
+      height: clamp(120px, 12vw, 160px);
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 28px;
+      border: 3px solid var(--white);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      transform: rotate(-3deg);
+      transition: transform 0.6s var(--ease);
+    }
+
+    .ab-bio__photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+
+    .ab-bio__photo:hover {
+      transform: scale(1.05) rotate(2deg);
+    }
+
+    .ab-bio__name {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .ab-bio__role {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      line-height: 1.8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ab-bio__resume-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 28px;
+      padding: 12px 24px;
+      background: var(--text);
+      color: var(--bg);
+      text-decoration: none;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.3s var(--ease);
+      border: 1px solid var(--text);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .ab-bio__resume-btn:hover {
+      background: transparent;
+      color: var(--text);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .ab-bio__right {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+    }
+
+    .ab-bio__text {
+      font-family: var(--sans);
+      font-size: clamp(16px, 1.8vw, 20px);
+      font-weight: 300;
+      line-height: 1.7;
+      color: #374151;
+    }
+
+    .ab-bio__text strong {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* ─── EXPERTISE ─── */
+    .ab-expertise {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .ab-expertise__label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    .ab-expertise__label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    .ab-expertise__item {
+      border-top: 1px solid rgba(15, 15, 15, 0.06);
+      padding: 32px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: default;
+      transition: all 0.4s var(--ease);
+      gap: 20px;
+    }
+
+    .ab-expertise__item:last-child { border-bottom: 1px solid rgba(15, 15, 15, 0.06); }
+
+    .ab-expertise__item:hover {
+      padding: 32px 24px;
+      background: var(--white);
+      border-radius: 12px;
+      border-color: transparent;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.02);
+    }
+
+    .ab-expertise__num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      min-width: 32px;
+      font-weight: 600;
+    }
+
+    .ab-expertise__name {
+      font-family: var(--serif);
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 400;
+      flex: 1;
+      color: var(--text);
+    }
+
+    .ab-expertise__tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .ab-expertise__tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: var(--accent-light);
+      padding: 6px 14px;
+      border-radius: 50px;
+      color: var(--accent);
+      border: 1px solid rgba(32, 96, 223, 0.1);
+      font-weight: 500;
+    }
+
+    /* ─── TOOLS SECTION ─── */
+    .ab-tools {
+      padding: 120px 60px;
+      background: var(--white);
+      border-top: 1px solid rgba(15, 15, 15, 0.06);
+    }
+
+    .ab-tools__header {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .ab-tools__title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .ab-tools__subtitle {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .ab-tools__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1px;
+      background: rgba(15, 15, 15, 0.06);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(15, 15, 15, 0.06);
+    }
+
+    .ab-tools__item {
+      background: var(--white);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .ab-tools__item:hover {
+      background: var(--accent-light);
+    }
+
+    .ab-tools__item-name {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .ab-tools__item-type {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ─── AWARDS ─── */
+    .ab-awards {
+      margin-top: 80px;
+    }
+
+    .ab-awards__list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 24px;
+    }
+
+    .ab-awards__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      border-top: 1px solid rgba(15, 15, 15, 0.06);
+      transition: all 0.3s var(--ease);
+    }
+
+    .ab-awards__item:last-child {
+      border-bottom: 1px solid rgba(15, 15, 15, 0.06);
+    }
+
+    .ab-awards__item:hover {
+      padding: 24px 16px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      border-color: transparent;
+    }
+
+    .ab-awards__name {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .ab-awards__date {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    /* ─── FOOTER BAR ─── */
+    .ab-footer {
+      padding: 40px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(15, 15, 15, 0.06);
+      background: var(--bg);
+    }
+
+    .ab-footer__copy {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .ab-footer__back {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.3s ease;
+      font-weight: 600;
+    }
+
+    .ab-footer__back:hover { gap: 16px; color: var(--accent); }
+
+    /* ─── REVEAL ANIMATION ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .ab-bio { gap: 60px; }
+    }
+
+    @media (max-width: 768px) {
+      body { background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px; }
+      .ab-nav { padding: 20px 24px; }
+      .ab-hero { padding: 140px 24px 40px; }
+      .ab-hero__bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .ab-stats { grid-template-columns: repeat(2, 1fr); padding: 0 24px; gap: 16px; margin-bottom: 60px; }
+      .ab-stats__item { padding: 24px; }
+      .ab-bio { grid-template-columns: 1fr; gap: 48px; padding: 60px 24px; }
+      .ab-bio__left { position: static; padding: 24px; }
+      .ab-tools { padding: 80px 24px; }
+      .ab-footer { padding: 32px 24px; flex-direction: column; gap: 16px; text-align: center; }
+      .ab-expertise__tags { display: none; }
+      .ab-expertise__item:hover { padding: 32px 0; background: transparent; box-shadow: none; }
+      .ab-awards__item:hover { padding: 24px 0; background: transparent; }
+      .ab-divider { margin: 0 24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════ NAV ═══════════════════════════ -->
+  <nav class="nav" id="main-nav">
+    <a href="index.html" class="nav__logo" aria-label="Go to homepage">
+      <img src="assets/profile.png" alt="Profile" />
+    </a>
+    <div class="nav__tabs">
+      <a href="https://drive.google.com/file/d/1kHrT_PMNRITSFjxPSE5NXx3i1pSSmYOf/view?usp=drive_link" class="nav__tab" target="_blank" rel="noopener noreferrer">Resume</a>
+      <a href="about.html" class="nav__tab nav__tab--active" id="nav-profile-btn">About</a>
+      <a href="playground.html" class="nav__tab">Playground</a>
+    </div>
+    <a href="index.html#contact" class="nav__cta">
+      Connect <span class="nav__cta-arrow">+</span>
+    </a>
+  </nav>
+
+  <!-- ═══════════════════════════ ABOUT ME ═══════════════════════════ -->
+  <section class="about" id="about" style="background: #000;">
+    <div class="about__scroll-container">
+      <div class="about__sticky" style="background: #000;">
+
+
+        <!-- Bio sequence (revealed on scroll) -->
+        <div class="about__bio" id="about-bio">
+          <div class="about__bio-bg" id="about-bg"></div>
+          
+          <div class="about__typo-container" id="wwd-container">
+            <h2 class="about__wwd-header">What I do</h2>
+            
+            <div class="about__typo-track" id="about-typo-track">
+              <div class="about__card about__card--ux">
+                <div class="about__card-arrow">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <h3 class="about__card-title" data-text="UX/UI Design"><span>UX/UI Design</span></h3>
+                <div class="about__card-img-wrap">
+                  <img src="assets/graphic-ui-chart.png" alt="UX/UI Chart" class="about__card-img">
+                </div>
+              </div>
+              <div class="about__card about__card--graphic">
+                <div class="about__card-arrow">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <h3 class="about__card-title" data-text="Graphic Design"><span>Graphic Design</span></h3>
+                <div class="about__card-img-wrap">
+                  <img src="assets/graphic-phone-mockup.png" alt="Graphic Design Phone" class="about__card-img">
+                </div>
+              </div>
+              <div class="about__card about__card--engineering">
+                <div class="about__card-arrow">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <h3 class="about__card-title" data-text="Full-Stack Engineering"><span>Full-Stack Engineering</span></h3>
+                <div class="about__card-img-wrap">
+                  <img src="assets/full_stack_card_graphic.png" alt="Engineering Graphic" class="about__card-img">
+                </div>
+              </div>
+            </div>
+
+            <div class="about__wwd-footer">
+              <div class="about__wwd-action">
+                <a href="#about-full" class="about__wwd-more">
+                  <span>Know more about me</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+              <div class="about__wwd-text">
+                <div class="about__wwd-seq about__wwd-seq--active">
+                  <p class="about__wwd-p about__wwd-p--bright">Beyond the Pixels: Full-Stack Engineering</p>
+                  <p class="about__wwd-p">I don’t just draw the map; I build the engine. My background in UI/UX ensures that every system I develop is intuitive, but my technical stack is what makes them powerful.</p>
+                </div>
+                <div class="about__wwd-seq">
+                  <p class="about__wwd-p about__wwd-p--bright">Code is the Delivery</p>
+                  <p class="about__wwd-p">A beautiful design is only a promise; code is the delivery. I transitioned into full-stack development because I wanted to be the one who ensures that every interaction works exactly as intended.</p>
+                </div>
+                <div class="about__wwd-seq">
+                  <p class="about__wwd-p about__wwd-p--bright">Architecting Logic</p>
+                  <p class="about__wwd-p">I don't just hand off assets; I architect the logic that powers them. By bridging the gap between design and engineering, I eliminate the "lost in translation" phase of product development.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="about__bio-composition" id="about-comp">
+            <div class="about__bio-photo about__bio-photo--left"></div>
+            <div class="about__bio-photo about__bio-photo--center"></div>
+            <div class="about__bio-photo about__bio-photo--right"></div>
+          </div>
+
+          <div class="about__bio-inner about__bio-inner--sequence">
+            <div class="about__seq-item" id="seq-1">
+              <p class="about__seq-p">
+                <span class="about__bright">Human-Centric UX/UI</span><br>
+                <span class="about__dim">I design interfaces that are not just beautiful, but intuitive. By focusing on user behavior and data-driven insights, I create digital experiences that solve real problems.</span>
+              </p>
+            </div>
+            <div class="about__seq-item" id="seq-2">
+              <p class="about__seq-p">
+                <span class="about__bright">Visual Storytelling & Graphics</span><br>
+                <span class="about__dim">Graphic design is the soul of branding. I craft visual identities that resonate, using color, typography, and motion to tell a compelling story across every touchpoint.</span>
+              </p>
+            </div>
+            <div class="about__seq-item" id="seq-3">
+              <p class="about__seq-p">
+                <span class="about__bright">Full-Stack Engineering</span><br>
+                <span class="about__dim">A design is only as good as its implementation. I bridge the gap by building robust, scalable systems that bring creative visions to life with clean, efficient code.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll trigger spacers -->
+      <div class="about__trigger about__trigger--1"></div>
+      <div class="about__trigger about__trigger--2"></div>
+      <div class="about__trigger about__trigger--3"></div>
+      <div class="about__trigger about__trigger--4"></div>
+    </div>
+    
+    <!-- Spacer after pinned content seamlessly scrolls -->
+    <div class="about__spacer"></div>
+  </section>
+
+  <!-- ─── BIO ─── -->
+  <div class="ab-bio" id="about-full">
+    <div class="ab-bio__left reveal">
+      <p class="ab-bio__name">April Gloreanne M. Mactal</p>
+      <p class="ab-bio__role">Designer × Developer × PSU Urdaneta City</p>
+      <br>
+      <p class="ab-bio__role">📧 gloreanne19@gmail.com</p>
+      <p class="ab-bio__role">📞 09760209793</p>
+      <p class="ab-bio__role">📍 #15 Pob East, Santa Maria, Pangasinan</p>
+      
+      <a href="assets/resume.pdf" target="_blank" class="ab-bio__resume-btn">
+        View Resume
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+      </a>
+    </div>
+
+    <div class="ab-bio__right">
+
+      <!-- Summary -->
+      <div>
+        <p class="ab-expertise__label">Summary</p>
+        <p class="ab-bio__text reveal">
+          Skilled in <strong>full-stack development</strong>, translating complex user requirements into functional, highly intuitive, and visually engaging applications. Proven contributor to award-winning app designs and successful client-based projects. Proficient in <strong>Flutter, Java, Laravel, ASP.NET, Python, and Node.js</strong>, with hands-on expertise in front-end design, back-end logic, and project management.
+        </p>
+      </div>
+
+      <!-- Education -->
+      <div class="ab-expertise reveal">
+        <p class="ab-expertise__label">Education</p>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">BSc</span>
+          <div style="flex:1">
+            <div class="ab-expertise__name" style="font-size:20px">Pangasinan State University</div>
+            <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted);margin-top:4px">Bachelor of Science in Information Technology · Major in Mobile and Web Development</div>
+          </div>
+          <div class="ab-expertise__tags">
+            <span class="ab-expertise__tag">Urdaneta City</span>
+            <span class="ab-expertise__tag">Aug 2026</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <div class="ab-expertise reveal">
+        <p class="ab-expertise__label">Experience</p>
+
+        <div class="ab-expertise__item" style="flex-direction:column;align-items:flex-start;gap:8px">
+          <div style="display:flex;justify-content:space-between;width:100%;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="ab-expertise__name" style="font-size:18px">Graphic Designer, UI/UX Designer &amp; Software Developer Intern</span>
+            <div class="ab-expertise__tags"><span class="ab-expertise__tag">Feb–May 2026</span></div>
+          </div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">7th Pillar Integrated Systems Corp. · Chino Roces Ave, Makati City</div>
+          <ul style="font-family:var(--sans);font-size:14px;color:#4b5563;line-height:1.6;padding-left:18px;margin-top:4px">
+            <li>Engineered and deployed functional software solutions, including a visitor attendance system, an appointment management system, and a cab-hailing application.</li>
+            <li>Produced user-centric graphic design assets and implemented full-stack features to deliver comprehensive, end-to-end system requirements.</li>
+          </ul>
+        </div>
+
+        <div class="ab-expertise__item" style="flex-direction:column;align-items:flex-start;gap:8px">
+          <div style="display:flex;justify-content:space-between;width:100%;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="ab-expertise__name" style="font-size:18px">Capstone Leader, UI/UX Designer &amp; Programmer</span>
+            <div class="ab-expertise__tags"><span class="ab-expertise__tag">Mar 2024–Dec 2025</span></div>
+          </div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">AlertGen — Capstone Project · Pangasinan State University</div>
+          <ul style="font-family:var(--sans);font-size:14px;color:#4b5563;line-height:1.6;padding-left:18px;margin-top:4px">
+            <li>Spearheaded development of complex allergen detection system, leading end-to-end technical planning and project management.</li>
+            <li>Designed critical UI/UX workflows and programmed core system logic ensuring seamless integration and functionality.</li>
+          </ul>
+        </div>
+
+        <div class="ab-expertise__item" style="flex-direction:column;align-items:flex-start;gap:8px">
+          <div style="display:flex;justify-content:space-between;width:100%;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="ab-expertise__name" style="font-size:18px">Android UI/UX Designer &amp; Assistant Programmer</span>
+            <div class="ab-expertise__tags"><span class="ab-expertise__tag">Oct 2024–May 2025</span></div>
+          </div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">Prepartor — Startup Project</div>
+          <ul style="font-family:var(--sans);font-size:14px;color:#4b5563;line-height:1.6;padding-left:18px;margin-top:4px">
+            <li>Created intuitive UI designs and user flows for personalized review application.</li>
+            <li>Assisted in Android feature development and testing to optimize learning experience and stability.</li>
+          </ul>
+        </div>
+
+        <div class="ab-expertise__item" style="flex-direction:column;align-items:flex-start;gap:8px">
+          <div style="display:flex;justify-content:space-between;width:100%;align-items:center;flex-wrap:wrap;gap:8px">
+            <span class="ab-expertise__name" style="font-size:18px">Programmer &amp; UI/UX Designer</span>
+            <div class="ab-expertise__tags"><span class="ab-expertise__tag">2022–Present</span></div>
+          </div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted)">Academic, Client-Based &amp; Independent Projects</div>
+          <ul style="font-family:var(--sans);font-size:14px;color:#4b5563;line-height:1.6;padding-left:18px;margin-top:4px">
+            <li>Designed and developed diverse portfolio of mobile, web, and system applications.</li>
+            <li>Implemented system logic and intuitive UI designs for POS systems, management systems, and mobile games.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- What I do -->
+      <div class="ab-expertise reveal">
+        <p class="ab-expertise__label">What I do</p>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">01</span>
+          <span class="ab-expertise__name">UX / UI Design</span>
+          <div class="ab-expertise__tags">
+            <span class="ab-expertise__tag">Figma</span>
+            <span class="ab-expertise__tag">Wireframing</span>
+            <span class="ab-expertise__tag">Prototyping</span>
+          </div>
+        </div>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">02</span>
+          <span class="ab-expertise__name">Full-Stack Development</span>
+          <div class="ab-expertise__tags">
+            <span class="ab-expertise__tag">Android</span>
+            <span class="ab-expertise__tag">Laravel</span>
+            <span class="ab-expertise__tag">Firebase</span>
+          </div>
+        </div>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">03</span>
+          <span class="ab-expertise__name">Graphic &amp; Multimedia Design</span>
+          <div class="ab-expertise__tags">
+            <span class="ab-expertise__tag">Adobe Suite</span>
+            <span class="ab-expertise__tag">Branding</span>
+          </div>
+        </div>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">04</span>
+          <span class="ab-expertise__name">AI-Integrated Systems</span>
+          <div class="ab-expertise__tags">
+            <span class="ab-expertise__tag">Gemini 2.5</span>
+            <span class="ab-expertise__tag">OCR</span>
+            <span class="ab-expertise__tag">GCP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leadership -->
+      <div class="ab-expertise reveal">
+        <p class="ab-expertise__label">Leadership &amp; Involvement</p>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">→</span>
+          <div style="flex:1">
+            <div style="font-family:var(--sans);font-size:15px;font-weight:600">Creative and Design Committee Head</div>
+            <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted);margin-top:2px">INTEL Information Technologists' League, PSU</div>
+          </div>
+          <div class="ab-expertise__tags"><span class="ab-expertise__tag">Sept 2025–Present</span></div>
+        </div>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">→</span>
+          <div style="flex:1">
+            <div style="font-family:var(--sans);font-size:15px;font-weight:600">Multimedia and Design Committee President</div>
+            <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted);margin-top:2px">San Mariano Bible Baptist Church</div>
+          </div>
+          <div class="ab-expertise__tags"><span class="ab-expertise__tag">June 2023–Present</span></div>
+        </div>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">→</span>
+          <div style="flex:1">
+            <div style="font-family:var(--sans);font-size:15px;font-weight:600">Internal Public Relations Officer</div>
+            <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted);margin-top:2px">INTEL Information Technologists' League, PSU</div>
+          </div>
+          <div class="ab-expertise__tags"><span class="ab-expertise__tag">Aug 2025–Present</span></div>
+        </div>
+        <div class="ab-expertise__item">
+          <span class="ab-expertise__num">→</span>
+          <div style="flex:1">
+            <div style="font-family:var(--sans);font-size:15px;font-weight:600">Creatives and Design Committee Member</div>
+            <div style="font-family:var(--mono);font-size:12px;color:var(--text-muted);margin-top:2px">Guild of Multimedia Artist, PSU · INTEL PSU Urdaneta City Campus</div>
+          </div>
+          <div class="ab-expertise__tags"><span class="ab-expertise__tag">Dec 2025–Present</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ab-divider"></div>
+
+  <!-- ─── TOOLS ─── -->
+  <section class="ab-tools">
+    <div class="ab-tools__header reveal">
+      <h2 class="ab-tools__title">Technical skills</h2>
+      <span class="ab-tools__subtitle">What I build with</span>
+    </div>
+    <div class="ab-tools__grid">
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Flutter (Android/Mobile)</span><span class="ab-tools__item-type">Mobile Dev</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Kotlin &amp; Flame Engine</span><span class="ab-tools__item-type">Mobile Dev</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Laravel (PHP)</span><span class="ab-tools__item-type">Back-End</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">ASP.NET (C#)</span><span class="ab-tools__item-type">Back-End</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Node.js · Flask</span><span class="ab-tools__item-type">Back-End</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Gemini AI · GCP</span><span class="ab-tools__item-type">AI / Cloud</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Google Maps API</span><span class="ab-tools__item-type">API</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">RESTful APIs</span><span class="ab-tools__item-type">Integration</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Figma</span><span class="ab-tools__item-type">UI/UX Design</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Adobe Photoshop</span><span class="ab-tools__item-type">Graphics</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">MySQL · Firebase</span><span class="ab-tools__item-type">Database</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">MongoDB · Supabase</span><span class="ab-tools__item-type">Database</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">Java · Kotlin · Python</span><span class="ab-tools__item-type">Language</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">C# · PHP · JS</span><span class="ab-tools__item-type">Language</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">HTML / CSS</span><span class="ab-tools__item-type">Markup</span></div>
+      <div class="ab-tools__item reveal"><span class="ab-tools__item-name">GoHighLevel · GitHub</span><span class="ab-tools__item-type">CRM / Dev Ops</span></div>
+    </div>
+
+    <!-- Awards -->
+    <div class="ab-awards reveal">
+      <div class="ab-tools__header">
+        <h2 class="ab-tools__title">Awards &amp; Certifications</h2>
+      </div>
+      <div class="ab-awards__list">
+        <div class="ab-awards__item">
+          <span class="ab-awards__name">IT Student Research Colloquium — Best Student Research Poster</span>
+          <span class="ab-awards__date">Jan 2026</span>
+        </div>
+        <div class="ab-awards__item">
+          <span class="ab-awards__name">TOPCIT — Level 3 Passer</span>
+          <span class="ab-awards__date">Dec 2025</span>
+        </div>
+        <div class="ab-awards__item">
+          <span class="ab-awards__name">Meta Android Developer Professional Certificate — Coursera</span>
+          <span class="ab-awards__date">Dec 2025</span>
+        </div>
+        <div class="ab-awards__item">
+          <span class="ab-awards__name">PSU Representative — Android Dev Productivity, IT Skills Olympics 2025</span>
+          <span class="ab-awards__date">Nov 2025</span>
+        </div>
+        <div class="ab-awards__item">
+          <span class="ab-awards__name">Best App Design Idea — EduCents, INNO Box Design for Change</span>
+          <span class="ab-awards__date">May 2024</span>
+        </div>
+        <div class="ab-awards__item">
+          <span class="ab-awards__name">DICT-GD001 Principles of Design, DICT</span>
+          <span class="ab-awards__date">Feb 2024</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="ab-footer">
+    <p class="ab-footer__copy">© 2026 April Gloreanne M. Mactal. Designed &amp; built by me.</p>
+    <a href="index.html" class="ab-footer__back">← Back to portfolio</a>
+  </footer>
+
+  <!-- ═══════════════════════════ SIDE POPUP PANEL ═══════════════════════════ -->
+  <div class="side-panel" id="side-panel" data-lenis-prevent>
+    <div class="side-panel__overlay" id="panel-overlay"></div>
+    <div class="side-panel__content" data-lenis-prevent>
+      <button class="side-panel__close" id="panel-close" aria-label="Close panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="side-panel__body">
+        <h2 class="side-panel__title" id="panel-title">UX/UI Design</h2>
+        
+        <p class="side-panel__tagline" id="panel-tagline">Transforming digital experiences with intuitive UX/UI design that drives engagement and loyalty</p>
+        
+        <p class="side-panel__desc" id="panel-desc">We craft seamless interfaces blending aesthetics and usability, ensuring every click feels natural and every journey inspires lasting connection.</p>
+        
+        <div class="side-panel__list" id="panel-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="side-panel__footer">
+        <a href="#contact" class="side-panel__btn side-panel__btn--primary" id="side-contact-btn">Get in touch</a>
+        <a href="#" class="side-panel__btn side-panel__btn--secondary">
+          <img src="assets/profile.png" alt="" width="20" style="border-radius: 50%;">
+          <span>TG</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="main.js"></script>
+
+  <script>
+    window.addEventListener('load', () => { document.body.classList.add('loaded'); });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          entry.target.style.transitionDelay = `${i * 0.04}s`;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
