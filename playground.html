@@ -397,7 +397,7 @@
         techStack: ['Android Studio', 'Gemini 2.5 Pro API', 'Google OCR Vision', 'Firebase Suite'],
         roles: ['Sole Developer & Lead Designer', 'AI Semantic Ingredient Mapper', 'System Usability Evaluation (SUS)'],
         image: 'assets/alertgen.png',
-        link: '#'
+        link: 'https://drive.google.com/file/d/1_5D3X_zOF7F6vpwO9XStJM2Q9jfXQsia/view?usp=drive_link'
       },
       {
         id: 'exler',
@@ -598,6 +598,14 @@
       if (project.link && project.link !== '#') {
         externalBtn.href = project.link;
         externalBtn.style.display = 'inline-flex';
+        const btnSpan = externalBtn.querySelector('span');
+        if (btnSpan) {
+          if (project.link.includes('drive.google.com')) {
+            btnSpan.textContent = 'Send me Request';
+          } else {
+            btnSpan.textContent = 'View Source / Live';
+          }
+        }
       } else {
         externalBtn.style.display = 'none';
       }
