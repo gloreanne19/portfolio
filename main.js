@@ -24,6 +24,25 @@
     requestAnimationFrame(raf);
   }
 
+  // Restore scroll position on index.html if returning from another page
+  if (!window.location.pathname.includes('about.html') && !window.location.hash) {
+    const savedScrollY = sessionStorage.getItem('homeScrollY');
+    if (savedScrollY) {
+      setTimeout(() => {
+        if (window.lenis) {
+          window.lenis.scrollTo(parseInt(savedScrollY, 10), { immediate: true });
+        } else {
+          window.scrollTo(0, parseInt(savedScrollY, 10));
+        }
+      }, 150);
+    }
+  }
+
+  // Set flag when visiting the About page to skip the intro video upon return
+  if (window.location.pathname.includes('about.html')) {
+    sessionStorage.setItem('hasSeenIntro', 'true');
+  }
+
   // ── Intro Splash Logic ──
   const introOverlay = $('#intro-overlay');
   const introVideo   = $('#intro-video');
@@ -74,46 +93,57 @@
   }, { once: true });
 
   if (introOverlay && introVideo) {
-    if (nav) {
-      nav.style.opacity = '1';
-      nav.style.visibility = 'visible';
-    }
-
-    // Force muted for autoplay to work, JS listener handles unmuting on click
-    introVideo.muted = true;
-    introVideo.play().catch(err => console.log("Intro autoplay state:", err));
+    const hasSeenIntro = sessionStorage.getItem('hasSeenIntro') === 'true';
     
-    // Set UI to show "SOUND ON" but don't actually toggle logic yet 
-    // to avoid unmuting the video before interaction (which kills autoplay)
-    soundOn = true;
-    const updateUI = () => {
-      const introLabel = introSound?.querySelector('.intro__sound-label');
-      if (introLabel) introLabel.textContent = 'SOUND ON';
-      const heroBtn = $('#sound-btn');
-      const heroLabel = heroBtn?.querySelector('.hero__sound-label');
-      if (heroLabel) heroLabel.textContent = 'SOUND ON';
-      if (heroBtn) heroBtn.style.borderColor = 'rgba(120,182,240,0.5)';
-    };
-    updateUI();
-
-    introSound?.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevent body click from re-toggling
-      toggleSound();
-    });
-
-    introVideo.addEventListener('ended', () => {
-      introOverlay.style.opacity = '0';
-      introActive = false; // Transition to main audio
-      
-      if (soundOn && bgAudio) {
-        bgAudio.play().catch(e => console.log("Main music blocked after intro", e));
+    if (hasSeenIntro) {
+      introOverlay.style.display = 'none';
+      introActive = false; // Bypass intro splash states
+      if (nav) {
+        nav.style.opacity = '0'; // Default state at top of page, updateNav handles scroll reveal
+      }
+    } else {
+      if (nav) {
+        nav.style.opacity = '1';
+        nav.style.visibility = 'visible';
       }
 
-      setTimeout(() => {
-        introOverlay.style.display = 'none';
-        if (window.scrollY < 80 && nav) nav.style.opacity = '0';
-      }, 1200);
-    });
+      // Force muted for autoplay to work, JS listener handles unmuting on click
+      introVideo.muted = true;
+      introVideo.play().catch(err => console.log("Intro autoplay state:", err));
+      
+      // Set UI to show "SOUND ON" but don't actually toggle logic yet 
+      // to avoid unmuting the video before interaction (which kills autoplay)
+      soundOn = true;
+      const updateUI = () => {
+        const introLabel = introSound?.querySelector('.intro__sound-label');
+        if (introLabel) introLabel.textContent = 'SOUND ON';
+        const heroBtn = $('#sound-btn');
+        const heroLabel = heroBtn?.querySelector('.hero__sound-label');
+        if (heroLabel) heroLabel.textContent = 'SOUND ON';
+        if (heroBtn) heroBtn.style.borderColor = 'rgba(120,182,240,0.5)';
+      };
+      updateUI();
+
+      introSound?.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent body click from re-toggling
+        toggleSound();
+      });
+
+      introVideo.addEventListener('ended', () => {
+        sessionStorage.setItem('hasSeenIntro', 'true');
+        introOverlay.style.opacity = '0';
+        introActive = false; // Transition to main audio
+        
+        if (soundOn && bgAudio) {
+          bgAudio.play().catch(e => console.log("Main music blocked after intro", e));
+        }
+
+        setTimeout(() => {
+          introOverlay.style.display = 'none';
+          if (window.scrollY < 80 && nav) nav.style.opacity = '0';
+        }, 1200);
+      });
+    }
   }
 
   /* ════════════════════════════════════════════
@@ -154,7 +184,14 @@
   }
 
   // Start states
-  if (nav) nav.style.opacity = '0';
+  if (nav) {
+    if (window.location.pathname.includes('about.html') || window.location.pathname.includes('playground.html')) {
+      nav.style.opacity = '1';
+      nav.style.visibility = 'visible';
+    } else {
+      nav.style.opacity = '0';
+    }
+  }
 
 
   /* ════════════════════════════════════════════
@@ -195,7 +232,13 @@
     if (!aboutSection) return;
     const rect       = aboutSection.getBoundingClientRect();
     const sectionH   = aboutSection.offsetHeight;
-    const progress   = Math.max(0, Math.min(1, -rect.top / (sectionH - window.innerHeight)));
+    let progress     = Math.max(0, Math.min(1, -rect.top / (sectionH - window.innerHeight)));
+
+    // Map the scroll timeline specifically for the About page to skip the empty intro stages
+    const isAboutPage = window.location.pathname.includes('about.html') || !!document.querySelector('.ab-bio');
+    if (isAboutPage) {
+      progress = 0.61 + progress * 0.39;
+    }
 
     // ── Reveal Bar Animation (Stage-by-Stage Logic) ──
     const revealBar = $('.about__reveal-bar');
@@ -759,6 +802,12 @@
         onAboutScroll();
         onExperimentScroll();
         updateSideNav();
+        
+        // Save scroll position for homepage only
+        if (!window.location.pathname.includes('about.html')) {
+          sessionStorage.setItem('homeScrollY', window.scrollY);
+        }
+        
         ticking = false;
       });
       ticking = true;
@@ -840,20 +889,30 @@
       let overLightBg = false;
       let overTransparent = false;
       
-      if (aboutSection) {
+      const isAboutPage = window.location.pathname.includes('about.html') || !!document.querySelector('.ab-bio');
+      const isPlaygroundPage = window.location.pathname.includes('playground.html');
+      
+      if (isPlaygroundPage) {
+        overLightBg = true;
+      } else if (aboutSection) {
         const aboutRect = aboutSection.getBoundingClientRect();
         if (aboutRect.top < navY && aboutRect.bottom > navY) {
           // We are physically hovering over the about container
-          const sectionH = aboutSection.offsetHeight;
-          const progress = Math.max(0, Math.min(1, -aboutRect.top / (sectionH - window.innerHeight)));
-          
-          if (progress < 0.5) {
-            // Over the initial white background
-            overLightBg = true;
-          } else {
-            // Over the black expanding curtain or the final Bio / spacer
+          if (isAboutPage) {
             overTransparent = true;
+          } else {
+            const sectionH = aboutSection.offsetHeight;
+            const progress = Math.max(0, Math.min(1, -aboutRect.top / (sectionH - window.innerHeight)));
+            if (progress < 0.5) {
+              overLightBg = true;
+            } else {
+              overTransparent = true;
+            }
           }
+        } else if (isAboutPage && aboutRect.bottom <= navY) {
+          // On the about page, once we scroll past the dark interactive section,
+          // the rest of the page (ab-bio, ab-tools, footer) is a light mode background!
+          overLightBg = true;
         }
       }
       

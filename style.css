@@ -375,6 +375,25 @@ button {
   letter-spacing: 0.5px;
   transition: opacity 0.2s, color 0.4s ease;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  position: relative;
+  opacity: 0.6;
+}
+
+.nav__tab--active {
+  opacity: 1 !important;
+}
+
+.nav__tab--active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
 }
 
 /* State: For light backgrounds (About top section) */
@@ -482,7 +501,7 @@ button {
 }
 
 .nav__tab:hover {
-  opacity: 0.7;
+  opacity: 0.95;
 }
 
 .nav__cta {

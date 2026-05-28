@@ -33,9 +33,9 @@
       <img src="assets/profile.png" alt="Profile" />
     </a>
     <div class="nav__tabs">
-      <a href="https://drive.google.com/file/d/1rwwK6NMtlK-NBCpuBsruJLvAQgFwekWY/view?usp=drive_link" class="nav__tab" target="_blank" rel="noopener noreferrer">Resume</a>
-      <a href="#about" class="nav__tab">About</a>
-      <a href="#playground" class="nav__tab">Playground</a>
+      <a href="https://drive.google.com/file/d/1kHrT_PMNRITSFjxPSE5NXx3i1pSSmYOf/view?usp=drive_link" class="nav__tab" target="_blank" rel="noopener noreferrer">Resume</a>
+      <a href="about.html" class="nav__tab">About</a>
+      <a href="playground.html" class="nav__tab">Playground</a>
     </div>
     <a href="#contact" class="nav__cta">
       Connect <span class="nav__cta-arrow">+</span>
@@ -382,7 +382,7 @@
           <h2 class="about__question">just a designer?</h2>
           <p class="about__sub">keep Scrolling <span class="about__cursor"></span></p>
         </div>
-
+  
         <!-- Bio sequence (revealed on scroll) -->
         <div class="about__bio" id="about-bio">
           <div class="about__bio-bg" id="about-bg"></div>
@@ -431,7 +431,7 @@
 
             <div class="about__wwd-footer">
               <div class="about__wwd-action">
-                <a href="#about-full" class="about__wwd-more">
+                <a href="about.html#about-full" class="about__wwd-more">
                   <span>Know more about me</span>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
@@ -518,7 +518,7 @@
             <div class="experiments__view-btn">View</div>
           </div>
           <div class="experiments__footer">
-            <a href="#" class="experiments__view-all">VIEW ALL PROJECTS</a>
+            <a href="playground.html" class="experiments__view-all">VIEW ALL PROJECTS</a>
           </div>
         </div>
 
@@ -658,9 +658,9 @@
   </section>
 
   <!-- ═══════════════════════════ SIDE POPUP PANEL ═══════════════════════════ -->
-  <div class="side-panel" id="side-panel">
+  <div class="side-panel" id="side-panel" data-lenis-prevent>
     <div class="side-panel__overlay" id="panel-overlay"></div>
-    <div class="side-panel__content">
+    <div class="side-panel__content" data-lenis-prevent>
       <button class="side-panel__close" id="panel-close" aria-label="Close panel">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
